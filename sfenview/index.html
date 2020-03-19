@@ -6,14 +6,10 @@
   <link rel="stylesheet" href="./sfenview.css">
   <script type="text/javascript" src="sfenview.js"></script>
 </head>
-<body>
+<body onload=load_defform()>
   <h1> SFEN(Shogi Forsyth-Edwards Notation) viewer </h1>
-  <input type="text" id="search" width="240px"></textarea>
-  <button id="load" onclick="search()">検索</button>
-  <br>
-  <br>
   
-  戦型：<select name="戦型" id="form_list" onchange="draw()">
+  棋譜：<select name="棋譜" id="form_list" onchange="draw()">
   <br>
   <br>
   </select>
@@ -71,8 +67,11 @@
   
   <br>
   <br>
-  <div>戦型定義ファイルを下記にコピペ</div>
+  <div>棋譜をコピペ</div>
   <textarea id="defform" class="defform">
+開始局面,lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
+1 ２六歩(27),lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1
+2 ８四歩(83),lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1
   </textarea>
   <br>
   <button id="load" onclick="load_defform()">読み込み</button>
