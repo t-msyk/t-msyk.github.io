@@ -96,14 +96,15 @@ nav li:hover{
 }
 
 main {
+  color: #0A1837;
   display: block;
   width:80%;
   margin-left: 10%;
   overflow: hidden;
 }
 main h1 {
+  color: #0A1837;
   font-size:120%;
-  color:#202020;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
@@ -116,25 +117,28 @@ main h1 {
   font-weight:700;
 }
 main h2 {
+  color: #0A1837;
   font-size:110%;
   text-decoration: underline;
-  color:#202020;
   font-weight:700;
   float: center;
 }
 main h3 {
+  color: #0A1837;
   font-size:100%;
   text-decoration: underline;
-  color:#202020;
   font-weight:700;
   float: center;
 }
 main h4,h5,h6 {
+  color: #0A1837;
   font-size:100%;
   text-decoration: underline;
-  color:#202020;
   font-weight:400;
   float: center;
+}
+main p {
+  color: #0A1837;
 }
 
 footer {
