@@ -1,11 +1,24 @@
 // Copyright (c) 2020 tMasayuki. All rights reserved.
 var sfen_list = [];
 var tag_list = [];
+var evaluation_value_list = [];
+var recommended_move_list = [];
 function dummy () {
 }
 
 function onload () {
-  load_defform();
+  if ( _GET['kifu'] ) {
+    var Kifu = document.getElementById("Kifu");
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', _GET['kifu'], true);
+    xhr.onload = function () {
+      Kifu.innerHTML = xhr.responseText;
+      load_sfen();
+    }
+    xhr.send();
+  } else {
+    load_sfen();
+  }
 }
 
 function printGetParameters () {
@@ -14,27 +27,27 @@ function printGetParameters () {
   }
 }
 function go_to_start () {
-  document.getElementById("form_list").value = 0;
+  document.getElementById("Kifu_list").value = 0;
   draw();
 }
 function prev () {
-  var v = document.getElementById("form_list").value - 1;
-  document.getElementById("form_list").value = v < 0 ? 0 : v;
+  var v = document.getElementById("Kifu_list").value - 1;
+  document.getElementById("Kifu_list").value = v < 0 ? 0 : v;
   draw();
 }
 function next () {
-  var v = document.getElementById("form_list").value - 0 + 1;
-  document.getElementById("form_list").value = 
+  var v = document.getElementById("Kifu_list").value - 0 + 1;
+  document.getElementById("Kifu_list").value = 
     v > sfen_list.length - 1 ? sfen_list.length - 1 : v;
   draw();
 }
 function go_to_end () {
-  document.getElementById("form_list").value = sfen_list.length - 1;
+  document.getElementById("Kifu_list").value = sfen_list.length - 1;
   draw();
 }
 
 function draw () {
-  var selected = document.getElementById("form_list").value;
+  var selected = document.getElementById("Kifu_list").value;
   draw_sfen(sfen_list[selected]);
   //console.log(selected);
 }
@@ -133,11 +146,11 @@ function draw_sfen ( sfen ) {
   draw_hand(hand);
   document.getElementById("tempo").innerHTML = tempo + "手目";
 }
-function load_defform() {
-  var form_list=document.getElementById("form_list");
-  form_list.innerHTML='';
-  var defform=document.getElementById("defform");
-  var text = defform.value.replace(/\r\n|\r/g,"\n");
+function load_sfen() {
+  var Kifu_list=document.getElementById("Kifu_list");
+  Kifu_list.innerHTML='';
+  var Kifu=document.getElementById("Kifu");
+  var text = Kifu.value.replace(/\r\n|\r/g,"\n");
   var lines = text.split('\n');
   for ( var i=0; i<lines.length-1; ++i ) {
     if ( !lines[i] ) {
@@ -146,12 +159,16 @@ function load_defform() {
     var tmp = lines[i].split(',');
     var tag = tmp[0];
     var sfen = tmp[1];
+    var evaluation_value = tmp[2];
+    var recommended_move = tmp[3];
     //console.log("tag:"+tag);
     //console.log("sfen:"+sfen);
-    form_list.innerHTML += "<option value=\""+i+"\">"+tag+"</option>\n";
+    Kifu_list.innerHTML += "<option value=\""+i+"\">"+tag+"</option>\n";
     sfen_list[i] = sfen;
     tag_list[i] = tag;
+    evaluation_value_list[i] = evaluation_value;
+    recommended_move_list[i] = recommended_move;
   }
   draw();
-  //console.log(defform.value);
+  //console.log(Kifu.value);
 }
