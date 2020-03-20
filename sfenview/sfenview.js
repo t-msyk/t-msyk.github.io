@@ -1,3 +1,4 @@
+// Copyright (c) 2020 Masayuki Tamura. All rights reserved.
 var sfen_list = [];
 var tag_list = [];
 function search () {
