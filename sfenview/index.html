@@ -14,10 +14,13 @@
   <h1> SFEN(Shogi Forsyth-Edwards Notation) viewer </h1>
 </header>
 <main>
-  棋譜：<select name="棋譜" id="form_list" onchange="draw()">
+  棋譜：<select name="棋譜" id="form_list" onchange="draw()"></select>
   <br>
+  <button id="go_to_start" onclick="go_to_start()">|&lt;</button>
+  <button id="prev" onclick="prev()">&lt;</button>
+  <button id="next" onclick="next()">&gt;</button>
+  <button id="go_to_end" onclick="go_to_end()">&gt;|</button>
   <br>
-  </select>
   <div id="turn"></div>
   <div id="white_hand">△</div>
   <table class="board" border="1">
@@ -75,8 +78,8 @@
   <div>棋譜をコピペ</div>
   <textarea id="defform" class="defform">
 開始局面,lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
-1 ２六歩(27),lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1
-2 ８四歩(83),lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1
+1 ▲２六歩(27),lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 2
+2 △８四歩(83),lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 3
   </textarea>
   <br>
   <button id="load" onclick="load_defform()">読み込み</button>

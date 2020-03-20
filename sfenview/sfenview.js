@@ -1,22 +1,28 @@
 // Copyright (c) 2020 tMasayuki. All rights reserved.
 var sfen_list = [];
 var tag_list = [];
-function search () {
-  search_word_list = document.getElementById("search").value.split(/\s+/);
-  var form_list=document.getElementById("form_list");
-  form_list.innerHTML = ""
-  for ( var i=0; i<sfen_list.length; ++i ) {
-    for ( var j=0; j<search_word_list.length; ++j ) {
-      var search_word = search_word_list[j];
-      // FIXME unsafe? need to escape?
-      var regexp = new RegExp(".*" + search_word + ".*",'g');
-      if ( tag_list[i].match(regexp) ) {
-        form_list.innerHTML += "<option value=\""+i+"\">"+tag_list[i]+"</option>\n";
-        continue;
-      }
-    }
-  }
+function dummy () {
 }
+function go_to_start () {
+  document.getElementById("form_list").value = 0;
+  draw();
+}
+function prev () {
+  var v = document.getElementById("form_list").value - 1;
+  document.getElementById("form_list").value = v < 0 ? 0 : v;
+  draw();
+}
+function next () {
+  var v = document.getElementById("form_list").value - 0 + 1;
+  document.getElementById("form_list").value = 
+    v > sfen_list.length - 1 ? sfen_list.length - 1 : v;
+  draw();
+}
+function go_to_end () {
+  document.getElementById("form_list").value = sfen_list.length - 1;
+  draw();
+}
+
 function draw () {
   var selected = document.getElementById("form_list").value;
   draw_sfen(sfen_list[selected]);
@@ -123,8 +129,8 @@ function load_defform() {
   var defform=document.getElementById("defform");
   var text = defform.value.replace(/\r\n|\r/g,"\n");
   var lines = text.split('\n');
-  for ( var i=0; i<lines.length; ++i ) {
-    if ( lines[i] == '' ) {
+  for ( var i=0; i<lines.length-1; ++i ) {
+    if ( !lines[i] ) {
       continue;
     }
     var tmp = lines[i].split(',');
