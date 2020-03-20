@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf8"/>
   <title> Kifu narabe </title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="../reset.css">
   <link rel="stylesheet" href="../main.css">
   <link rel="stylesheet" href="./kif-narabe.css">
@@ -18,10 +19,11 @@
 <main>
   棋譜：<select name="棋譜" id="form_list" onchange="draw()"></select>
   <br>
-  <button id="go_to_start" onclick="go_to_start()" style='width:64px;height:32px'>|&lt;</button>
-  <button id="prev"        onclick="prev()"        style='width:64px;height:32px'>&lt;</button>
-  <button id="next"        onclick="next()"        style='width:64px;height:32px'>&gt;</button>
-  <button id="go_to_end"   onclick="go_to_end()"   style='width:64px;height:32px'>&gt;|</button>
+  <div class='button'>
+  <button id="go_to_start" onclick="go_to_start()" style='width:64px;height:44px'>|&lt;</button>
+  <button id="prev"        onclick="prev()"        style='width:64px;height:44px'>&lt;</button>
+  <button id="next"        onclick="next()"        style='width:64px;height:44px'>&gt;</button>
+  <button id="go_to_end"   onclick="go_to_end()"   style='width:64px;height:44px'>&gt;|</button>
   <br>
   <div id="turn"></div>
   <div id="white_hand">△</div>
