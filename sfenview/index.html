@@ -4,12 +4,16 @@
 <head>
   <meta charset="utf8"/>
   <title> SFEN(Shogi Forsyth-Edwards Notation) viewer </title>
+  <link rel="stylesheet" href="../reset.css">
+  <link rel="stylesheet" href="../main.css">
   <link rel="stylesheet" href="./sfenview.css">
   <script type="text/javascript" src="sfenview.js"></script>
 </head>
 <body onload=load_defform()>
+<header>
   <h1> SFEN(Shogi Forsyth-Edwards Notation) viewer </h1>
-  
+</header>
+<main>
   棋譜：<select name="棋譜" id="form_list" onchange="draw()">
   <br>
   <br>
@@ -76,10 +80,10 @@
   </textarea>
   <br>
   <button id="load" onclick="load_defform()">読み込み</button>
-<br>
-<br>
+</main>
+<footer>
 Copyright (c) 2020 tMasayuki. All rights reserved.
-<br>
+</footer>
 </body>
 </html>
 

@@ -1,0 +1,110 @@
+@charset "utf-8";
+
+body {
+  font: 14px/1.6,"メイリオ";
+  margin:0;
+  color:#303030;
+}
+
+img {
+  outline:none;
+  border-style:none;
+}
+
+a {
+  color:blue;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+a:visited {
+  color:blue;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+a:hover {
+  color: green;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+header{
+  color: #F0F0F0;
+  display: block;
+  width:100%;
+  background-color: #0A1837;
+  text-align: center;
+  overflow: hidden;
+}
+header h1{
+  font-size:120%;
+  color:#F0F0F0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border:1px solid #F0F0F0;
+  border-radius: 5px;
+  letter-spacing: 3px;
+  font-weight:400;
+  float: center;
+}
+header p{
+  font-size:100%;
+  color:#F0F0F0;
+  float: left;
+}
+
+nav{
+  width: 100%;
+  border-top: 1px solid #000080;
+  border-bottom: 1px solid #000080;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+nav ul{
+  width: 60%;
+  margin-left: 20%;
+}
+nav li{
+  width: calc(25% - 2px);
+  font-size: 110%;
+  letter-spacing: 5px;
+  font-weight: 400;
+  line-height: 45px;
+  border-left: 1px solid #0A1837;
+  color: #202020;
+  cursor: pointer;
+  text-align: center;
+  float: left;
+}
+nav li:last-child{
+  border-right: 1px solid #0A1837;
+}
+
+nav li:hover{
+  background-color: #0A1837;
+  transition: background-color 0.5s ease-out;
+  color: #ffffff;
+}
+
+main {
+  display: block;
+  width:80%;
+  margin-left: 10%;
+  overflow: hidden;
+}
+
+footer{
+  color: #808080;
+  font-size: 80%;
+  width: 100%;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #0A1837;
+}
