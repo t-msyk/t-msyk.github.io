@@ -1,6 +1,6 @@
 // Copyright (c) 2020 tMasayuki. All rights reserved.
 
-var _GET = function () {
+var _GET = (function () {
   var vars = {}; 
   var param = location.search.substring(1).split('&');
   for(var i = 0; i < param.length; i++) {
@@ -11,5 +11,5 @@ var _GET = function () {
     if ( key != '') vars[key] = decodeURI(val);
   } 
   return vars; 
-}
+})();
 

@@ -3,15 +3,17 @@
 <html lang='ja'>
 <head>
   <meta charset="utf8"/>
-  <title> SFEN(Shogi Forsyth-Edwards Notation) viewer </title>
+  <title> Kifu narabe </title>
   <link rel="stylesheet" href="../reset.css">
   <link rel="stylesheet" href="../main.css">
-  <link rel="stylesheet" href="./sfenview.css">
-  <script type="text/javascript" src="sfenview.js"></script>
+  <link rel="stylesheet" href="./kif-narabe.css">
+  <script type="text/javascript" src="../main.js"></script>
+  <script type="text/javascript" src="./kif-narabe.js"></script>
 </head>
-<body onload=load_defform()>
+<body onload=onload()>
 <header>
-  <h1> SFEN(Shogi Forsyth-Edwards Notation) viewer </h1>
+  <h1> Kifu narabe </h1>
+  <p> Tag and SFEN(Shogi Forsyth-Edwards Notation) Sequence Narabe</p>
 </header>
 <main>
   棋譜：<select name="棋譜" id="form_list" onchange="draw()"></select>
@@ -77,13 +79,13 @@
   <br>
   <div>棋譜をコピペ</div>
   <textarea id="defform" class="defform">
-lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
-lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 2
-lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 3
-lnsgkgsnl/1r5b1/p1ppppppp/1p7/7P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 4
-lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 5
-lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b - 6
-lnsgk1snl/1r4gb1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b - 7
+開始局面,lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
+1 ▲２六歩(27),lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 2
+2 △８四歩(83),lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 3
+3 ▲２五歩(26),lnsgkgsnl/1r5b1/p1ppppppp/1p7/7P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 4
+4 △８五歩(84),lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 5
+5 ▲７八金(69),lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b - 6
+6 △３二金(41),lnsgk1snl/1r4gb1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b - 7
   </textarea>
   <br>
   <button id="load" onclick="load_defform()">読み込み</button>
