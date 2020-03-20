@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Masayuki Tamura. All rights reserved.
+// Copyright (c) 2020 tMasayuki. All rights reserved.
 var sfen_list = [];
 var tag_list = [];
 function search () {
