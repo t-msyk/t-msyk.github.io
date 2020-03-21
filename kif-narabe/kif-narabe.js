@@ -16,9 +16,8 @@ function onload () {
       load_sfen();
     }
     xhr.send();
-  } else {
-    load_sfen();
   }
+  load_sfen();
 }
 
 function printGetParameters () {
@@ -45,6 +44,13 @@ function go_to_end () {
   document.getElementById("Kifu_list").value = sfen_list.length - 1;
   draw();
 }
+function go_at ( tempo ) {
+  if ( tempo < 0 ) tempo = 0;
+  if ( tempo > sfen_list.length -1 ) tempo = sfen_list.length -1;
+  document.getElementById("Kifu_list").value = tempo;
+  draw();
+}
+
 
 function draw () {
   var selected = document.getElementById("Kifu_list").value;
@@ -168,6 +174,9 @@ function load_sfen() {
     tag_list[i] = tag;
     evaluation_value_list[i] = evaluation_value;
     recommended_move_list[i] = recommended_move;
+  }
+  if ( _GET['tempo'] ) {
+    go_at(Number(_GET['tempo']));
   }
   draw();
   //console.log(Kifu.value);
