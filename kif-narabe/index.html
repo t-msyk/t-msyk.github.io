@@ -17,14 +17,6 @@
   <p> Tag and SFEN(Shogi Forsyth-Edwards Notation) Sequence Narabe</p>
 </header>
 <main>
-  棋譜：<select name="棋譜" id="Kifu_list" onchange="draw()"></select>
-  <br>
-  <div class='button'>
-  <button id="go_to_start" onclick="go_to_start()" style='width:64px;'>|&lt;</button>
-  <button id="prev"        onclick="prev()"        style='width:64px;'>&lt;</button>
-  <button id="next"        onclick="next()"        style='width:64px;'>&gt;</button>
-  <button id="go_to_end"   onclick="go_to_end()"   style='width:64px;'>&gt;|</button>
-  <br>
   <div id="turn"></div>
   <div id="white_hand">△</div>
   <table class="board" border="1">
@@ -76,6 +68,20 @@
   </table>
   <div id="black_hand">▲</div>
   <div id="tempo"></div>
+  <div id="evaluation_value"></div>
+  <div id="recommended_move"></div>
+  棋譜：<select name="棋譜" id="Kifu_list" onchange="draw()"></select>
+  <br>
+  <div class='button'>
+  <button id="go_to_start" onclick="go_to_start()" style='width:64px;'>|&lt;</button>
+  <button id="prev"        onclick="prev()"        style='width:64px;'>&lt;</button>
+  <button id="next"        onclick="next()"        style='width:64px;'>&gt;</button>
+  <button id="go_to_end"   onclick="go_to_end()"   style='width:64px;'>&gt;|</button>
+  <br>
+  <!-- TODO
+    draw graph
+    http://home.a00.itscom.net/hatada/js01/canvas/canvas04.html
+  -->
   
   <br>
   <br>
