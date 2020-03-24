@@ -63,9 +63,8 @@ function draw () {
     } else {
       get_param_string += '&' + key + '=' + _GET[key];
     }
-    console.log("_GET[" + key +"]=" + _GET[key]);
-    window.history.pushState(null, null, get_param_string);
   }
+  window.history.pushState(null, null, get_param_string);
 }
 
 function draw_board ( board ) {
