@@ -64,7 +64,9 @@ function draw () {
       get_param_string += '&' + key + '=' + _GET[key];
     }
   }
-  window.history.pushState(null, null, get_param_string);
+  // TODO which is better ?
+  //window.history.pushState(null, null, get_param_string);
+  window.history.replaceState(null, null, get_param_string);
 }
 
 function draw_board ( board ) {
