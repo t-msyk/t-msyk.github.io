@@ -54,9 +54,20 @@ function go_at ( tempo ) {
 
 function draw () {
   var selected = document.getElementById("Kifu_list").value;
+  var get_param_string = '';
   draw_sfen(sfen_list[selected]);
-  //console.log(selected);
+  _GET['tempo'] = selected;
+  for ( var key in _GET ) {
+    if ( get_param_string === '' ) {
+      get_param_string += '?' + key + '=' + _GET[key];
+    } else {
+      get_param_string += '&' + key + '=' + _GET[key];
+    }
+    console.log("_GET[" + key +"]=" + _GET[key]);
+    window.history.pushState(null, null, get_param_string);
+  }
 }
+
 function draw_board ( board ) {
   var extended_board = board.replace(/9/g,"_________")
                             .replace(/8/g,"________")
