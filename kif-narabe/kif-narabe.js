@@ -16,8 +16,9 @@ function onload () {
       load_sfen();
     }
     xhr.send();
+  } else {
+    load_sfen();
   }
-  load_sfen();
 }
 
 function printGetParameters () {
