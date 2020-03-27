@@ -16,8 +16,9 @@ function onload () {
       load_sfen();
     }
     xhr.send();
+  } else {
+    load_sfen();
   }
-  load_sfen();
 }
 
 function printGetParameters () {
@@ -54,9 +55,21 @@ function go_at ( tempo ) {
 
 function draw () {
   var selected = document.getElementById("Kifu_list").value;
+  var get_param_string = '';
   draw_sfen(sfen_list[selected]);
-  //console.log(selected);
+  _GET['tempo'] = selected;
+  for ( var key in _GET ) {
+    if ( get_param_string === '' ) {
+      get_param_string += '?' + key + '=' + _GET[key];
+    } else {
+      get_param_string += '&' + key + '=' + _GET[key];
+    }
+  }
+  // TODO which is better ?
+  //window.history.pushState(null, null, get_param_string);
+  window.history.replaceState(null, null, get_param_string);
 }
+
 function draw_board ( board ) {
   var extended_board = board.replace(/9/g,"_________")
                             .replace(/8/g,"________")
