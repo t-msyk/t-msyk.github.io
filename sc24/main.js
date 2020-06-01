@@ -34,11 +34,10 @@ function load_kif_table() {
     for ( var j=0; j<=9; ++j ) {
       tbody_html += "<td>" + tmp[j] + "</td>";
     }
-    tbody_html += "<td><a href='" + tmp[10] + "'>棋譜</a></td>"
     var file_path_list= tmp[10].split('/');
     var kif_file = file_path_list[file_path_list.length-1];
     var sfen_file = kif_file.substring(0,kif_file.lastIndexOf('.')) + '.sfen'
-    // ../kif-narabe/?kifu=../sc24/sfen/2020-05-18-18-27-03-3685219-be5e0c0d84e6654475f8aa0bd2998957-toyo.sfen
+    tbody_html += "<td><a href='./kif/" + kif_file + "'>棋譜</a></td>"
     tbody_html += "<td><a href='../kif-narabe/?kifu=../sc24/sfen/" + sfen_file + "'>再生</a></td>"
     tbody_html += "</tr>\n";
   }
