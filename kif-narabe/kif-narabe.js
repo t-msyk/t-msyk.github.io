@@ -153,8 +153,8 @@ function draw_hand ( hand ) {
   if ( _GET['sente'] ) sente=_GET['sente'] ;
   var gote  = "" 
   if ( _GET['sente'] ) gote=_GET['gote'] ;
-  document.getElementById("white_hand").innerHTML = "△" + sente + ":" + whand;
-  document.getElementById("black_hand").innerHTML = "▲" + gote  + ":" + bhand;
+  document.getElementById("white_hand").innerHTML = "△" + gote  + ":" + whand;
+  document.getElementById("black_hand").innerHTML = "▲" + sente + ":" + bhand;
 }
 function draw_sfen ( sfen ) {
   var tmp = sfen.split(' ');
