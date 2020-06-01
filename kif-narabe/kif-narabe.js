@@ -149,8 +149,12 @@ function draw_hand ( hand ) {
       .replace(/(\d*)B/,'角$1')
       .replace(/(\d*)R/,'飛$1')
       .replace(/(\d*)K/,'玉$1');
-  document.getElementById("white_hand").innerHTML = "△"+whand;
-  document.getElementById("black_hand").innerHTML = "▲"+bhand;
+  var sente = "" 
+  if ( _GET['sente'] ) sente=_GET['sente'] ;
+  var gote  = "" 
+  if ( _GET['sente'] ) gote=_GET['gote'] ;
+  document.getElementById("white_hand").innerHTML = "△" + sente + ":" + whand;
+  document.getElementById("black_hand").innerHTML = "▲" + gote  + ":" + bhand;
 }
 function draw_sfen ( sfen ) {
   var tmp = sfen.split(' ');
