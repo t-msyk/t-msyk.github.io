@@ -43,7 +43,7 @@ function load_kif_table() {
     var file_path_list= tmp[10].split('/');
     var kif_file = file_path_list[file_path_list.length-1];
     var sfen_file = kif_file.substring(0,kif_file.lastIndexOf('.')) + '.sfen'
-    tbody_html += "<td><a href='./kif/" + kif_file + "'>棋譜</a></td>"
+    tbody_html += "<td><a href='kif/" + kif_file + "'>棋譜</a></td>"
     var uri = "../kif-narabe/?kifu=../sc24/sfen/" + sfen_file + "&sente=" + sente + "&gote=" + gote;
     // TODO Set Parameter &sente=XXXX(yyyy)&gote=ZZZZ(wwww)
     tbody_html += "<td><a href='" + encodeURI(uri) + "'>再生</a></td>"
