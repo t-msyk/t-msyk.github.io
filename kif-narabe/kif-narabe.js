@@ -182,7 +182,7 @@ function draw_sfen ( sfen ) {
   document.getElementById("turn").innerHTML = (turn==="b")?"先手番":"後手番";
   //console.log("hand :"+hand);
   draw_hand(hand);
-  document.getElementById("tempo").innerHTML = tempo + "手目";
+  document.getElementById("tempo").innerHTML = ( tempo -1 ) + "手目";
 }
 
 function load_sfen() {
