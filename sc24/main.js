@@ -35,8 +35,10 @@ function load_kif_table() {
     tbody_html += "<tr>"
     tbody_html += "<td>" + tmp[0] + "</td>";
     tbody_html += "<td>" + tmp[1] + "</td>";
-    tbody_html += "<td>" + tmp[2] + "(" + tmp[3] + ")</td>";
-    tbody_html += "<td>" + tmp[4] + "(" + tmp[5] + ")</td>";
+
+    tbody_html += "<td class='" + ( tmp[6] === '先手勝ち' ? "winner" : "loser" ) +  "'>" + tmp[2] + "(" + tmp[3] + ")</td>";
+    tbody_html += "<td class='" + ( tmp[6] === '後手勝ち' ? "winner" : "loser" ) +  "'>" + tmp[4] + "(" + tmp[5] + ")</td>";
+
     tbody_html += "<td>" + tmp[6] + "(" + tmp[7] + "手)</td>";
     tbody_html += "<td>" + tmp[8] + "</td>";
     tbody_html += "<td>" + tmp[9] + "</td>";
