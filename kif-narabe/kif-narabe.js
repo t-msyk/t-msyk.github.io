@@ -52,12 +52,18 @@ function go_at ( tempo ) {
   draw();
 }
 
+function reversal () {
+  draw();
+}
+
 
 function draw () {
   var selected = document.getElementById("Kifu_list").value;
+  var reversal = document.getElementById("reversal").checked;
   var get_param_string = '';
   draw_sfen(sfen_list[selected]);
   _GET['tempo'] = selected;
+  _GET['reversal'] = "" + reversal;
   for ( var key in _GET ) {
     if ( get_param_string === '' ) {
       get_param_string += '?' + key + '=' + _GET[key];
@@ -71,6 +77,7 @@ function draw () {
 }
 
 function draw_board ( board ) {
+  var reversal = document.getElementById('reversal').checked;
   var extended_board = board.replace(/9/g,"_________")
                             .replace(/8/g,"________")
                             .replace(/7/g,"_______")
@@ -85,6 +92,7 @@ function draw_board ( board ) {
   for ( var i = 0; i<board_array.length; ++i ) {
     var ch = board_array[i];
     var prefix = "";
+    var target=document.getElementById( reversal ? "" + (10-r) + (10-c) : ""  + r + c );
     if ( ch === "/" ) {
       ++r;
       c=1;
@@ -98,12 +106,12 @@ function draw_board ( board ) {
       ch = "";
     }
     if ( ch.match(/[KRBGSNLP]/) ) {
-      document.getElementById(""+r+c).style.transform="rotate(0deg)";
+      target.style.transform = reversal ? "rotate(180deg)" : "rotate(0deg)";
     }
     if ( ch.match(/[krbgsnlp]/) ) {
-      document.getElementById(""+r+c).style.transform="rotate(180deg)";
+      target.style.transform = reversal ? "rotate(0deg)" : "rotate(180deg)";
     }
-    document.getElementById(""+r+c).innerHTML 
+    target.innerHTML 
         = ( prefix + ch ) .replace(/k/,"K")
                           .replace(/r/,"R")
                           .replace(/b/,"B")
@@ -131,6 +139,7 @@ function draw_board ( board ) {
   //console.log(extended_board);
 }
 function draw_hand ( hand ) {
+  var reversal = document.getElementById('reversal').checked;
   var whand=hand.replace(/(\d*K)*(\d*R)*(\d*B)*(\d*G)*(\d*S)*(\d*N)*(\d*L)*(\d*P)*/g,"")
       .replace(/(\d*)p/,'歩$1')
       .replace(/(\d*)l/,'香$1')
@@ -153,9 +162,15 @@ function draw_hand ( hand ) {
   if ( _GET['sente'] ) sente=_GET['sente'] ;
   var gote  = "" 
   if ( _GET['sente'] ) gote=_GET['gote'] ;
-  document.getElementById("white_hand").innerHTML = "△" + gote  + ":" + whand;
-  document.getElementById("black_hand").innerHTML = "▲" + sente + ":" + bhand;
+  if ( reversal ) {
+    document.getElementById("black_hand").innerHTML = "△" + gote  + ":" + whand;
+    document.getElementById("white_hand").innerHTML = "▲" + sente + ":" + bhand;
+  } else {
+    document.getElementById("white_hand").innerHTML = "△" + gote  + ":" + whand;
+    document.getElementById("black_hand").innerHTML = "▲" + sente + ":" + bhand;
+  }
 }
+
 function draw_sfen ( sfen ) {
   var tmp = sfen.split(' ');
   var board = tmp[0];
@@ -169,6 +184,7 @@ function draw_sfen ( sfen ) {
   draw_hand(hand);
   document.getElementById("tempo").innerHTML = tempo + "手目";
 }
+
 function load_sfen() {
   var Kifu_list=document.getElementById("Kifu_list");
   Kifu_list.innerHTML='';
@@ -192,9 +208,13 @@ function load_sfen() {
     evaluation_value_list[i] = evaluation_value;
     recommended_move_list[i] = recommended_move;
   }
+  if ( _GET['reversal'] ) {
+    document.getElementById('reversal').checked = ( _GET['reversal'].toString().toLowerCase() === 'true' );
+  }
   if ( _GET['tempo'] ) {
     go_at(Number(_GET['tempo']));
   }
   draw();
   //console.log(Kifu.value);
 }
+
