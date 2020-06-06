@@ -14,7 +14,6 @@ function onload () {
   xhr.send();
 }
 
-
 function load_kif_table() {
   var main_table=document.getElementById("main_table");
   main_table.innerHTML='<tr><td>日時</td><td>棋戦</td><td>先手(レート)</td><td>後手(レート)</td><td>勝敗(手数)</td><td>先手戦形</td><td>後手戦形</td><td>棋譜</td><td>再生</td></tr>\n';
@@ -33,7 +32,8 @@ function load_kif_table() {
     var sente = tmp[2] + "(" + tmp[3] + ")";
     var gote  = tmp[4] + "(" + tmp[5] + ")";
     tbody_html += "<tr>"
-    tbody_html += "<td>" + tmp[0] + "</td>";
+    var date = tmp[0].replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6');
+    tbody_html += "<td>" + date + "</td>";
     tbody_html += "<td>" + tmp[1] + "</td>";
 
     tbody_html += "<td class='" + ( tmp[6] === '先手勝ち' ? "winner" : "loser" ) +  "'>" + tmp[2] + "(" + tmp[3] + ")</td>";
