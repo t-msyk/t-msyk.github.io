@@ -138,6 +138,7 @@ function draw_board ( board ) {
   }
   //console.log(extended_board);
 }
+
 function draw_hand ( hand ) {
   var reversal = document.getElementById('reversal').checked;
   var whand=hand.replace(/(\d*K)*(\d*R)*(\d*B)*(\d*G)*(\d*S)*(\d*N)*(\d*L)*(\d*P)*/g,"")
