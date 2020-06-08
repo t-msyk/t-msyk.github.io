@@ -13,3 +13,16 @@ var _GET = (function () {
   return vars; 
 })();
 
+function get2url () {
+  var get_param_string='';
+  for ( var key in _GET ) {
+    if ( get_param_string === '' ) {
+      get_param_string += '?' + key + '=' + _GET[key];
+    } else {
+      get_param_string += '&' + key + '=' + _GET[key];
+    }
+  }
+  // TODO which is better ?
+  //window.history.pushState(null, null, get_param_string);
+  window.history.replaceState(null, null, get_param_string);
+}

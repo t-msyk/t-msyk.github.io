@@ -56,7 +56,6 @@ function reversal () {
   draw();
 }
 
-
 function draw () {
   var selected = document.getElementById("Kifu_list").value;
   var reversal = document.getElementById("reversal").checked;
