@@ -20,8 +20,20 @@ function load_kif_table() {
   var kif_table=document.getElementById("kif_table");
   var text = kif_table.value.replace(/\r\n|\r/g,"\n");
   var lines = text.split('\n');
-  var tbody_html=""
-  for ( var i=0; i<lines.length; ++i ) {
+  var tbody_html = ""
+  var start = 0;
+  var end = lines.length;
+  if ( _GET['recently'] ) {
+    var recently = document.getElementById('recently');
+    recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
+    if ( recently.checked ) {
+      start = 0;
+      end = 30;
+    }
+  }
+  if ( start < 0 || start > lines.length ) start = 0;
+  if ( end   < 0 || end   > lines.length ) end = lines.length;
+  for ( var i=start; i<end; ++i ) {
     if ( !lines[i] ) {
       continue;
     }
@@ -51,4 +63,10 @@ function load_kif_table() {
     tbody_html += "</tr>\n";
   }
   main_table.innerHTML += tbody_html;
+}
+
+function recently() {
+  _GET['recently'] = "" + document.getElementById('recently').checked;
+  get2url();
+  load_kif_table();
 }
