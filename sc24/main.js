@@ -79,6 +79,12 @@ function filter_result ( result ) {
   return false;
 }
 
+function filter_tempo ( tempo ) {
+  var min = document.getElementById('tempo_end_min').value - 0; // String -> number
+  var max = document.getElementById('tempo_end_max').value - 0; // String -> number
+  return min <= tempo && tempo <= max;
+}
+
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
   if ( !filter_date ( date ) ) {
     return false;
@@ -89,6 +95,9 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   // TODO player1
   // TODO player2
   if ( !filter_result ( result ) ) {
+    return false;
+  }
+  if ( !filter_tempo ( tempo ) ) {
     return false;
   }
   // TODO tempo
