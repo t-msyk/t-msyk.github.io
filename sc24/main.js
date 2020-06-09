@@ -44,7 +44,8 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
 
 function load_kif_table() {
   var main_table=document.getElementById("main_table");
-  main_table.innerHTML='<tr><td>日時</td><td>棋戦</td><td>先手(レート)</td><td>後手(レート)</td><td>勝敗(手数)</td><td>先手戦形</td><td>後手戦形</td><td>棋譜</td><td>再生</td></tr>\n';
+  var thead_html = '<tr><td>日時</td><td>棋戦</td><td>先手(レート)</td><td>後手(レート)</td><td>勝敗(手数)</td><td>先手戦形</td><td>後手戦形</td><td>棋譜</td><td>再生</td></tr>\n';
+  main_table.innerHTML= thead_html;
   var kif_table=document.getElementById("kif_table");
   var text = kif_table.value.replace(/\r\n|\r/g,"\n");
   var lines = text.split('\n');
