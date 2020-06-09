@@ -48,10 +48,6 @@ function load_kif_table() {
   var recently = document.getElementById('recently');
   if ( _GET['recently'] ) {
     recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
-    //if ( recently.checked ) {
-    //  start = 0;
-    //  end = 30;
-    //}
   }
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
