@@ -16,16 +16,50 @@
   <h1> Kif List Page </h1>
 </header>
 <main>
-  <textarea id="filter_function" rows="10" cols="120">
-filter = function ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
-  return sente==="mitsuji" && sente_form.indexOf("三間飛車") >= 0 
-       || gote==="mitsuji" && gote_form.indexOf("三間飛車") >=0
-}
-</textarea>
+  日付：<input type="date" id="date_start" value="1990-01-01">～<input type="date" id="date_end" value="9999-12-31"><br>
+  <!-- TODO
+  時刻：<input type="time" id="time_start" value="00:00">～<input type="time" id="time_end" value="23:59"><br>
+  -->
+  棋戦：<div id="kisen">
+        <input type="checkbox" id="kisen_quick"  value="早指"  checked><label for="kisen_quick" >早指</label>
+        <input type="checkbox" id="kisen_quick2" value="早指2" checked><label for="kisen_quick2">早指2</label>
+        <input type="checkbox" id="kisen_quick3" value="早指3" checked><label for="kisen_quick3">早指3</label>
+        <input type="checkbox" id="kisen_15min"  value="15分"  checked><label for="kisen_15min" >15分</label>
+        <input type="checkbox" id="kisen_long"   value="長考"  checked><label for="kisen_long"  >長考</label>
+        </div>
+        <br>
+  <!-- TODO
+  プレイヤー1：
+        <input type="radio" id="player1_sente" name="player1" value="長考"  checked><label for="kisen_long">先手</label>
+        <input type="radio" id="player1_sente" name="player1" value="長考"  checked><label for="kisen_long">先後いずれでも</label>
+        <input type="text"  id="player1_name" value="*">
+        <br>
+  プレイヤー2：
+        <input type="radio" id="player2_sente" name="player2" value="長考"  checked><label for="kisen_long">後手</label>
+        <input type="radio" id="player2_sente" name="player2" value="長考"  checked><label for="kisen_long">先後いずれでも</label>
+        <input type="text"  id="player2_name" value="*">
+        <br>
+  -->
+  勝敗：
+        <div id="result">
+        <input type="checkbox" id="sente_win" value="先手勝ち" checked><label for="sente_win" checked>先手勝ち</label>
+        <input type="checkbox" id="gote_win"  value="後手勝ち" checked><label for="gote_win"  checked>後手勝ち</label>
+        <input type="checkbox" id="result_other" value="その他" checked><label for="result_other" checked>その他</label>
+        </div>
+        <br>
+  <!-- TODO
+  手数：<input type="number" id="tempo_start" value="0" >～<input type="number" id="tempo_end" value="9999" ><br>
+  <input type="radio"  id="form1_sente"   name="form1" value="先手戦形"        checked><label for="kisen_long">先手戦形</label>
+  <input type="radio"  id="form1_player1" name="form1" value="プレイヤー1戦形" checked><label for="kisen_long">プレイヤー1の戦形</label>
+        ：<input type="text" id="player1_form" value="*"><br>
+  <input type="radio"  id="form2_gote"    name="form2" value="後手戦形"        checked><label for="kisen_long">後手戦形</label>
+  <input type="radio"  id="form2_player2" name="form2" value="プレイヤー2戦形" checked><label for="kisen_long">プレイヤー2の戦形</label>
+        ：<input type="text" id="player2_form" value="*"><br>
+  -->
   <br>
   <button id="search" onclick="search()" style='width:128px;'>検索</button>
   <br>
-  最新30件のみ表示：<input id="recently" type="checkbox" onchange="recently()"></input>
+  最新30件のみ表示：<input id="recently" type="checkbox" onchange="recently()" checked></input>
   <table id="main_table" class="main_table" border="1">
   </table>
   <br>

@@ -33,12 +33,64 @@ function generate_tbody ( date, kisen, sente, senteR, gote, goteR, result, tempo
 }
 
 function search() {
-  var filter_function=document.getElementById("filter_function");
-  eval(filter_function.value);
   load_kif_table();
 }
 
+function filter_date ( date ) {
+  // date
+  var dt = new Date(date.replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6'));
+  var dt_start = new Date(document.getElementById("date_start").value ? document.getElementById("date_start").value : "1900-01-01");
+  var dt_end   = new Date(document.getElementById("date_end").value   ? document.getElementById("date_end").value   : "9999-12-31");
+  if ( dt_start <= dt.getTime() && dt <= dt_end ) {
+    return true;
+  }
+  return false;
+}
+
+function filter_kisen ( kisen ) {
+  // kisen
+  var ksn = document.getElementById('kisen').getElementsByTagName('input');
+  var re="hoge"
+  for ( var i=0; i<ksn.length; ++i ) {
+    if ( ksn[i].checked ) {
+      re += "|" + ksn[i].value;
+    }
+  }
+  if ( kisen.match(new RegExp(re)) ) { 
+    return true;
+  }
+  return false;
+}
+
+function filter_result ( result ) {
+  // result
+  var rslt = document.getElementById('result').getElementsByTagName('input');
+  var re="hoge"
+  var re_all="hoge"
+  for ( var i=0; i<rslt.length; ++i ) {
+    re_all += "|" + rslt[i].value;
+    if ( rslt[i].checked ) {
+      re += "|" + rslt[i].value;
+    }
+  }
+  if ( result.match(new RegExp(re)) || !result.match(new RegExp(re_all)) && document.getElementById('result_other').checked ) { 
+    return true;
+  }
+  return false;
+}
+
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
+  if ( !filter_date ( date ) ) {
+    return false;
+  }
+  if ( !filter_kisen ( kisen ) ) {
+    return false;
+  }
+  // TODO player1
+  // TODO player2
+  if ( !filter_result ( result ) ) {
+    return false;
+  }
   return true;
 }
 
