@@ -16,6 +16,15 @@
   <h1> Kif List Page </h1>
 </header>
 <main>
+  <textarea id="filter_function" rows="15" cols="120">
+filter = function ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
+  return sente==="mitsuji" && sente_form.indexOf("三間飛車") >= 0 
+       || gote==="mitsuji" && gote_form.indexOf("三間飛車") >=0
+}
+</textarea>
+  <br>
+  <button id="search" onclick="search()" style='width:128px;'>検索</button>
+  <br>
   最新30件のみ表示：<input id="recently" type="checkbox" onchange="recently()"></input>
   <table id="main_table" class="main_table" border="1">
   </table>

@@ -32,6 +32,12 @@ function generate_tbody ( date, kisen, sente, senteR, gote, goteR, result, tempo
         + "</tr>\n";
 }
 
+function search() {
+  var filter_function=document.getElementById("filter_function");
+  eval(filter_function.value);
+  load_kif_table();
+}
+
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
   return true;
 }
@@ -73,3 +79,5 @@ function recently() {
   get2url();
   load_kif_table();
 }
+
+
