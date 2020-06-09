@@ -91,6 +91,9 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   if ( !filter_result ( result ) ) {
     return false;
   }
+  // TODO tempo
+  // TODO form1
+  // TODO form2
   return true;
 }
 

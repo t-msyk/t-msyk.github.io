@@ -20,14 +20,14 @@
   <!-- TODO
   時刻：<input type="time" id="time_start" value="00:00">～<input type="time" id="time_end" value="23:59"><br>
   -->
-  棋戦：<div id="kisen">
-        <input type="checkbox" id="kisen_quick"  value="早指"  checked><label for="kisen_quick" >早指</label>
+  <div id="kisen">
+  棋戦：<input type="checkbox" id="kisen_quick"  value="早指"  checked><label for="kisen_quick" >早指</label>
         <input type="checkbox" id="kisen_quick2" value="早指2" checked><label for="kisen_quick2">早指2</label>
         <input type="checkbox" id="kisen_quick3" value="早指3" checked><label for="kisen_quick3">早指3</label>
         <input type="checkbox" id="kisen_15min"  value="15分"  checked><label for="kisen_15min" >15分</label>
         <input type="checkbox" id="kisen_long"   value="長考"  checked><label for="kisen_long"  >長考</label>
-        </div>
-        <br>
+  </div>
+  <br>
   <!-- TODO
   プレイヤー1：
         <input type="radio" id="player1_sente" name="player1" value="長考"  checked><label for="kisen_long">先手</label>
@@ -40,13 +40,13 @@
         <input type="text"  id="player2_name" value="*">
         <br>
   -->
+  <div id="result">
   勝敗：
-        <div id="result">
         <input type="checkbox" id="sente_win" value="先手勝ち" checked><label for="sente_win" checked>先手勝ち</label>
         <input type="checkbox" id="gote_win"  value="後手勝ち" checked><label for="gote_win"  checked>後手勝ち</label>
         <input type="checkbox" id="result_other" value="その他" checked><label for="result_other" checked>その他</label>
-        </div>
-        <br>
+  </div>
+  <br>
   <!-- TODO
   手数：<input type="number" id="tempo_start" value="0" >～<input type="number" id="tempo_end" value="9999" ><br>
   <input type="radio"  id="form1_sente"   name="form1" value="先手戦形"        checked><label for="kisen_long">先手戦形</label>
