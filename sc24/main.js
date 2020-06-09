@@ -14,6 +14,28 @@ function onload () {
   xhr.send();
 }
 
+function generate_tbody ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
+  var file_path_list= path_to_kif.split('/');
+  var kif_file = file_path_list[file_path_list.length-1];
+  var sfen_file = kif_file.substring(0,kif_file.lastIndexOf('.')) + '.sfen'
+  var uri = "../kif-narabe/?kifu=../sc24/sfen/" + sfen_file + "&sente=" + sente + "&gote=" + gote;
+  return "<tr>"
+        + "<td>" + date.replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6') + "</td>"
+        + "<td>" + kisen + "</td>"
+        + "<td class='" + ( result === '先手勝ち' ? "winner" : "loser" ) +  "'>" + sente + "(" + senteR + ")</td>"
+        + "<td class='" + ( result === '後手勝ち' ? "winner" : "loser" ) +  "'>" + gote  + "(" + goteR  + ")</td>"
+        + "<td>" + result + "(" + tempo + "手)</td>"
+        + "<td>" + sente_form + "</td>"
+        + "<td>" + gote_form  + "</td>"
+        + "<td><a href='kif/" + kif_file + "'>棋譜</a></td>"
+        + "<td><a href='" + encodeURI(uri) + "'>再生</a></td>"
+        + "</tr>\n";
+}
+
+function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
+  return true;
+}
+
 function load_kif_table() {
   var main_table=document.getElementById("main_table");
   main_table.innerHTML='<tr><td>日時</td><td>棋戦</td><td>先手(レート)</td><td>後手(レート)</td><td>勝敗(手数)</td><td>先手戦形</td><td>後手戦形</td><td>棋譜</td><td>再生</td></tr>\n';
@@ -23,44 +45,29 @@ function load_kif_table() {
   var tbody_html = ""
   var start = 0;
   var end = lines.length;
+  var recently = document.getElementById('recently');
   if ( _GET['recently'] ) {
-    var recently = document.getElementById('recently');
     recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
-    if ( recently.checked ) {
-      start = 0;
-      end = 30;
-    }
+    //if ( recently.checked ) {
+    //  start = 0;
+    //  end = 30;
+    //}
   }
-  if ( start < 0 || start > lines.length ) start = 0;
-  if ( end   < 0 || end   > lines.length ) end = lines.length;
-  for ( var i=start; i<end; ++i ) {
-    if ( !lines[i] ) {
+  var count = 0;
+  for ( var i=0; i<lines.length; ++i ) {
+    if ( !lines[i] 
+       || recently.checked && ( count > 30 )
+    ) {
       continue;
     }
     //    0,    1,    2,          3,    4,          5,    6,    7,        8         9,                10
     // 日時, 棋戦, 先手, 先手レート, 後手, 後手レート, 勝敗, 手数, 先手戦形, 後手戦形, http://url/to/kif
-    //console.log ("" + lines[i]);
     var tmp = lines[i].split(',');
-    var sente = tmp[2] + "(" + tmp[3] + ")";
-    var gote  = tmp[4] + "(" + tmp[5] + ")";
-    tbody_html += "<tr>"
-    var date = tmp[0].replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6');
-    tbody_html += "<td>" + date + "</td>";
-    tbody_html += "<td>" + tmp[1] + "</td>";
-
-    tbody_html += "<td class='" + ( tmp[6] === '先手勝ち' ? "winner" : "loser" ) +  "'>" + tmp[2] + "(" + tmp[3] + ")</td>";
-    tbody_html += "<td class='" + ( tmp[6] === '後手勝ち' ? "winner" : "loser" ) +  "'>" + tmp[4] + "(" + tmp[5] + ")</td>";
-
-    tbody_html += "<td>" + tmp[6] + "(" + tmp[7] + "手)</td>";
-    tbody_html += "<td>" + tmp[8] + "</td>";
-    tbody_html += "<td>" + tmp[9] + "</td>";
-    var file_path_list= tmp[10].split('/');
-    var kif_file = file_path_list[file_path_list.length-1];
-    var sfen_file = kif_file.substring(0,kif_file.lastIndexOf('.')) + '.sfen'
-    tbody_html += "<td><a href='kif/" + kif_file + "'>棋譜</a></td>"
-    var uri = "../kif-narabe/?kifu=../sc24/sfen/" + sfen_file + "&sente=" + sente + "&gote=" + gote;
-    tbody_html += "<td><a href='" + encodeURI(uri) + "'>再生</a></td>"
-    tbody_html += "</tr>\n";
+    if ( !filter(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]) ) {
+      continue;
+    }
+    tbody_html += generate_tbody(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
+    count++;
   }
   main_table.innerHTML += tbody_html;
 }
