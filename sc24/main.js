@@ -36,6 +36,22 @@ function search() {
   load_kif_table();
 }
 
+function reset_search () {
+  document.getElementById('date_start').value = "1990-01-01";
+  document.getElementById('date_end').value   = "9999-12-31";
+  var ksn = document.getElementById('kisen').getElementsByTagName('input');
+  for ( var i=0; i<ksn.length; ++i ) {
+    ksn[i].checked = true;
+  }
+  var rslt = document.getElementById('result').getElementsByTagName('input');
+  for ( var i=0; i<rslt.length; ++i ) {
+    rslt[i].checked = true;
+  }
+  document.getElementById('tempo_end_min').value = 0;
+  document.getElementById('tempo_end_max').value = 9999;
+  search();
+}
+
 function filter_date ( date ) {
   // date
   var dt = new Date(date.replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6'));
@@ -80,8 +96,14 @@ function filter_result ( result ) {
 }
 
 function filter_tempo ( tempo ) {
-  var min = document.getElementById('tempo_end_min').value - 0; // String -> number
-  var max = document.getElementById('tempo_end_max').value - 0; // String -> number
+  var min = 0;
+  var max = 9999;
+  if ( document.getElementById('tempo_end_min').value ) {
+    min = document.getElementById('tempo_end_min').value - 0; // String -> number
+  }
+  if ( document.getElementById('tempo_end_max').value ) {
+    max = document.getElementById('tempo_end_max').value - 0; // String -> number
+  }
   return min <= tempo && tempo <= max;
 }
 
@@ -100,7 +122,6 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   if ( !filter_tempo ( tempo ) ) {
     return false;
   }
-  // TODO tempo
   // TODO form1
   // TODO form2
   return true;
