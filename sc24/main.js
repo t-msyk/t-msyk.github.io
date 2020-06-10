@@ -47,12 +47,12 @@ function reset_search () {
   document.getElementById('player1_any'  ).checked = false;
   document.getElementById('player1_name' ).value = "";
   document.getElementById('player1R_min' ).value = 0;
-  document.getElementById('player1R_min' ).value = 9999;
+  document.getElementById('player1R_max' ).value = 9999;
   document.getElementById('player2_gote' ).checked = true;
   document.getElementById('player2_any'  ).checked = false;
   document.getElementById('player2_name' ).value = "";
   document.getElementById('player2R_min' ).value = 0;
-  document.getElementById('player2R_min' ).value = 9999;
+  document.getElementById('player2R_max' ).value = 9999;
   var rslt = document.getElementById('result').getElementsByTagName('input');
   for ( var i=0; i<rslt.length; ++i ) {
     rslt[i].checked = true;
