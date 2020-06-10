@@ -43,12 +43,28 @@ function reset_search () {
   for ( var i=0; i<ksn.length; ++i ) {
     ksn[i].checked = true;
   }
+  document.getElementById('player1_sente').checked = true;
+  document.getElementById('player1_any'  ).checked = false;
+  document.getElementById('player1_name' ).value = "";
+  document.getElementById('player1R_min' ).value = 0;
+  document.getElementById('player1R_min' ).value = 9999;
+  document.getElementById('player2_gote' ).checked = true;
+  document.getElementById('player2_any'  ).checked = false;
+  document.getElementById('player2_name' ).value = "";
+  document.getElementById('player2R_min' ).value = 0;
+  document.getElementById('player2R_min' ).value = 9999;
   var rslt = document.getElementById('result').getElementsByTagName('input');
   for ( var i=0; i<rslt.length; ++i ) {
     rslt[i].checked = true;
   }
   document.getElementById('tempo_end_min').value = 0;
   document.getElementById('tempo_end_max').value = 9999;
+  document.getElementById('form1_sente').checked   = true;
+  document.getElementById('form1_player1').checked = false;
+  document.getElementById('form1').value           = "";
+  document.getElementById('form2_gote').checked    = true;
+  document.getElementById('form2_player2').checked = false;
+  document.getElementById('form2').value           = "";
   search();
 }
 
@@ -107,6 +123,91 @@ function filter_tempo ( tempo ) {
   return min <= tempo && tempo <= max;
 }
 
+function filter_player1 ( sente, gote, senteR, goteR ) {
+  var name = document.getElementById('player1_name').value;
+  var re = new RegExp( name ? name : ".*" );
+  var min = 0;
+  var max = 9999;
+  if ( document.getElementById('player1R_min').value ) {
+    min = document.getElementById('player1R_min').value - 0; // String -> number
+  }
+  if ( document.getElementById('player1R_max').value ) {
+    max = document.getElementById('player1R_max').value - 0; // String -> number
+  }
+
+  if ( document.getElementById('player1_sente').checked ) {
+    return sente.match(re) && min <= senteR && senteR <= max;
+  }
+  if ( document.getElementById('player1_any').checked ) {
+    return sente.match(re) && min <= senteR && senteR <= max
+        || gote.match(re) && min <= goteR && goteR <= max;
+  }
+  return false;
+}
+
+function filter_player2 ( sente, gote, senteR, goteR ) {
+  var name = document.getElementById('player2_name').value;
+  var re = new RegExp( name ? name : ".*" );
+  var min = 0;
+  var max = 9999;
+  if ( document.getElementById('player2R_min').value ) {
+    min = document.getElementById('player2R_min').value - 0; // String -> number
+  }
+  if ( document.getElementById('player2R_max').value ) {
+    max = document.getElementById('player2R_max').value - 0; // String -> number
+  }
+
+  if ( document.getElementById('player2_gote').checked ) {
+    return sente.match(re) && min <= senteR && senteR <= max;
+  }
+  if ( document.getElementById('player2_any').checked ) {
+    return sente.match(re) && min <= senteR && senteR <= max
+        || gote.match(re) && min <= goteR && goteR <= max;
+  }
+  return false;
+}
+
+function filter_form1 ( sente, gote, sente_form, gote_form ) {
+  var form = "";
+  var form1 = document.getElementById('form1').value.replace(';','|');
+  var re = new RegExp( form1 ? form1 : ".*" );
+  if ( document.getElementById('form1_sente').checked ) {
+    form = sente_form;
+  }
+  if ( document.getElementById('form1_player1').checked ) {
+    var name = document.getElementById('player1_name').value;
+    var r = new RegExp( name ? name : ".*" );
+    if ( sente.match(r) ) {
+      form = sente_form;
+    }
+    if ( gote.match(r) ) {
+      form = gote_form;
+    }
+  }
+  return form.match(re);
+}
+
+function filter_form2 ( sente, gote, sente_form, gote_form ) {
+  var form = "";
+  var form2 = document.getElementById('form2').value.replace(';','|');
+  var re = new RegExp( form2 ? form1 : ".*" );
+  if ( document.getElementById('form2_gote').checked ) {
+    form = gote_form;
+  }
+  if ( document.getElementById('form2_player2').checked ) {
+    var name = document.getElementById('player2_name').value;
+    var r = new RegExp( name ? name : ".*" );
+    if ( sente.match(r) ) {
+      form = sente_form;
+    }
+    if ( gote.match(r) ) {
+      form = gote_form;
+    }
+  }
+  return form.match(re);
+}
+
+
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
   if ( !filter_date ( date ) ) {
     return false;
@@ -114,12 +215,20 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   if ( !filter_kisen ( kisen ) ) {
     return false;
   }
-  // TODO player1
-  // TODO player2
+  // TODO implement search-by-rate
+  if ( !filter_player1 ( sente, gote, senteR, goteR ) ) {
+    return false;
+  }
+  if ( !filter_player2 ( sente, gote, senteR, goteR ) ) {
+    return false;
+  }
   if ( !filter_result ( result ) ) {
     return false;
   }
   if ( !filter_tempo ( tempo ) ) {
+    return false;
+  }
+  if ( !filter_form1 ( sente, gote, sente_form, gote_form ) ) {
     return false;
   }
   // TODO form1
