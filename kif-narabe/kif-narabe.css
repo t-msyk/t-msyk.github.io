@@ -9,6 +9,7 @@ td {
 
 table.board {
   text-align : center;
+  border-collapse : collapse;
 }
 
 .Kifu {
