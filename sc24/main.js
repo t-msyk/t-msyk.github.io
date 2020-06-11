@@ -252,10 +252,11 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
   var turn   = [ "先手",     "後手"   ];
   for ( i=0; i<2; ++i ) {
     if ( !player[i].match(re) ) continue;
-    if ( !form[i] ) continue;
     user['form'] = form[i];
     user['turn'] = turn[i];
     user['result'] = result.match(new RegExp( turn[i] + "勝ち" )) ? 'win' : 'lose';
+    user['statistics']['合計'][user['turn']][user['result']] += 1;
+    if ( !form[i] ) continue;
     var form_list = user['form'].split(';');
     for ( var j=0; j<form_list.length; ++j ) {
       if ( !form_list[j] ) continue;
@@ -264,7 +265,6 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
       }
       user['statistics'][form_list[j]][user['turn']][user['result']] += 1;
     }
-    user['statistics']['合計'][user['turn']][user['result']] += 1;
   }
 }
 
@@ -333,7 +333,7 @@ function load_kif_table() {
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
     if ( !lines[i] 
-       || recently.checked && ( count > 30 )
+       || recently.checked && ( count >= 30 )
     ) {
       continue;
     }
