@@ -207,7 +207,6 @@ function filter_form2 ( sente, gote, sente_form, gote_form ) {
   return form.match(re);
 }
 
-
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
   if ( !filter_date ( date ) ) {
     return false;
@@ -231,8 +230,9 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   if ( !filter_form1 ( sente, gote, sente_form, gote_form ) ) {
     return false;
   }
-  // TODO form1
-  // TODO form2
+  if ( !filter_form2 ( sente, gote, sente_form, gote_form ) ) {
+    return false;
+  }
   return true;
 }
 

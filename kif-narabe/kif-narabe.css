@@ -25,3 +25,13 @@ textarea{
 button {
   height:44px;
 }
+
+.left{
+  width:48%;
+  float: left;
+}
+
+.right{
+  width:48%;
+  float: right;
+}
