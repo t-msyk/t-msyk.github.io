@@ -5,11 +5,13 @@ table {
 td {
   width  : 30px;
   height : 30px;
+  border-width : 1.2px;
 }
 
 table.board {
   text-align : center;
   border-collapse : collapse;
+  border-width : 1.2px;
 }
 
 .Kifu {
