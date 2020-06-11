@@ -24,3 +24,17 @@ td {
   border-radius: 5px;
   float: center;
 }
+
+.statistics {
+  width:80%;
+  margin-left: 10%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border:1px solid #000000;
+  border-radius: 5px;
+  float: center;
+}

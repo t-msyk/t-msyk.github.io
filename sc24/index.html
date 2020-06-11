@@ -17,8 +17,9 @@
 </header>
 <main>
   <div class="search">
+  ユーザ名：<input id="username" type="text" onchange="username()" checked></input>
   <details>
-    <summary> 検索 </summary>
+    <summary> 詳細検索 </summary>
     日付：<input type="date" id="date_start" value="1990-01-01">～<input type="date" id="date_end" value="9999-12-31"><br>
     <!-- TODO
     時刻：<input type="time" id="time_start" value="00:00">～<input type="time" id="time_end" value="23:59"><br>
@@ -62,6 +63,15 @@
     <br>
     <button onclick="search()"       style='width:128px'>検索</button>
     <button onclick="reset_search()" style='width:128px'>検索条件クリア</button>
+  </details>
+  </div>
+  <div class="statistics">
+  <details>
+    <summary> 統計 </summary>
+    <div id="statistics_title"></div>
+    <br>
+    <table id="statistics_table" class="statistics_table" border="1">
+    </table>
   </details>
   </div>
   <br>

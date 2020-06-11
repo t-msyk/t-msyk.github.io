@@ -167,6 +167,12 @@ function filter_player2 ( sente, gote, senteR, goteR ) {
   return false;
 }
 
+function filter_username ( sente, gote ) {
+  var name = document.getElementById('username').value;
+  var re = new RegExp( name ? "^" + name +"$" : ".*" );
+  return sente.match(re) || gote.match(re);
+}
+
 function filter_form1 ( sente, gote, sente_form, gote_form ) {
   var form = "";
   var form1 = document.getElementById('form1').value.replace(';','|');
@@ -208,6 +214,9 @@ function filter_form2 ( sente, gote, sente_form, gote_form ) {
 }
 
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
+  if ( !filter_username ( sente, gote ) ) {
+    return false;
+  }
   if ( !filter_date ( date ) ) {
     return false;
   }
@@ -236,6 +245,66 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   return true;
 }
 
+function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
+  var re = new RegExp( user.name ? "^" + user.name +"$" : ".*" );
+  var player = [ sente,      gote     ];
+  var form   = [ sente_form, gote_form];
+  var turn   = [ "先手",     "後手"   ];
+  for ( i=0; i<2; ++i ) {
+    if ( !player[i].match(re) ) continue;
+    if ( !form[i] ) continue;
+    user['form'] = form[i];
+    user['turn'] = turn[i];
+    user['result'] = result.match(new RegExp( turn[i] + "勝ち" )) ? 'win' : 'lose';
+    var form_list = user['form'].split(';');
+    for ( var j=0; j<form_list.length; ++j ) {
+      if ( !form_list[j] ) continue;
+      if ( !user['statistics'][form_list[j]] ) {
+        user['statistics'][form_list[j]] = {先手:{win:0,lose:0},後手:{win:0,lose:0}}
+      }
+      user['statistics'][form_list[j]][user['turn']][user['result']] += 1;
+    }
+    user['statistics']['合計'][user['turn']][user['result']] += 1;
+  }
+}
+
+function draw_statistics ( user ) {
+  document.getElementById("statistics_title").innerHTML 
+    = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
+  var statistics_table_table=document.getElementById("statistics_table");
+  var thead_html = '<tr><td>戦法</td><td>先手(勝/負)</td><td>後手(勝/負)</td><td>合計(勝/負)</td></tr>\n';
+  var tbody_html = '';
+  statistics_table.innerHTML= thead_html;
+  for ( var form in user.statistics ) {
+    if ( form === '合計' ) continue;
+    var sente_win  = user.statistics[form]['先手'].win;
+    var sente_lose = user.statistics[form]['先手'].lose;
+    var gote_win   = user.statistics[form]['後手'].win;
+    var gote_lose  = user.statistics[form]['後手'].lose;
+    var win  = sente_win  + gote_win;
+    var lose = sente_lose + gote_lose;
+    tbody_html += '<tr>'
+      + '<td>' + form + '</td>'
+      + '<td>' + sente_win + '/' + sente_lose + '</td>'
+      + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
+      + '<td>' + win + '/' + lose + '</td>'
+      + '</tr>';
+  }
+  var sente_win  = user.statistics['合計']['先手'].win;
+  var sente_lose = user.statistics['合計']['先手'].lose;
+  var gote_win   = user.statistics['合計']['後手'].win;
+  var gote_lose  = user.statistics['合計']['後手'].lose;
+  var win  = sente_win  + gote_win;
+  var lose = sente_lose + gote_lose;
+  tbody_html += '<tr>'
+    + '<td>' + '合計' + '</td>'
+    + '<td>' + sente_win + '/' + sente_lose + '</td>'
+    + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
+    + '<td>' + win + '/' + lose + '</td>'
+    + '</tr>';
+  statistics_table.innerHTML += tbody_html;
+}
+
 function load_kif_table() {
   var main_table=document.getElementById("main_table");
   var thead_html = '<tr><td>日時</td><td>棋戦</td><td>先手(レート)</td><td>後手(レート)</td><td>勝敗(手数)</td><td>先手戦形</td><td>後手戦形</td><td>棋譜</td><td>再生</td></tr>\n';
@@ -247,8 +316,19 @@ function load_kif_table() {
   var start = 0;
   var end = lines.length;
   var recently = document.getElementById('recently');
+  var user = { 
+    name   : '',
+    form   : '', 
+    turn   : '',
+    result : '',
+    statistics : {合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}}}
+  };
+  user['name'] = document.getElementById('username').value;
   if ( _GET['recently'] ) {
     recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
+  }
+  if ( _GET['recently'] ) {
+    document.getElementById('username').value = _GET['username'];
   }
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
@@ -263,14 +343,22 @@ function load_kif_table() {
     if ( !filter(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]) ) {
       continue;
     }
+    take_statistics(user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     tbody_html += generate_tbody(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     count++;
   }
   main_table.innerHTML += tbody_html;
+  draw_statistics( user );
 }
 
 function recently() {
   _GET['recently'] = "" + document.getElementById('recently').checked;
+  get2url();
+  load_kif_table();
+}
+
+function username() {
+  _GET['username'] = "" + document.getElementById('username').value;
   get2url();
   load_kif_table();
 }
