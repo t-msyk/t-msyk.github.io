@@ -24,5 +24,8 @@ function get2url () {
   }
   // TODO which is better ?
   //window.history.pushState(null, null, get_param_string);
-  window.history.replaceState(null, null, get_param_string);
+  if ( !get_param_string ) {
+    get_param_string = "?"
+  }
+  window.history.replaceState(null, null, encodeURI(get_param_string));
 }
