@@ -301,7 +301,7 @@ function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
   var statistics_table_table=document.getElementById("statistics_table");
-  var thead_html = '<tr><td>戦法</td><td>先手(勝/負)</td><td>後手(勝/負)</td><td>合計(勝/負)</td></tr>\n';
+  var thead_html = '<tr><td>戦形</td><td>先手(勝/負)</td><td>後手(勝/負)</td><td>合計(勝/負)</td></tr>\n';
   var tbody_html = '';
   statistics_table.innerHTML= thead_html;
   for ( var form in user.statistics ) {
