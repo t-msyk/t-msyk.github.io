@@ -334,7 +334,7 @@ function load_kif_table() {
   if ( _GET['recently'] ) {
     recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
   }
-  if ( _GET['recently'] ) {
+  if ( _GET['username'] ) {
     document.getElementById('username').value = _GET['username'];
   }
   var count = 0;
