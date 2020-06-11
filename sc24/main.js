@@ -167,10 +167,24 @@ function filter_player2 ( sente, gote, senteR, goteR ) {
   return false;
 }
 
-function filter_username ( sente, gote ) {
+function filter_username_form ( sente, gote, sente_form, gote_form ) {
   var name = document.getElementById('username').value;
-  var re = new RegExp( name ? "^" + name +"$" : ".*" );
-  return sente.match(re) || gote.match(re);
+  var form = document.getElementById('form').value;
+  var re_name = new RegExp( name ? "^" + name +"$" : ".*" );
+  var re_form = new RegExp( form ? "^" + form +";" + "|;" + form + ";" : ".*" );
+  var ret=false;
+  if ( sente.match(re_name) ) {
+    ret = ret || sente_form.match(re_form);
+  }
+  if ( gote.match(re_name) ) {
+    ret = ret || gote_form.match(re_form);
+  }
+  return ret;
+}
+
+function set_form ( form ) {
+  document.getElementById('form').value = form;
+  formatin();
 }
 
 function filter_form1 ( sente, gote, sente_form, gote_form ) {
@@ -214,7 +228,7 @@ function filter_form2 ( sente, gote, sente_form, gote_form ) {
 }
 
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
-  if ( !filter_username ( sente, gote ) ) {
+  if ( !filter_username_form ( sente, gote, sente_form, gote_form ) ) {
     return false;
   }
   if ( !filter_date ( date ) ) {
@@ -268,6 +282,21 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
   }
 }
 
+function make_statistics_tr ( statistics, form ) {
+  var sente_win  = statistics[form]['先手'].win;
+  var sente_lose = statistics[form]['先手'].lose;
+  var gote_win   = statistics[form]['後手'].win;
+  var gote_lose  = statistics[form]['後手'].lose;
+  var win  = sente_win  + gote_win;
+  var lose = sente_lose + gote_lose;
+  return '<tr>'
+    + ( form === '合計' ? '<td>' : ( '<td onclick="set_form(\'' + form + '\')">' ))  + form + '</td>'
+    + '<td>' + sente_win + '/' + sente_lose + '</td>'
+    + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
+    + '<td>' + win + '/' + lose + '</td>'
+    + '</tr>';
+}
+
 function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
@@ -277,31 +306,9 @@ function draw_statistics ( user ) {
   statistics_table.innerHTML= thead_html;
   for ( var form in user.statistics ) {
     if ( form === '合計' ) continue;
-    var sente_win  = user.statistics[form]['先手'].win;
-    var sente_lose = user.statistics[form]['先手'].lose;
-    var gote_win   = user.statistics[form]['後手'].win;
-    var gote_lose  = user.statistics[form]['後手'].lose;
-    var win  = sente_win  + gote_win;
-    var lose = sente_lose + gote_lose;
-    tbody_html += '<tr>'
-      + '<td>' + form + '</td>'
-      + '<td>' + sente_win + '/' + sente_lose + '</td>'
-      + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
-      + '<td>' + win + '/' + lose + '</td>'
-      + '</tr>';
+    tbody_html += make_statistics_tr ( user.statistics, form );
   }
-  var sente_win  = user.statistics['合計']['先手'].win;
-  var sente_lose = user.statistics['合計']['先手'].lose;
-  var gote_win   = user.statistics['合計']['後手'].win;
-  var gote_lose  = user.statistics['合計']['後手'].lose;
-  var win  = sente_win  + gote_win;
-  var lose = sente_lose + gote_lose;
-  tbody_html += '<tr>'
-    + '<td>' + '合計' + '</td>'
-    + '<td>' + sente_win + '/' + sente_lose + '</td>'
-    + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
-    + '<td>' + win + '/' + lose + '</td>'
-    + '</tr>';
+  tbody_html += make_statistics_tr ( user.statistics, "合計" );
   statistics_table.innerHTML += tbody_html;
 }
 
@@ -359,8 +366,14 @@ function recently() {
 
 function username() {
   _GET['username'] = "" + document.getElementById('username').value;
+  if ( !_GET['username'] ) {
+    delete _GET['username'];
+  }
   get2url();
   load_kif_table();
 }
 
+function formatin() {
+  load_kif_table();
+}
 
