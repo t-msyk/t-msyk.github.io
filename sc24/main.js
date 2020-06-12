@@ -295,15 +295,15 @@ function generate_color ( win, lose ) {
   var r = 1;
   var g = 1;
   var b = 1;
-  if ( win + lose === 0 ) {
-    return "rgb(" + (r*255) + "," + (g*255) +"," + (b*255) + ")";
-  }
   if ( win > lose ) {
     //r = 1 - ( rate - 0.5 );
     //g = 1 - ( rate - 0.5 );
   } else {
     g = 1 - ( 0.5 - rate );
     b = 1 - ( 0.5 - rate );
+  }
+  if ( (win-0) + (lose-0) === 0 ) {
+    r = g = b = 1;
   }
   return "rgb(" + (r*255) + "," + (g*255) +"," + (b*255) + ")";
 }
@@ -386,8 +386,8 @@ function create_statistics_table ( user ) {
     ) {
       var td = document.createElement('td');
       td.textContent = txt;
-      var w = txt.split('/')[0];
-      var l = txt.split('/')[1];
+      var w = txt.split('/')[0] - 0;
+      var l = txt.split('/')[1] - 0;
       td.style.border = border_style;
       td.style.backgroundColor = generate_color(w,l);
       tr.appendChild(td);
