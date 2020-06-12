@@ -22,8 +22,8 @@ function generate_tbody ( date, kisen, sente, senteR, gote, goteR, result, tempo
   return "<tr>"
         + "<td>" + date.replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6') + "</td>"
         + "<td>" + kisen + "</td>"
-        + "<td class='" + ( result === '先手勝ち' ? "winner" : "loser" ) +  "'>" + sente + "(" + senteR + ")</td>"
-        + "<td class='" + ( result === '後手勝ち' ? "winner" : "loser" ) +  "'>" + gote  + "(" + goteR  + ")</td>"
+        + "<td class='" + ( result === '先手勝ち' ? "winner" : "loser" ) +  "' onclick='set_username(\"" + sente + "\")'>" + sente + "(" + senteR + ")</td>"
+        + "<td class='" + ( result === '後手勝ち' ? "winner" : "loser" ) +  "' onclick='set_username(\"" + gote  + "\")'>" + gote  + "(" + goteR  + ")</td>"
         + "<td>" + result + "(" + tempo + "手)</td>"
         + "<td>" + sente_form + "</td>"
         + "<td>" + gote_form  + "</td>"
@@ -68,6 +68,7 @@ function reset_search () {
   document.getElementById('form2_gote').checked    = true;
   document.getElementById('form2_player2').checked = false;
   document.getElementById('form2').value           = "";
+  get2url();
   search();
 }
 
@@ -188,6 +189,11 @@ function filter_username_form ( sente, gote, sente_form, gote_form ) {
 function set_form ( form ) {
   document.getElementById('form').value = form;
   formatin();
+}
+
+function set_username ( uname ) {
+  document.getElementById('username').value = uname;
+  username();
 }
 
 function filter_form1 ( sente, gote, sente_form, gote_form ) {
