@@ -174,13 +174,13 @@ function filter_player2 ( sente, gote, senteR, goteR ) {
 function filter_username_form ( sente, gote, sente_form, gote_form ) {
   var name = document.getElementById('username').value;
   var form = document.getElementById('form').value;
-  var re_name = new RegExp( name ? "^" + name +"$" : ".*" );
+  //var re_name = new RegExp( name ? "^" + name +"$" : ".*" );
   var re_form = new RegExp( form ? "^" + form +";" + "|;" + form + ";" : ".*" );
   var ret=false;
-  if ( sente.match(re_name) ) {
+  if ( sente.indexOf(name) >= 0 ) {
     ret = ret || sente_form.match(re_form);
   }
-  if ( gote.match(re_name) ) {
+  if ( gote.indexOf(name) >= 0 ) {
     ret = ret || gote_form.match(re_form);
   }
   return ret;
@@ -269,12 +269,11 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
 }
 
 function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
-  var re = new RegExp( user.name ? "^" + user.name +"$" : ".*" );
   var player = [ sente,      gote     ];
   var form   = [ sente_form, gote_form];
   var turn   = [ "先手",     "後手"   ];
   for ( i=0; i<2; ++i ) {
-    if ( !player[i].match(re) ) continue;
+    if ( player[i].indexOf(user.name) < 0 ) continue;
     user['form'] = form[i];
     user['turn'] = turn[i];
     user['result'] = result.match(new RegExp( turn[i] + "勝ち" )) ? 'win' : 'lose';
