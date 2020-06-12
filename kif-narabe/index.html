@@ -11,7 +11,7 @@
   <script type="text/javascript" src="../main.js"></script>
   <script type="text/javascript" src="./kif-narabe.js"></script>
 </head>
-<body onload='onload()'>
+<body id='body' onload='onload()'>
 <header>
   <h1> Kifu narabe </h1>
   <p> Tag and SFEN(Shogi Forsyth-Edwards Notation) Sequence Narabe</p>
@@ -19,7 +19,7 @@
 <main>
   <div id="turn"></div>
   <div id="white_hand">△</div>
-  <table class="board" border="1">
+  <table id="board" class="board" border="1" onclick="board_on_click(this,event)">
     <tr>
       <td id="11"></td> <td id="12"></td> <td id="13"></td>
       <td id="14"></td> <td id="15"></td> <td id="16"></td>

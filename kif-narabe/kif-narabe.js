@@ -21,6 +21,7 @@ function onload () {
   }
 }
 
+
 function printGetParameters () {
   for ( var key in _GET ) {
     console.log ( "" + key + " : " + _GET[key] );
@@ -216,5 +217,18 @@ function load_sfen() {
   }
   draw();
   //console.log(Kifu.value);
+}
+
+function board_on_click ( obj,e ) {
+  var targetRectangle = obj.getBoundingClientRect() ;
+  var x = e.pageX - ( targetRectangle.left + window.pageXOffset );
+  var w = targetRectangle.width;
+  if ( 2 * x > w ) {
+    // right half
+    next();
+  } else {
+    // left half
+    prev();
+  }
 }
 
