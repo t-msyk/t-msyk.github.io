@@ -291,13 +291,13 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
 }
 
 function generate_color ( win, lose ) {
-  var rate = win  / ( win + lose );
+  var rate = (win-0)  / ( (win-0) + (lose-0) );
   var r = 1;
   var g = 1;
   var b = 1;
   if ( win > lose ) {
-    //r = 100 - ( rate - 50 );
-    //g = 100 - ( rate - 50 );
+    //r = 1 - ( rate - 0.5 );
+    //g = 1 - ( rate - 0.5 );
   } else {
     g = 1 - ( 0.5 - rate );
     b = 1 - ( 0.5 - rate );
@@ -383,7 +383,10 @@ function create_statistics_table ( user ) {
     ) {
       var td = document.createElement('td');
       td.textContent = txt;
+      var w = txt.split('/')[0];
+      var l = txt.split('/')[1];
       td.style.border = border_style;
+      td.style.backgroundColor = generate_color(w,l);
       tr.appendChild(td);
     }
     table.appendChild(tr);
