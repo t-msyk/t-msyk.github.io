@@ -320,7 +320,42 @@ function create_statistics_table ( user ) {
   }
   table.appendChild(tr);
   // tbody
+  var form_array = [];
   for ( var form in user.statistics ) {
+    form_array.push(form);
+  }
+  // total is last row
+  for ( var i=0; i<form_array.length; ++i ) {
+    if ( form_array[i] === '合計' ) {
+      form_array[i] = form_array[form_array.length-1];
+      form_array[form_array.length-1] = '合計';
+    }
+  }
+  // sort form
+  for ( var i=0; i<form_array.length - 1; ++i ) {
+    var form = form_array[i];
+    var score_min = + user.statistics[form]['先手'].win
+                    - user.statistics[form]['先手'].lose
+                    + user.statistics[form]['後手'].win
+                    - user.statistics[form]['後手'].lose;
+    var min_idx = i;
+    for ( var j=i+1; j<form_array.length - 1; ++j ) {
+       var score = + user.statistics[form_array[j]]['先手'].win
+                   - user.statistics[form_array[j]]['先手'].lose
+                   + user.statistics[form_array[j]]['後手'].win
+                   - user.statistics[form_array[j]]['後手'].lose;
+      if ( score_min > score ) {
+        score_min = score;
+        min_idx = j;
+      }
+    }
+    var tmp = form_array[i];
+    form_array[i] = form_array[min_idx];
+    form_array[min_idx] = tmp;
+  }
+  // add tr
+  for ( var i=0; i<form_array.length; ++i ) {
+    var form = form_array[i];
     var tr = document.createElement('tr');
     var td = document.createElement('td');
     tr.style.border = border_style;
