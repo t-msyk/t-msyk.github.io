@@ -38,6 +38,7 @@ function search() {
 
 function reset_search () {
   document.getElementById('username').value = "";
+  delete _GET['username'];
   document.getElementById('form').value     = "";
   document.getElementById('date_start').value = "1990-01-01";
   document.getElementById('date_end').value   = "9999-12-31";
