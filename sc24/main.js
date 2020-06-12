@@ -295,6 +295,9 @@ function generate_color ( win, lose ) {
   var r = 1;
   var g = 1;
   var b = 1;
+  if ( win + lose === 0 ) {
+    return "rgb(" + (r*255) + "," + (g*255) +"," + (b*255) + ")";
+  }
   if ( win > lose ) {
     //r = 1 - ( rate - 0.5 );
     //g = 1 - ( rate - 0.5 );
