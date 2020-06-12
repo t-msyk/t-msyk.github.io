@@ -291,18 +291,18 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
 }
 
 function generate_color ( win, lose ) {
-  var rate = win * 100 / ( win + lose );
-  var r = 100;
-  var g = 100;
-  var b = 100;
+  var rate = win  / ( win + lose );
+  var r = 1;
+  var g = 1;
+  var b = 1;
   if ( win > lose ) {
     //r = 100 - ( rate - 50 );
     //g = 100 - ( rate - 50 );
   } else {
-    g = 100 - ( 50 - rate );
-    b = 100 - ( 50 - rate );
+    g = 1 - ( 0.5 - rate );
+    b = 1 - ( 0.5 - rate );
   }
-  return "rgb(" + r + "%," + g +"%," + b + "%)";
+  return "rgb(" + (r*255) + "," + (g*255) +"," + (b*255) + ")";
 }
 
 function create_statistics_table ( user ) {
@@ -339,7 +339,7 @@ function create_statistics_table ( user ) {
     var win  = sente_win  + gote_win;
     var lose = sente_lose + gote_lose;
     tr.style.backgroundColor = generate_color(win,lose);
-    for ( var elmt of 
+    for ( var txt of 
       [
         "" + sente_win + "/" + sente_lose,
         "" + gote_win  + "/" + gote_lose,
@@ -347,7 +347,7 @@ function create_statistics_table ( user ) {
       ]
     ) {
       var td = document.createElement('td');
-      td.textContent = elmt;
+      td.textContent = txt;
       td.style.border = border_style;
       tr.appendChild(td);
     }
@@ -356,10 +356,42 @@ function create_statistics_table ( user ) {
   return table;
 }
 
+function sort_table ( table ) {
+  var n = table.rows.length;
+  console.log("n=" + n );
+  for ( var i=1; i<n; ++i ) {
+    var td3 = table.rows[1].cells[3].textContent.split('/');
+    var win  = td3[0];
+    var lose = td3[1];
+    var min = win - lose;
+    var min_idx = i;
+    for ( var j=1; j<n - i; ++j ) {
+      td3 = table.rows[j].cells[3].textContent.split('/');
+      win  = td3[0];
+      lose = td3[1];
+      if ( min > win - lose ) {
+        min = win - lose;
+        min_idx = j;
+      }
+    }
+    table.appendChild(table.rows[min_idx].cloneNode(true));
+    table.removeChild(table.rows[min_idx]);
+  }
+  // row 合計 is last element
+  for ( var i=0; i<table.rows.length - 1; ++i ) {
+    if ( table.rows[i].cells[0].textContent === '合計' ) {
+      table.appendChild(table.rows[i].cloneNode(true));
+      table.removeChild(table.rows[i]);
+      break;
+    }
+  }
+}
+
 function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
   var table = create_statistics_table ( user );
+  sort_table(table);
   document.getElementById("statistics_title").appendChild(table);
 
 }
