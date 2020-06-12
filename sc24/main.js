@@ -38,7 +38,7 @@ function search() {
 
 function reset_search () {
   document.getElementById('username').value = "";
-  document.getElementById('formatin').value   = "";
+  document.getElementById('form').value     = "";
   document.getElementById('date_start').value = "1990-01-01";
   document.getElementById('date_end').value   = "9999-12-31";
   var ksn = document.getElementById('kisen').getElementsByTagName('input');
@@ -292,7 +292,7 @@ function make_statistics_tr ( statistics, form ) {
   var win  = sente_win  + gote_win;
   var lose = sente_lose + gote_lose;
   return '<tr>'
-    + ( form === '合計' ? '<td>' : ( '<td onclick="set_form(\'' + form + '\')">' ))  + form + '</td>'
+    + '<td onclick="set_form(\'' + (form==='合計'?'':form) + '\')">'   + form + '</td>'
     + '<td>' + sente_win + '/' + sente_lose + '</td>'
     + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
     + '<td>' + win + '/' + lose + '</td>'
