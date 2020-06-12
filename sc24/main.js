@@ -285,34 +285,74 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
   }
 }
 
-function make_statistics_tr ( statistics, form ) {
-  var sente_win  = statistics[form]['先手'].win;
-  var sente_lose = statistics[form]['先手'].lose;
-  var gote_win   = statistics[form]['後手'].win;
-  var gote_lose  = statistics[form]['後手'].lose;
-  var win  = sente_win  + gote_win;
-  var lose = sente_lose + gote_lose;
-  return '<tr>'
-    + '<td onclick="set_form(\'' + (form==='合計'?'':form) + '\')">'   + form + '</td>'
-    + '<td>' + sente_win + '/' + sente_lose + '</td>'
-    + '<td>' + gote_win  + '/' + gote_lose  + '</td>'
-    + '<td>' + win + '/' + lose + '</td>'
-    + '</tr>';
+function generate_color ( win, lose ) {
+  var rate = win * 100 / ( win + lose );
+  var r = 100;
+  var g = 100;
+  var b = 100;
+  if ( win > lose ) {
+    //r = 100 - ( rate - 50 );
+    //g = 100 - ( rate - 50 );
+  } else {
+    g = 100 - ( 50 - rate );
+    b = 100 - ( 50 - rate );
+  }
+  return "rgb(" + r + "%," + g +"%," + b + "%)";
+}
+
+function create_statistics_table ( user ) {
+  var table = document.createElement('table');
+  var border_style = 'thin solid black';
+  table.style.border = border_style;
+  // thead
+  var tr = document.createElement('tr');
+  tr.style.border = border_style;
+  for ( var txt of ['戦形','先手(勝/敗)','後手(勝/敗)','合計(勝/敗)'] ) {
+    var td = document.createElement('td');
+    td.textContent = txt;
+    td.style.border = border_style;
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+  // tbody
+  for ( var form in user.statistics ) {
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.style.border = border_style;
+    td.textContent = form;
+    td.style.border = border_style;
+    td.onclick=function () { set_form(this.innerHTML); }
+    tr.appendChild(td);
+    var sente_win  = user.statistics[form]['先手'].win;
+    var sente_lose = user.statistics[form]['先手'].lose;
+    var gote_win   = user.statistics[form]['後手'].win;
+    var gote_lose  = user.statistics[form]['後手'].lose;
+    var win  = sente_win  + gote_win;
+    var lose = sente_lose + gote_lose;
+    tr.style.backgroundColor = generate_color(win,lose);
+    for ( var elmt of 
+      [
+        "" + sente_win + "/" + sente_lose,
+        "" + gote_win  + "/" + gote_lose,
+        "" + win       + "/" + lose,
+      ]
+    ) {
+      var td = document.createElement('td');
+      td.textContent = elmt;
+      td.style.border = border_style;
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  return table;
 }
 
 function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
-  var statistics_table_table=document.getElementById("statistics_table");
-  var thead_html = '<tr><td>戦形</td><td>先手(勝/負)</td><td>後手(勝/負)</td><td>合計(勝/負)</td></tr>\n';
-  var tbody_html = '';
-  statistics_table.innerHTML= thead_html;
-  for ( var form in user.statistics ) {
-    if ( form === '合計' ) continue;
-    tbody_html += make_statistics_tr ( user.statistics, form );
-  }
-  tbody_html += make_statistics_tr ( user.statistics, "合計" );
-  statistics_table.innerHTML += tbody_html;
+  var table = create_statistics_table ( user );
+  document.getElementById("statistics_title").appendChild(table);
+
 }
 
 function load_kif_table() {
