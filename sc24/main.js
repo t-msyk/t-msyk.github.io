@@ -321,7 +321,11 @@ function create_statistics_table ( user ) {
     tr.style.border = border_style;
     td.textContent = form;
     td.style.border = border_style;
-    td.onclick=function () { set_form(this.innerHTML); }
+    if ( form === '合計' ) {
+      td.onclick=function () { set_form(''); }
+    } else {
+      td.onclick=function () { set_form(this.innerHTML); }
+    }
     tr.appendChild(td);
     var sente_win  = user.statistics[form]['先手'].win;
     var sente_lose = user.statistics[form]['先手'].lose;
