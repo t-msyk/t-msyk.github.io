@@ -356,42 +356,10 @@ function create_statistics_table ( user ) {
   return table;
 }
 
-function sort_table ( table ) {
-  var n = table.rows.length;
-  console.log("n=" + n );
-  for ( var i=1; i<n; ++i ) {
-    var td3 = table.rows[1].cells[3].textContent.split('/');
-    var win  = td3[0];
-    var lose = td3[1];
-    var min = win - lose;
-    var min_idx = i;
-    for ( var j=1; j<n - i; ++j ) {
-      td3 = table.rows[j].cells[3].textContent.split('/');
-      win  = td3[0];
-      lose = td3[1];
-      if ( min > win - lose ) {
-        min = win - lose;
-        min_idx = j;
-      }
-    }
-    table.appendChild(table.rows[min_idx].cloneNode(true));
-    table.removeChild(table.rows[min_idx]);
-  }
-  // row 合計 is last element
-  for ( var i=0; i<table.rows.length - 1; ++i ) {
-    if ( table.rows[i].cells[0].textContent === '合計' ) {
-      table.appendChild(table.rows[i].cloneNode(true));
-      table.removeChild(table.rows[i]);
-      break;
-    }
-  }
-}
-
 function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
   var table = create_statistics_table ( user );
-  sort_table(table);
   document.getElementById("statistics_title").appendChild(table);
 
 }
