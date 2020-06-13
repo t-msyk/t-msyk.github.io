@@ -423,6 +423,21 @@ function draw_statistics ( user, vs_user ) {
   document.getElementById("vs_statistics_table").appendChild(vs_table);
 }
 
+function draw_time_histgram ( hist ) {
+  var time_histgram=document.getElementById('time_histgram');
+  var canvas = document.getElementById('hist_canvas');
+  time_histgram.innerHTML = "";
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'gray';
+  ctx.fillRect( 10,10, 240, 100 );
+  for ( var i=0; i<24; ++i ) {
+    //time_histgram.innerHTML += i + "時：" + hist[i] + "局<br>";
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'green';
+    ctx.fillRect( 10*(i+1), 110-hist[i]*10, 10, hist[i]*10 );
+  }
+}
+
 function load_kif_table() {
   var main_table=document.getElementById("main_table");
   var thead_html = '<tr><td>日時</td><td>棋戦</td><td>先手(レート)</td><td>後手(レート)</td><td>勝敗(手数)</td><td>先手戦形</td><td>後手戦形</td><td>棋譜</td><td>再生</td></tr>\n';
@@ -434,6 +449,10 @@ function load_kif_table() {
   var start = 0;
   var end = lines.length;
   var recently = document.getElementById('recently');
+  var time_histgram=[0, 0, 0, 0, 0, 0, 
+                     0, 0, 0, 0, 0, 0, 
+                     0, 0, 0, 0, 0, 0, 
+                     0, 0, 0, 0, 0, 0 ];
   var user = { 
     name   : '',
     form   : '', 
@@ -463,6 +482,7 @@ function load_kif_table() {
     if ( !filter(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]) ) {
       continue;
     }
+    time_histgram[tmp[0].split('-')[3]-0]++;
     take_statistics(user   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     take_statistics(vs_user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[9],tmp[8],tmp[10]);
     tbody_html += generate_tbody(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
@@ -470,6 +490,7 @@ function load_kif_table() {
   }
   main_table.innerHTML += tbody_html;
   draw_statistics( user, vs_user );
+  draw_time_histgram ( time_histgram ) ;
 }
 
 function recently() {
