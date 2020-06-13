@@ -274,7 +274,7 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
   var turn   = [ "先手",     "後手"   ];
   for ( i=0; i<2; ++i ) {
     if ( player[i].indexOf(user.name) < 0 ) continue;
-    if ( !result.match(/"勝ち"/) ) continue;
+    if ( !result.match(/勝ち/) ) continue;
     user['form'] = form[i];
     user['turn'] = turn[i];
     user['result'] = result.match(new RegExp( turn[i] + "勝ち" )) ? 'win' : 'lose';
