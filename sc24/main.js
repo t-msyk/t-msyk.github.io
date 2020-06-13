@@ -439,7 +439,8 @@ function load_kif_table() {
     form   : '', 
     turn   : '',
     result : '',
-    statistics : {合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}}}
+    statistics : { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                 その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}}
   };
   user['name'] = document.getElementById('username').value;
   if ( _GET['recently'] ) {
