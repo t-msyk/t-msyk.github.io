@@ -175,14 +175,20 @@ function filter_username_form ( sente, gote, sente_form, gote_form ) {
   var name = document.getElementById('username').value;
   var form = document.getElementById('form').value;
   //var re_name = new RegExp( name ? "^" + name +"$" : ".*" );
+  var vs = false;
+  if ( form.match(/^vs/) ) {
+    vs = true;
+    var tmp = form.replace(/^vs/,"");
+    form = tmp;
+  }
   var re_form = new RegExp( form ? "^" + form +";" + "|;" + form + ";" : ".*" );
   if ( form === 'その他' ) re_form = new RegExp ( "^$" );
   var ret=false;
   if ( sente.indexOf(name) >= 0 ) {
-    ret = ret || sente_form.match(re_form);
+    ret = ret || (vs ? gote_form.match(re_form)  : sente_form.match(re_form) );
   }
   if ( gote.indexOf(name) >= 0 ) {
-    ret = ret || gote_form.match(re_form);
+    ret = ret || (vs ? sente_form.match(re_form) : gote_form.match(re_form) );
   }
   return ret;
 }
@@ -293,24 +299,26 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
 }
 
 function generate_color ( win, lose ) {
-  var rate = (win-0)  / ( (win-0) + (lose-0) );
-  var r = 1;
-  var g = 1;
-  var b = 1;
-  if ( win > lose ) {
+  var w = win  - 0;
+  var l = lose - 0;
+  var rate = w  / ( w + l );
+  var r = 1.0;
+  var g = 1.0;
+  var b = 1.0;
+  if ( w > l ) {
     //r = 1 - ( rate - 0.5 );
     //g = 1 - ( rate - 0.5 );
   } else {
-    g = 1 - ( 0.5 - rate );
-    b = 1 - ( 0.5 - rate );
+    g = 1.0 - ( 0.5 - rate );
+    b = 1.0 - ( 0.5 - rate );
   }
-  if ( (win-0) + (lose-0) === 0 ) {
-    r = g = b = 1;
+  if ( w + l === 0 ) {
+    r = g = b = 1.0;
   }
-  return "rgb(" + (r*255) + "," + (g*255) +"," + (b*255) + ")";
+  return "rgb(" + Math.floor(r*255) + "," + Math.floor(g*255) +"," + Math.floor(b*255) + ")";
 }
 
-function create_statistics_table ( user ) {
+function create_statistics_table ( user, form_prefix ) {
   var table = document.createElement('table');
   var border_style = 'thin solid black';
   table.style.border = border_style;
@@ -371,7 +379,7 @@ function create_statistics_table ( user ) {
     var tr = document.createElement('tr');
     var td = document.createElement('td');
     tr.style.border = border_style;
-    td.textContent = form;
+    td.textContent = form_prefix + form;
     td.style.border = border_style;
     if ( form === '合計' ) {
       td.onclick=function () { set_form(''); }
@@ -404,12 +412,15 @@ function create_statistics_table ( user ) {
   return table;
 }
 
-function draw_statistics ( user ) {
+function draw_statistics ( user, vs_user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
-  var table = create_statistics_table ( user );
-  document.getElementById("statistics_title").appendChild(table);
-
+  document.getElementById("statistics_table").innerHTML    = "";
+  document.getElementById("vs_statistics_table").innerHTML = "";
+  var table    = create_statistics_table ( user    ,""  );
+  var vs_table = create_statistics_table ( vs_user ,"vs");
+  document.getElementById("statistics_table").appendChild   (table   );
+  document.getElementById("vs_statistics_table").appendChild(vs_table);
 }
 
 function load_kif_table() {
@@ -437,6 +448,7 @@ function load_kif_table() {
   if ( _GET['username'] ) {
     document.getElementById('username').value = _GET['username'];
   }
+  var vs_user = JSON.parse(JSON.stringify(user));
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
     if ( !lines[i] 
@@ -450,12 +462,13 @@ function load_kif_table() {
     if ( !filter(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]) ) {
       continue;
     }
-    take_statistics(user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
+    take_statistics(user   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
+    take_statistics(vs_user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[9],tmp[8],tmp[10]);
     tbody_html += generate_tbody(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     count++;
   }
   main_table.innerHTML += tbody_html;
-  draw_statistics( user );
+  draw_statistics( user, vs_user );
 }
 
 function recently() {
