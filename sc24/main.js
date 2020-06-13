@@ -325,7 +325,7 @@ function create_hist_table ( user ) {
   // thead
   var tr = document.createElement('tr');
   tr.style.border = border_style;
-  for ( var txt of ['戦形','先手(勝/敗)','後手(勝/敗)','合計(勝/敗)'] ) {
+  for ( var txt of ['対局開始時刻','先手(勝/敗)','後手(勝/敗)','合計(勝/敗)'] ) {
     var td = document.createElement('td');
     td.textContent = txt;
     td.style.border = border_style;
