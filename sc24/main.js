@@ -428,6 +428,9 @@ function draw_time_histgram ( hist ) {
   var canvas = document.getElementById('hist_canvas');
   time_histgram.innerHTML = "";
   var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect( 0,0, 260, 120 );
+  var ctx = canvas.getContext('2d');
   ctx.fillStyle = 'gray';
   ctx.fillRect( 10,10, 240, 100 );
   for ( var i=0; i<24; ++i ) {
