@@ -176,6 +176,7 @@ function filter_username_form ( sente, gote, sente_form, gote_form ) {
   var form = document.getElementById('form').value;
   //var re_name = new RegExp( name ? "^" + name +"$" : ".*" );
   var re_form = new RegExp( form ? "^" + form +";" + "|;" + form + ";" : ".*" );
+  if ( form === 'その他' ) re_form = new RegExp ( "^$" );
   var ret=false;
   if ( sente.indexOf(name) >= 0 ) {
     ret = ret || sente_form.match(re_form);
@@ -279,8 +280,8 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
     user['turn'] = turn[i];
     user['result'] = result.match(new RegExp( turn[i] + "勝ち" )) ? 'win' : 'lose';
     user['statistics']['合計'][user['turn']][user['result']] += 1;
-    if ( !form[i] ) continue;
     var form_list = user['form'].split(';');
+    if ( !form[i] ) form_list = ['その他'];
     for ( var j=0; j<form_list.length; ++j ) {
       if ( !form_list[j] ) continue;
       if ( !user['statistics'][form_list[j]] ) {
@@ -335,15 +336,22 @@ function create_statistics_table ( user ) {
       form_array[form_array.length-1] = '合計';
     }
   }
+  // other is 2nd-last row
+  for ( var i=0; i<form_array.length; ++i ) {
+    if ( form_array[i] === 'その他' ) {
+      form_array[i] = form_array[form_array.length-2];
+      form_array[form_array.length-2] = 'その他';
+    }
+  }
   // sort form
-  for ( var i=0; i<form_array.length - 1; ++i ) {
+  for ( var i=0; i<form_array.length - 2; ++i ) {
     var form = form_array[i];
     var score_min = + user.statistics[form]['先手'].win
                     - user.statistics[form]['先手'].lose
                     + user.statistics[form]['後手'].win
                     - user.statistics[form]['後手'].lose;
     var min_idx = i;
-    for ( var j=i+1; j<form_array.length - 1; ++j ) {
+    for ( var j=i+1; j<form_array.length - 2; ++j ) {
        var score = + user.statistics[form_array[j]]['先手'].win
                    - user.statistics[form_array[j]]['先手'].lose
                    + user.statistics[form_array[j]]['後手'].win
