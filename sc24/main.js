@@ -349,7 +349,7 @@ function create_hist_table ( user ) {
     var form = form_array[i].split('時')[0] - 0;
     var score_min = form - 0;
     var min_idx = i;
-    for ( var j=i+1; j<form_array.length - 2; ++j ) {
+    for ( var j=i+1; j<form_array.length - 1; ++j ) {
        var score = form_array[j].split('時')[0] - 0;
       if ( score_min > score ) {
         score_min = score;
