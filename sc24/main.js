@@ -318,6 +318,82 @@ function generate_color ( win, lose ) {
   return "rgb(" + Math.floor(r*255) + "," + Math.floor(g*255) +"," + Math.floor(b*255) + ")";
 }
 
+function create_hist_table ( user ) {
+  var table = document.createElement('table');
+  var border_style = 'thin solid black';
+  table.style.border = border_style;
+  // thead
+  var tr = document.createElement('tr');
+  tr.style.border = border_style;
+  for ( var txt of ['戦形','先手(勝/敗)','後手(勝/敗)','合計(勝/敗)'] ) {
+    var td = document.createElement('td');
+    td.textContent = txt;
+    td.style.border = border_style;
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+  // tbody
+  var form_array = [];
+  for ( var form in user.statistics ) {
+    form_array.push(form);
+  }
+  // total is last row
+  for ( var i=0; i<form_array.length; ++i ) {
+    if ( form_array[i] === '合計' ) {
+      form_array[i] = form_array[form_array.length-1];
+      form_array[form_array.length-1] = '合計';
+    }
+  }
+  // sort form
+  for ( var i=0; i<form_array.length - 1; ++i ) {
+    var form = form_array[i].split('時')[0] - 0;
+    var score_min = form - 0;
+    var min_idx = i;
+    for ( var j=i+1; j<form_array.length - 2; ++j ) {
+       var score = form_array[j].split('時')[0] - 0;
+      if ( score_min > score ) {
+        score_min = score;
+        min_idx = j;
+      }
+    }
+    var tmp = form_array[i];
+    form_array[i] = form_array[min_idx];
+    form_array[min_idx] = tmp;
+  }
+  // add tr
+  for ( var i=0; i<form_array.length; ++i ) {
+    var form = form_array[i];
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.style.border = border_style;
+    td.style.border = border_style;
+    td.textContent = form;
+    tr.appendChild(td);
+    var sente_win  = user.statistics[form]['先手'].win;
+    var sente_lose = user.statistics[form]['先手'].lose;
+    var gote_win   = user.statistics[form]['後手'].win;
+    var gote_lose  = user.statistics[form]['後手'].lose;
+    var win  = sente_win  + gote_win;
+    var lose = sente_lose + gote_lose;
+    tr.style.backgroundColor = generate_color(win,lose);
+    for ( var rslt of 
+      [
+        [ sente_win , sente_lose],
+        [ gote_win  , gote_lose ],
+        [ win       , lose      ]
+      ]
+    ) {
+      var td = document.createElement('td');
+      td.textContent = "" + rslt[0] + "/" + rslt[1];
+      td.style.border = border_style;
+      td.style.backgroundColor = generate_color(rslt[0],rslt[1]);
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  return table;
+}
+
 function create_statistics_table ( user, form_prefix ) {
   var table = document.createElement('table');
   var border_style = 'thin solid black';
@@ -472,6 +548,33 @@ function load_kif_table() {
     document.getElementById('username').value = _GET['username'];
   }
   var vs_user = JSON.parse(JSON.stringify(user));
+  var hist    = JSON.parse(JSON.stringify(user));
+  hist.statistics = { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '0時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '1時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '2時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '3時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '4時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '5時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '6時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '7時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '8時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                       '9時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '10時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '11時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '12時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '13時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '14時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '15時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '16時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '17時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '18時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '19時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '20時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '21時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '22時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                      '23時':{先手:{win:0,lose:0},後手:{win:0,lose:0}}
+                    };
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
     if ( !lines[i] 
@@ -485,15 +588,20 @@ function load_kif_table() {
     if ( !filter(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]) ) {
       continue;
     }
+    var h=(tmp[0].split('-')[3]-0) + "時";
     time_histgram[tmp[0].split('-')[3]-0]++;
     take_statistics(user   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     take_statistics(vs_user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[9],tmp[8],tmp[10]);
+    take_statistics(hist   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],h     ,h     ,tmp[10]);
     tbody_html += generate_tbody(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     count++;
   }
   main_table.innerHTML += tbody_html;
   draw_statistics( user, vs_user );
   draw_time_histgram ( time_histgram ) ;
+  document.getElementById("time_histgram").innerHTML = "";
+  var table    = create_hist_table ( hist );
+  document.getElementById("time_histgram").appendChild(table);
 }
 
 function recently() {
