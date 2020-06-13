@@ -377,19 +377,17 @@ function create_statistics_table ( user ) {
     var win  = sente_win  + gote_win;
     var lose = sente_lose + gote_lose;
     tr.style.backgroundColor = generate_color(win,lose);
-    for ( var txt of 
+    for ( var rslt of 
       [
-        "" + sente_win + "/" + sente_lose,
-        "" + gote_win  + "/" + gote_lose,
-        "" + win       + "/" + lose,
+        [ sente_win , sente_lose],
+        [ gote_win  , gote_lose ],
+        [ win       , lose      ]
       ]
     ) {
       var td = document.createElement('td');
-      td.textContent = txt;
-      var w = txt.split('/')[0] - 0;
-      var l = txt.split('/')[1] - 0;
+      td.textContent = "" + rslt[0] + "/" + rslt[1];
       td.style.border = border_style;
-      td.style.backgroundColor = generate_color(w,l);
+      td.style.backgroundColor = generate_color(rslt[0],rslt[1]);
       tr.appendChild(td);
     }
     table.appendChild(tr);
