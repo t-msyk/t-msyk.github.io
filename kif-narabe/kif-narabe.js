@@ -162,7 +162,7 @@ function draw_hand ( hand ) {
   var sente = "" 
   if ( _GET['sente'] ) sente=_GET['sente'] ;
   var gote  = "" 
-  if ( _GET['sente'] ) gote=_GET['gote'] ;
+  if ( _GET['gote']  ) gote=_GET['gote'] ;
   if ( reversal ) {
     document.getElementById("black_hand").innerHTML = "△" + gote  + ":" + whand;
     document.getElementById("white_hand").innerHTML = "▲" + sente + ":" + bhand;
