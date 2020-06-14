@@ -29,3 +29,15 @@ function get2url () {
   }
   window.history.replaceState(null, null, encodeURI(get_param_string));
 }
+
+function copy_url () {
+  var  obj = document.createElement('textarea');
+  document.body.appendChild(obj);
+  obj.innerHTML = location.href;
+  obj.style.display = 'none';
+  obj.readonly = true;
+  obj.select();
+  document.execCommand('Copy');
+  document.body.removeChild(obj);
+}
+
