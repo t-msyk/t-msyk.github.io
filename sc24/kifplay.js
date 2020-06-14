@@ -7,6 +7,7 @@ function dummy () {
 }
 
 function onload () {
+  var file_path_list= _GET['kif_id'].split('/');
   if ( _GET['kif_id'] ) {
     load_sfen_from_url( './sfen/' + _GET['kif_id'] + '.sfen' );
     load_kif_from_url ( './kif/'  + _GET['kif_id'] + '.kif'  );
@@ -43,6 +44,10 @@ function load_kif_from_url ( kif_url ) {
        //console.log(freader.result);
        var r = ( raw_kif.innerHTML.match( /\n/g ) || [] ).length + 1;
        raw_kif.rows = r;
+       document.getElementById('date').innerHTML  = raw_kif.innerHTML.match(/開始日時：[^\n]*/)[0];
+       document.getElementById('kisen').innerHTML = raw_kif.innerHTML.match(/棋戦：[^\n]*/)[0];
+       document.getElementById('sente').innerHTML = raw_kif.innerHTML.match(/先手：[^\n]*/)[0];
+       document.getElementById('gote').innerHTML  = raw_kif.innerHTML.match(/後手：[^\n]*/)[0];
     };
     freader.readAsText(xhr.response, 'shift-jis');
     load_sfen();
@@ -53,7 +58,7 @@ function load_kif_from_url ( kif_url ) {
 function copy_kif () {
   var  obj = document.createElement('textarea');
   document.body.appendChild(obj);
-  obj.innerHTML = document.getElementById('raw_kif').innerHTML.replace(/<br>/g,'\n');
+  obj.innerHTML = document.getElementById('raw_kif').innerHTML;
   obj.readonly = true;
   obj.select();
   document.execCommand('Copy');

@@ -1,4 +1,6 @@
 function onload () {
+  var file_path_list= _GET['kif'].split('/');
+  document.getElementById("title").innerHTML = file_path_list[file_path_list.length-1];
   var xhr = new XMLHttpRequest();
   xhr.responseType = "blob"
   xhr.open('GET', _GET['kif'], true);
