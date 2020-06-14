@@ -27,7 +27,7 @@ function generate_tbody ( date, kisen, sente, senteR, gote, goteR, result, tempo
         + "<td>" + result + "(" + tempo + "手)</td>"
         + "<td>" + sente_form + "</td>"
         + "<td>" + gote_form  + "</td>"
-        + "<td><a href='kif/" + kif_file + "'>棋譜</a></td>"
+        + "<td><a href='kifview.html?kif=kif/" + kif_file + "'>棋譜</a></td>"
         + "<td><a href='" + encodeURI(uri) + "'>再生</a></td>"
         + "</tr>\n";
 }
