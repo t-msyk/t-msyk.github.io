@@ -499,21 +499,41 @@ function draw_statistics ( user, vs_user ) {
   document.getElementById("vs_statistics_table").appendChild(vs_table);
 }
 
-function draw_time_histgram ( hist ) {
+function draw_time_histgram ( user ) {
   var time_histgram=document.getElementById('time_histgram');
   var canvas = document.getElementById('hist_canvas');
+  var offset={x:10,y:10};
+  var size = {w:20,h:10};
+  var max_cnt = 0;
+  for ( var i=0; i<24; ++i ) {
+    var cnt_w = user.statistics[i+"時"]["先手"].win - 0
+              + user.statistics[i+"時"]["後手"].win - 0;
+    var cnt_l = user.statistics[i+"時"]["先手"].lose - 0
+              + user.statistics[i+"時"]["後手"].lose - 0;
+    if ( max_cnt < cnt_w + cnt_l ) {
+      max_cnt = cnt_w + cnt_l
+    }
+  }
+  canvas.width=2*offset.x + size.w*24;
+  canvas.height=2*offset.y + max_cnt*size.h;
   time_histgram.innerHTML = "";
   var ctx = canvas.getContext('2d');
   ctx.fillStyle = 'white';
-  ctx.fillRect( 0,0, 260, 120 );
+  ctx.fillRect( 0,0, canvas.width, canvas.height );
   var ctx = canvas.getContext('2d');
   ctx.fillStyle = 'gray';
-  ctx.fillRect( 10,10, 240, 100 );
+  ctx.fillRect( offset.x, offset.y , size.w*24, max_cnt*size.h );
   for ( var i=0; i<24; ++i ) {
-    //time_histgram.innerHTML += i + "時：" + hist[i] + "局<br>";
+    var cnt_w = user.statistics[i+"時"]["先手"].win - 0
+              + user.statistics[i+"時"]["後手"].win - 0;
+    var cnt_l = user.statistics[i+"時"]["先手"].lose - 0
+              + user.statistics[i+"時"]["後手"].lose - 0;
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'green';
-    ctx.fillRect( 10*(i+1), 110-hist[i]*10, 10, hist[i]*10 );
+    ctx.fillStyle = 'blue';
+    ctx.fillRect( offset.x + size.w*i, offset.y + size.h*(max_cnt-cnt_w-cnt_l), size.w, cnt_w*10 );
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'red';
+    ctx.fillRect( offset.x + size.w*i, offset.y + size.h*(max_cnt-cnt_l), size.w, cnt_l*10 );
   }
 }
 
@@ -528,10 +548,6 @@ function load_kif_table() {
   var start = 0;
   var end = lines.length;
   var recently = document.getElementById('recently');
-  var time_histgram=[0, 0, 0, 0, 0, 0, 
-                     0, 0, 0, 0, 0, 0, 
-                     0, 0, 0, 0, 0, 0, 
-                     0, 0, 0, 0, 0, 0 ];
   var user = { 
     name   : '',
     form   : '', 
@@ -589,7 +605,6 @@ function load_kif_table() {
       continue;
     }
     var h=(tmp[0].split('-')[3]-0) + "時";
-    time_histgram[tmp[0].split('-')[3]-0]++;
     take_statistics(user   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     take_statistics(vs_user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[9],tmp[8],tmp[10]);
     take_statistics(hist   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],h     ,h     ,tmp[10]);
@@ -598,7 +613,7 @@ function load_kif_table() {
   }
   main_table.innerHTML += tbody_html;
   draw_statistics( user, vs_user );
-  draw_time_histgram ( time_histgram ) ;
+  draw_time_histgram ( hist ) ;
   document.getElementById("time_histgram").innerHTML = "";
   var table    = create_hist_table ( hist );
   document.getElementById("time_histgram").appendChild(table);
