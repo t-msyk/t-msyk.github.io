@@ -40,8 +40,7 @@ button.copy {
 }
 
 .raw_kif {
-  //width:80%;
-  min-width:30%;
+  min-width:30em;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 10px;
