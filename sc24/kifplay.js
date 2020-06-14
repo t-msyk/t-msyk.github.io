@@ -48,6 +48,7 @@ function load_kif_from_url ( kif_url ) {
        document.getElementById('kisen').innerHTML = raw_kif.innerHTML.match(/棋戦：[^\n]*/)[0];
        document.getElementById('sente').innerHTML = raw_kif.innerHTML.match(/先手：[^\n]*/)[0];
        document.getElementById('gote').innerHTML  = raw_kif.innerHTML.match(/後手：[^\n]*/)[0];
+       load_sfen();
     };
     freader.readAsText(xhr.response, 'shift-jis');
     load_sfen();
@@ -202,10 +203,8 @@ function draw_hand ( hand ) {
       .replace(/(\d*)B/,'角$1')
       .replace(/(\d*)R/,'飛$1')
       .replace(/(\d*)K/,'玉$1');
-  var sente = "" 
-  if ( _GET['sente'] ) sente=_GET['sente'] ;
-  var gote  = "" 
-  if ( _GET['gote'] ) gote=_GET['gote'] ;
+  var sente = document.getElementById("sente").innerHTML.match(/[^：]*$/)[0];
+  var gote  = document.getElementById("gote") .innerHTML.match(/[^：]*$/)[0];
   if ( reversal ) {
     document.getElementById("black_hand").innerHTML = "△" + gote  + ":" + whand;
     document.getElementById("white_hand").innerHTML = "▲" + sente + ":" + bhand;
