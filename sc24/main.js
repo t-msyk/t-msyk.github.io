@@ -514,7 +514,7 @@ function draw_time_histgram ( user ) {
       max_cnt = cnt_w + cnt_l
     }
   }
-  canvas.width=2*offset.x + size.w*24;
+  canvas.width=2*offset.x + size.w*24 + 3;
   canvas.height=2*offset.y + max_cnt*size.h;
   time_histgram.innerHTML = "";
   var ctx = canvas.getContext('2d');
@@ -522,7 +522,7 @@ function draw_time_histgram ( user ) {
   ctx.fillRect( 0,0, canvas.width, canvas.height );
   var ctx = canvas.getContext('2d');
   ctx.fillStyle = 'gray';
-  ctx.fillRect( offset.x, offset.y , size.w*24, max_cnt*size.h );
+  ctx.fillRect( offset.x, offset.y , size.w*24+3, max_cnt*size.h );
   for ( var i=0; i<24; ++i ) {
     var cnt_w = user.statistics[i+"時"]["先手"].win - 0
               + user.statistics[i+"時"]["後手"].win - 0;
@@ -530,20 +530,25 @@ function draw_time_histgram ( user ) {
               + user.statistics[i+"時"]["後手"].lose - 0;
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = 'blue';
-    ctx.fillRect( offset.x + size.w*i, offset.y + size.h*(max_cnt-cnt_w-cnt_l), size.w, cnt_w*10 );
+    ctx.fillRect( offset.x + size.w*i + Math.floor(i/6), offset.y + size.h*(max_cnt-cnt_w-cnt_l), size.w, cnt_w*10 );
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = 'red';
-    ctx.fillRect( offset.x + size.w*i, offset.y + size.h*(max_cnt-cnt_l), size.w, cnt_l*10 );
+    ctx.fillRect( offset.x + size.w*i + Math.floor(i/6), offset.y + size.h*(max_cnt-cnt_l), size.w, cnt_l*10 );
   }
   for ( var i=5; i<max_cnt; i+=5 ) {
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = 'black';
-    ctx.fillRect( offset.x , offset.y + size.h*(max_cnt-i), 24*size.w, 1 );
+    ctx.fillRect( offset.x , offset.y + size.h*(max_cnt-i), 24*size.w + 3, 1 );
   }
   for ( var i=10; i<max_cnt; i+=10 ) {
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = 'black';
-    ctx.fillRect( offset.x , offset.y + size.h*(max_cnt-i), 24*size.w, 2 );
+    ctx.fillRect( offset.x , offset.y + size.h*(max_cnt-i), 24*size.w + 3, 2 );
+  }
+  for ( var i=6; i<24; i+=6 ) {
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'black';
+    ctx.fillRect( offset.x + size.w*i + Math.floor(i/6)-1, offset.y, 1, size.h*max_cnt );
   }
 }
 
