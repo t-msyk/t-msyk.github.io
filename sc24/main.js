@@ -17,8 +17,8 @@ function onload () {
 function generate_tbody ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
   var file_path_list= path_to_kif.split('/');
   var kif_file = file_path_list[file_path_list.length-1];
-  var sfen_file = kif_file.substring(0,kif_file.lastIndexOf('.')) + '.sfen'
-  var uri = "../kif-narabe/?kifu=../sc24/sfen/" + sfen_file + "&sente=" + sente + "(" + senteR + ")" + "&gote=" + gote + "(" + goteR + ")";
+  var kif_id = kif_file.substring(0,kif_file.lastIndexOf('.'))
+  var uri = "kifplay.html?kif_id=" + kif_id + "&sente=" + sente + "(" + senteR + ")" + "&gote=" + gote + "(" + goteR + ")";
   return "<tr>"
         + "<td>" + date.replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3 $4:$5:$6') + "</td>"
         + "<td>" + kisen + "</td>"
