@@ -34,7 +34,6 @@ function copy_url () {
   var  obj = document.createElement('textarea');
   document.body.appendChild(obj);
   obj.innerHTML = location.href;
-  obj.style.display = 'none';
   obj.readonly = true;
   obj.select();
   document.execCommand('Copy');
