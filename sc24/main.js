@@ -535,6 +535,16 @@ function draw_time_histgram ( user ) {
     ctx.fillStyle = 'red';
     ctx.fillRect( offset.x + size.w*i, offset.y + size.h*(max_cnt-cnt_l), size.w, cnt_l*10 );
   }
+  for ( var i=5; i<max_cnt; i+=5 ) {
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'black';
+    ctx.fillRect( offset.x , offset.y + size.h*(max_cnt-i), 24*size.w, 1 );
+  }
+  for ( var i=10; i<max_cnt; i+=10 ) {
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'black';
+    ctx.fillRect( offset.x , offset.y + size.h*(max_cnt-i), 24*size.w, 2 );
+  }
 }
 
 function load_kif_table() {
