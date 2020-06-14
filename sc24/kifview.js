@@ -1,10 +1,5 @@
-var obj;
 function onload () {
   var xhr = new XMLHttpRequest();
-  obj = document.createElement('textarea');
-  obj.style.width='100%';
-  obj.style.height='80%';
-  document.body.appendChild(obj);
   xhr.responseType = "blob"
   xhr.open('GET', _GET['kif'], true);
   xhr.onload = function () {
@@ -14,7 +9,7 @@ function onload () {
          document.body.innerHTML = "error to read " + _GET['kif'];
          return;
        }
-       document.body.innerHTML = freader.result.replace(/\n/g,'<br>');
+       document.getElementById('kif').innerHTML = freader.result.replace(/\n/g,'<br>');
        console.log(freader.result);
     };
     freader.readAsText(xhr.response, 'shift-jis');
@@ -23,5 +18,11 @@ function onload () {
 }
 
 function copy_kif () {
+  var  obj = document.createElement('textarea');
+  document.body.appendChild(obj);
+  obj.innerHTML = document.getElementById('kif').innerHTML.replace(/<br>/g,'\n');
+  obj.readonly = true;
+  obj.select();
+  document.execCommand('Copy');
+  document.body.removeChild(obj);
 }
-
