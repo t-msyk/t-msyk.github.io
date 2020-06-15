@@ -4,6 +4,7 @@ function dummy () {
 }
 
 function onload () {
+  notice_unsupported_browser();
   var kif_table = document.getElementById("kif_table");
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'kif_table.csv', true);

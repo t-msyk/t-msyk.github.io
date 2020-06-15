@@ -7,6 +7,7 @@ function dummy () {
 }
 
 function onload () {
+  notice_unsupported_browser();
   var file_path_list= _GET['kif_id'].split('/');
   if ( _GET['kif_id'] ) {
     load_sfen_from_url( './sfen/' + _GET['kif_id'] + '.sfen' );
@@ -20,6 +21,7 @@ function onload () {
 function load_sfen_from_url ( sfen_url ) {
   var Kifu = document.getElementById("Kifu");
   var xhr = new XMLHttpRequest();
+  xhr.responseType = "text"
   xhr.open('GET', sfen_url , true);
   xhr.onload = function () {
     Kifu.innerHTML = xhr.responseText;
