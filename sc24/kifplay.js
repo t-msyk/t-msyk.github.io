@@ -10,8 +10,9 @@ function onload () {
   notice_unsupported_browser();
   var file_path_list= _GET['kif_id'].split('/');
   if ( _GET['kif_id'] ) {
-    load_sfen_from_url( './sfen/' + _GET['kif_id'] + '.sfen' );
-    load_kif_from_url ( './kif/'  + _GET['kif_id'] + '.kif'  );
+    load_sfen_from_url ( './sfen/' + _GET['kif_id'] + '.sfen' );
+    load_kif_from_url  ( './kif/'  + _GET['kif_id'] + '.kif'  );
+    set_piyoshogi_link ( './kif/'  + _GET['kif_id'] + '.kif'  );
     load_sfen();
   } else {
     load_sfen();
@@ -56,6 +57,11 @@ function load_kif_from_url ( kif_url ) {
     load_sfen();
   }
   xhr.send();
+}
+
+function set_piyoshogi_link ( kif_url ) {
+  var uri = "https://t-msyk.github.io/sc24/" + kif_url;
+  document.getElementById("piyo_link").href = "piyoshogi://?url=" + encodeURI ( uri );
 }
 
 function copy_kif () {
