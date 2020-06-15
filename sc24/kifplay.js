@@ -60,8 +60,15 @@ function load_kif_from_url ( kif_url ) {
 }
 
 function set_piyoshogi_link ( kif_url ) {
-  var uri = "https://t-msyk.github.io/sc24/" + kif_url;
-  document.getElementById("piyo_link").href = "piyoshogi://?url=" + encodeURI ( uri );
+  piyo_link = document.getElementById("piyo_link");
+  if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+    var uri = "https://t-msyk.github.io/sc24/" + kif_url;
+    piyo_link.href = "piyoshogi://?url=" + encodeURI ( uri );
+  } else {
+    if ( piyo_link.parentNode ) {
+      piyo_link.parentNode.removeChild(piyo_link);
+    }
+  }
 }
 
 function copy_kif () {
