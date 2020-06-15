@@ -28,7 +28,7 @@ function notice_unsupported_browser () {
     browser = "Firefox";
   } else if ( agent.indexOf() !== -1 ) {
   }
-  if ( browser === 'edge' || browser === 'IE' || browser ==='Opera' ) {
+  if ( browser === 'Edge' || browser === 'IE' || browser ==='Opera' ) {
     notice.innerHTML = browser + " is unsupported browser.<br>" 
                      + "Sometimes layouts broken.<br>"
                      + "Firefox is recommended.<br>";
