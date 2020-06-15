@@ -22,11 +22,15 @@ function onload () {
 function load_sfen_from_url ( sfen_url ) {
   var Kifu = document.getElementById("Kifu");
   var xhr = new XMLHttpRequest();
+  var tempo = _GET['tempo'];
   xhr.responseType = "text"
   xhr.open('GET', sfen_url , true);
   xhr.onload = function () {
     Kifu.innerHTML = xhr.responseText;
     load_sfen();
+    if ( tempo ) {
+      go_at ( tempo );
+    }
   }
   xhr.send();
 }
