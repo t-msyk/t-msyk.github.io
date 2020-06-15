@@ -30,10 +30,12 @@ function notice_unsupported_browser () {
   }
   if ( browser === 'edge' || browser === 'IE' || browser ==='Opera' ) {
     notice.innerHTML = browser + " is unsupported browser.<br>" 
-                     + "Sometimes layouts broken.<br>";
+                     + "Sometimes layouts broken.<br>"
+                     + "Firefox is recommended.<br>";
   }
   if ( browser === 'unknown' ) {
     notice.innerHTML = "You use unknown browser.<br>" 
-                     + "Sometimes layouts broken.<br>";
+                     + "Sometimes layouts broken.<br>"
+                     + "Firefox is recommended.<br>";
   }
 }
