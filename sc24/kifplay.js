@@ -8,6 +8,13 @@ function dummy () {
 
 function onload () {
   notice_unsupported_browser();
+  if ( browser === 'Edge' ) {
+    var board = document.getElementById('board');
+    board.style.border = 'solid 1px #000000';
+    for ( var td of board.getElementsByTagName('td') ) {
+      td.style.border = 'solid 1px #000000';
+    }
+  }
   var file_path_list= _GET['kif_id'].split('/');
   if ( _GET['kif_id'] ) {
     load_sfen_from_url ( './sfen/' + _GET['kif_id'] + '.sfen' );

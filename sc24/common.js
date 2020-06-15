@@ -1,3 +1,4 @@
+var browser="unknown";
 function notice_unsupported_browser () {
   var agent = window.navigator.userAgent.toLowerCase();
   var notice = document.getElementById('notice_unsupported_browser');
@@ -9,7 +10,6 @@ function notice_unsupported_browser () {
   }
   notice.style.color = "red";
   notice.style.fontWeight = 700;
-  var browser="unknown";
   // The order is important
   if ( false ) {
   } else if ( agent.indexOf('edge') !== -1 ) {
