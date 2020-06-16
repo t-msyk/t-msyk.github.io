@@ -15,7 +15,6 @@ function onload () {
       td.style.border = 'solid 1px #000000';
     }
   }
-  var file_path_list= _GET['kif_id'].split('/');
   if ( _GET['kif_id'] ) {
     load_sfen_from_url ( './sfen/' + _GET['kif_id'] + '.sfen' );
     load_kif_from_url  ( './kif/'  + _GET['kif_id'] + '.kif'  );
@@ -29,7 +28,7 @@ function onload () {
 function load_sfen_from_url ( sfen_url ) {
   var Kifu = document.getElementById("Kifu");
   var xhr = new XMLHttpRequest();
-  var tempo = _GET['tempo'];
+  var tempo = Number(_GET['tempo']);
   xhr.responseType = "text"
   xhr.open('GET', sfen_url , true);
   xhr.onload = function () {
@@ -55,7 +54,6 @@ function load_kif_from_url ( kif_url ) {
          return;
        }
        raw_kif.innerHTML = freader.result;
-       //console.log(freader.result);
        var r = ( raw_kif.innerHTML.match( /\n/g ) || [] ).length + 1;
        raw_kif.rows = r;
        document.getElementById('date').innerHTML  = raw_kif.innerHTML.match(/開始日時：[^\n]*/)[0];
@@ -92,11 +90,6 @@ function copy_kif () {
   document.body.removeChild(obj);
 }
 
-function printGetParameters () {
-  for ( var key in _GET ) {
-    console.log ( "" + key + " : " + _GET[key] );
-  }
-}
 function go_to_start () {
   document.getElementById("Kifu_list").value = 0;
   draw();
@@ -162,7 +155,18 @@ function draw_board ( board ) {
   for ( var i = 0; i<board_array.length; ++i ) {
     var ch = board_array[i];
     var prefix = "";
-    var target=document.getElementById( reversal ? "" + (10-r) + (10-c) : ""  + r + c );
+    var target = document.getElementById( reversal ? "" + (10-r) + (10-c) : ""  + r + c );
+    var ascii2kanji = {
+      '_':'',
+      'K':"玉",
+     '+R':"龍", 'R':"飛",
+     '+B':"馬", 'B':"角",
+      'G':"金",
+     '+S':"全", 'S':"銀",
+     '+N':"圭", 'N':"桂",
+     '+L':"杏", 'L':"香",
+     '+P':"と", 'P':"歩",
+    }
     if ( ch === "/" ) {
       ++r;
       c=1;
@@ -172,41 +176,15 @@ function draw_board ( board ) {
       prefix = "+"
       ch = board_array[++i];
     }
-    if ( ch === "_" ) {
-      ch = "";
-    }
-    if ( ch.match(/[KRBGSNLP]/) ) {
+    if ( 'PLNSGBRK'.indexOf(ch) !== -1 ) {
       target.style.transform = reversal ? "rotate(180deg)" : "rotate(0deg)";
     }
-    if ( ch.match(/[krbgsnlp]/) ) {
+    if ( 'plnsgbrk'.indexOf(ch) !== -1 ) {
       target.style.transform = reversal ? "rotate(0deg)" : "rotate(180deg)";
     }
-    target.innerHTML 
-        = ( prefix + ch ) .replace(/k/,"K")
-                          .replace(/r/,"R")
-                          .replace(/b/,"B")
-                          .replace(/g/,"G")
-                          .replace(/s/,"S")
-                          .replace(/n/,"N")
-                          .replace(/l/,"L")
-                          .replace(/p/,"P")
-                          .replace(/K/,"玉")
-                          .replace(/\+R/,"龍")
-                          .replace(/R/,"飛")
-                          .replace(/\+B/,"馬")
-                          .replace(/B/,"角")
-                          .replace(/G/,"金")
-                          .replace(/\+S/,"全")
-                          .replace(/S/,"銀")
-                          .replace(/\+N/,"圭")
-                          .replace(/N/,"桂")
-                          .replace(/\+L/,"杏")
-                          .replace(/L/,"香")
-                          .replace(/\+P/,"と")
-                          .replace(/P/,"歩")
+    target.innerHTML = ascii2kanji[( prefix + ch.toUpperCase() )];
     ++c;
   }
-  //console.log(extended_board);
 }
 
 function draw_hand ( hand ) {
@@ -246,10 +224,8 @@ function draw_sfen ( sfen ) {
   var turn  = tmp[1];
   var hand  = tmp[2];
   var tempo = tmp[3];
-  //console.log("board:"+board);
   draw_board(board);
   document.getElementById("turn").innerHTML = (turn==="b")?"先手番":"後手番";
-  //console.log("hand :"+hand);
   draw_hand(hand);
   document.getElementById("tempo").innerHTML = ( tempo -1 ) + "手目";
 }
@@ -269,8 +245,6 @@ function load_sfen() {
     var sfen = tmp[1];
     var evaluation_value = tmp[2];
     var recommended_move = tmp[3];
-    //console.log("tag:"+tag);
-    //console.log("sfen:"+sfen);
     Kifu_list.innerHTML += "<option value=\""+i+"\">"+tag+"</option>\n";
     sfen_list[i] = sfen;
     tag_list[i] = tag;
@@ -284,7 +258,6 @@ function load_sfen() {
     go_at(Number(_GET['tempo']));
   }
   draw();
-  //console.log(Kifu.value);
 }
 
 function board_on_click ( obj,e ) {
