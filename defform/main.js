@@ -26,7 +26,6 @@ function go_to_end () {
 function draw () {
   var selected = document.getElementById("form_list").value;
   draw_sfen(sfen_list[selected]);
-  //console.log(selected);
 }
 function draw_board ( board ) {
   var extended_board = board.replace(/9/g,"_________")
@@ -86,7 +85,6 @@ function draw_board ( board ) {
                           .replace(/P/,"歩")
     ++c;
   }
-  //console.log(extended_board);
 }
 function draw_hand ( hand ) {
   var whand=hand.replace(/(\d*K)*(\d*R)*(\d*B)*(\d*G)*(\d*S)*(\d*N)*(\d*L)*(\d*P)*/g,"")
@@ -116,10 +114,8 @@ function draw_sfen ( sfen ) {
   var turn  = tmp[1];
   var hand  = tmp[2];
   var tempo = tmp[3];
-  //console.log("board:"+board);
   draw_board(board);
   document.getElementById("turn").innerHTML = (turn==="b")?"先手番":"後手番";
-  //console.log("hand :"+hand);
   draw_hand(hand);
   document.getElementById("tempo").innerHTML = tempo + "手目";
 }
@@ -130,9 +126,6 @@ function load_defform() {
   var text = defform.value.replace(/\r\n|\r/g,"\n");
   var lines = text.split('\n');
   for ( var i=0; i<lines.length-1; ++i ) {
-    if ( !lines[i] ) {
-      continue;
-    }
     var tag  = lines[i].split(',')[0];
     var sfen = lines[i].split(',')[1];
     if ( !sfen ) {
