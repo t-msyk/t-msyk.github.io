@@ -135,6 +135,9 @@ function load_defform() {
     }
     var tag  = lines[i].split(',')[0];
     var sfen = lines[i].split(',')[1];
+    if ( !sfen ) {
+      sfen = '9/9/9/9/9/9/9/9/9 b - 1';
+    }
     form_list.innerHTML += "<option value=\""+i+"\">"+tag+"</option>\n";
     sfen_list[i] = sfen;
     tag_list[i] = tag;
