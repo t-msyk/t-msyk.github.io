@@ -335,33 +335,10 @@ function create_hist_table ( user ) {
   table.appendChild(tr);
   // tbody
   var form_array = [];
-  for ( var form in user.statistics ) {
-    form_array.push(form);
+  for ( var i = 0; i<24; ++i ) {
+    form_array.push(i+"時");
   }
-  // total is last row
-  for ( var i=0; i<form_array.length; ++i ) {
-    if ( form_array[i] === '合計' ) {
-      form_array[i] = form_array[form_array.length-1];
-      form_array[form_array.length-1] = '合計';
-    }
-  }
-  // sort form
-  for ( var i=0; i<form_array.length - 1; ++i ) {
-    var form = form_array[i].split('時')[0] - 0;
-    var score_min = form - 0;
-    var min_idx = i;
-    for ( var j=i+1; j<form_array.length - 1; ++j ) {
-       var score = form_array[j].split('時')[0] - 0;
-      if ( score_min > score ) {
-        score_min = score;
-        min_idx = j;
-      }
-    }
-    var tmp = form_array[i];
-    form_array[i] = form_array[min_idx];
-    form_array[min_idx] = tmp;
-  }
-  // add tr
+  form_array.push("合計");
   for ( var i=0; i<form_array.length; ++i ) {
     var form = form_array[i];
     var tr = document.createElement('tr');
@@ -385,7 +362,7 @@ function create_hist_table ( user ) {
       ]
     ) {
       var td = document.createElement('td');
-      td.textContent = "" + rslt[0] + "/" + rslt[1];
+      td.textContent = rslt[0] + "/" + rslt[1];
       td.style.border = border_style;
       td.style.backgroundColor = generate_color(rslt[0],rslt[1]);
       tr.appendChild(td);
@@ -536,6 +513,7 @@ function draw_time_histgram ( user ) {
     ctx.fillStyle = 'red';
     ctx.fillRect( offset.x + size.w*i + Math.floor(i/6), offset.y + size.h*(max_cnt-cnt_l), size.w, cnt_l*10 );
   }
+  // draw lines
   for ( var i=5; i<max_cnt; i+=5 ) {
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = 'black';
@@ -609,10 +587,11 @@ function load_kif_table() {
                     };
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
-    if ( !lines[i] 
-       || recently.checked && ( count >= 30 )
-    ) {
+    if ( !lines[i] ) {
       continue;
+    }
+    if ( recently.checked && ( count >= 30 )) {
+      break;
     }
     //    0,    1,    2,          3,    4,          5,    6,    7,        8         9,                10
     // 日時, 棋戦, 先手, 先手レート, 後手, 後手レート, 勝敗, 手数, 先手戦形, 後手戦形, http://url/to/kif
