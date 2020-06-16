@@ -133,8 +133,8 @@ function load_defform() {
     if ( !lines[i] ) {
       continue;
     }
-    var tag = "" + i;
-    var sfen = lines[i]
+    var tag  = lines[i].split(',')[0];
+    var sfen = lines[i].split(',')[1];
     form_list.innerHTML += "<option value=\""+i+"\">"+tag+"</option>\n";
     sfen_list[i] = sfen;
     tag_list[i] = tag;
