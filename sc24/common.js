@@ -1,5 +1,7 @@
 var browser="unknown";
 function notice_unsupported_browser () {
+  console.log("notice_unsupported_browser");
+  console.log( "window.navigator.userAgent:" + window.navigator.userAgent );
   var agent = window.navigator.userAgent.toLowerCase();
   var notice = document.getElementById('notice_unsupported_browser');
   if ( !notice ) {
@@ -14,6 +16,10 @@ function notice_unsupported_browser () {
   if ( false ) {
   } else if ( agent.indexOf('edge') !== -1 ) {
     browser = "Edge";
+  } else if ( agent.indexOf('edg') !== -1 ) {
+    browser = "Edge";
+  } else if ( agent.indexOf('opr') !== -1 ) {
+    browser = "Opera";
   } else if ( agent.indexOf('opera') !== -1 ) {
     browser = "Opera";
   } else if ( agent.indexOf('msie') !== -1 ) {
