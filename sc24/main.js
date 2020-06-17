@@ -245,57 +245,44 @@ function filter_form2 ( sente, gote, sente_form, gote_form ) {
 }
 
 function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
-  if ( !filter_username_form ( sente, gote, sente_form, gote_form ) ) {
-    return false;
-  }
-  if ( !filter_date ( date ) ) {
-    return false;
-  }
-  if ( !filter_kisen ( kisen ) ) {
-    return false;
-  }
   // TODO implement search-by-rate
-  if ( !filter_player1 ( sente, gote, senteR, goteR ) ) {
-    return false;
+  return filter_username_form ( sente, gote, sente_form, gote_form ) 
+      && filter_date ( date )
+      && filter_kisen ( kisen )
+      &&filter_player1 ( sente, gote, senteR, goteR )
+      &&filter_player2 ( sente, gote, senteR, goteR )
+      &&filter_result ( result )
+      &&filter_tempo ( tempo )
+      &&filter_form1 ( sente, gote, sente_form, gote_form )
+      &&filter_form2 ( sente, gote, sente_form, gote_form );
+}
+
+function take_form_stat ( userstat, turn, form, result ) {
+  userstat['合計'][turn][result] += 1;
+  var form_list = form.toString().split(';');
+  if ( !form ) form_list = ['その他'];
+  for ( var j=0; j<form_list.length; ++j ) {
+    if ( !form_list[j] ) continue;
+    if ( !userstat[form_list[j]] ) {
+      userstat[form_list[j]] = {先手:{win:0,lose:0},後手:{win:0,lose:0}}
+    }
+    userstat[form_list[j]][turn][result] += 1;
   }
-  if ( !filter_player2 ( sente, gote, senteR, goteR ) ) {
-    return false;
-  }
-  if ( !filter_result ( result ) ) {
-    return false;
-  }
-  if ( !filter_tempo ( tempo ) ) {
-    return false;
-  }
-  if ( !filter_form1 ( sente, gote, sente_form, gote_form ) ) {
-    return false;
-  }
-  if ( !filter_form2 ( sente, gote, sente_form, gote_form ) ) {
-    return false;
-  }
-  return true;
 }
 
 function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result, tempo, sente_form, gote_form, path_to_kif ) {
   var player = [ sente,      gote     ];
   var form   = [ sente_form, gote_form];
   var turn   = [ "先手",     "後手"   ];
+  var h=(date.split('-')[3]-0) + "時";
   for ( i=0; i<2; ++i ) {
     if ( player[i].indexOf(user.name) < 0 ) continue;
     if ( !result.match(/勝ち/) ) continue;
-    user['form'] = form[i];
-    user['turn'] = turn[i];
-    user['result'] = result.match(new RegExp( turn[i] + "勝ち" )) ? 'win' : 'lose';
-    user['statistics']['合計'][user['turn']][user['result']] += 1;
-    var form_list = user['form'].split(';');
-    if ( !form[i] ) form_list = ['その他'];
-    for ( var j=0; j<form_list.length; ++j ) {
-      if ( !form_list[j] ) continue;
-      if ( !user['statistics'][form_list[j]] ) {
-        user['statistics'][form_list[j]] = {先手:{win:0,lose:0},後手:{win:0,lose:0}}
-      }
-      user['statistics'][form_list[j]][user['turn']][user['result']] += 1;
-    }
+    var user_result = result.indexOf( turn[i] + "勝ち" ) !== -1 ? 'win' : 'lose';
+    take_form_stat(user.statistics.myform,turn[i],form[i],user_result);
+    take_form_stat(user.statistics.vsform,turn[i],form[i],user_result);
+    user.statistics.time[h][turn[i]][user_result] += 1;
+    user.statistics.time['合計'][turn[i]][user_result] += 1;
   }
 }
 
@@ -319,7 +306,7 @@ function generate_color ( win, lose ) {
   return "rgb(" + Math.floor(r*255) + "," + Math.floor(g*255) +"," + Math.floor(b*255) + ")";
 }
 
-function create_hist_table ( user ) {
+function create_hist_table ( time_stat ) {
   var table = document.createElement('table');
   var border_style = 'thin solid black';
   table.style.border = border_style;
@@ -347,10 +334,10 @@ function create_hist_table ( user ) {
     td.style.border = border_style;
     td.textContent = form;
     tr.appendChild(td);
-    var sente_win  = user.statistics[form]['先手'].win;
-    var sente_lose = user.statistics[form]['先手'].lose;
-    var gote_win   = user.statistics[form]['後手'].win;
-    var gote_lose  = user.statistics[form]['後手'].lose;
+    var sente_win  = time_stat[form]['先手'].win;
+    var sente_lose = time_stat[form]['先手'].lose;
+    var gote_win   = time_stat[form]['後手'].win;
+    var gote_lose  = time_stat[form]['後手'].lose;
     var win  = sente_win  + gote_win;
     var lose = sente_lose + gote_lose;
     tr.style.backgroundColor = generate_color(win,lose);
@@ -372,7 +359,7 @@ function create_hist_table ( user ) {
   return table;
 }
 
-function create_statistics_table ( user, form_prefix ) {
+function create_statistics_table ( form_stat, form_prefix ) {
   var table = document.createElement('table');
   var border_style = 'thin solid black';
   table.style.border = border_style;
@@ -388,7 +375,7 @@ function create_statistics_table ( user, form_prefix ) {
   table.appendChild(tr);
   // tbody
   var form_array = [];
-  for ( var form in user.statistics ) {
+  for ( var form in form_stat ) {
     form_array.push(form);
   }
   // total is last row
@@ -408,16 +395,16 @@ function create_statistics_table ( user, form_prefix ) {
   // sort form
   for ( var i=0; i<form_array.length - 2; ++i ) {
     var form = form_array[i];
-    var score_min = + user.statistics[form]['先手'].win
-                    - user.statistics[form]['先手'].lose
-                    + user.statistics[form]['後手'].win
-                    - user.statistics[form]['後手'].lose;
+    var score_min = + form_stat[form]['先手'].win
+                    - form_stat[form]['先手'].lose
+                    + form_stat[form]['後手'].win
+                    - form_stat[form]['後手'].lose;
     var min_idx = i;
     for ( var j=i+1; j<form_array.length - 2; ++j ) {
-       var score = + user.statistics[form_array[j]]['先手'].win
-                   - user.statistics[form_array[j]]['先手'].lose
-                   + user.statistics[form_array[j]]['後手'].win
-                   - user.statistics[form_array[j]]['後手'].lose;
+       var score = + form_stat[form_array[j]]['先手'].win
+                   - form_stat[form_array[j]]['先手'].lose
+                   + form_stat[form_array[j]]['後手'].win
+                   - form_stat[form_array[j]]['後手'].lose;
       if ( score_min > score ) {
         score_min = score;
         min_idx = j;
@@ -441,10 +428,10 @@ function create_statistics_table ( user, form_prefix ) {
       td.onclick=function () { set_form(this.innerHTML); }
     }
     tr.appendChild(td);
-    var sente_win  = user.statistics[form]['先手'].win;
-    var sente_lose = user.statistics[form]['先手'].lose;
-    var gote_win   = user.statistics[form]['後手'].win;
-    var gote_lose  = user.statistics[form]['後手'].lose;
+    var sente_win  = form_stat[form]['先手'].win;
+    var sente_lose = form_stat[form]['先手'].lose;
+    var gote_win   = form_stat[form]['後手'].win;
+    var gote_lose  = form_stat[form]['後手'].lose;
     var win  = sente_win  + gote_win;
     var lose = sente_lose + gote_lose;
     tr.style.backgroundColor = generate_color(win,lose);
@@ -466,28 +453,28 @@ function create_statistics_table ( user, form_prefix ) {
   return table;
 }
 
-function draw_statistics ( user, vs_user ) {
+function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
   document.getElementById("statistics_table").innerHTML    = "";
   document.getElementById("vs_statistics_table").innerHTML = "";
-  var table    = create_statistics_table ( user    ,""  );
-  var vs_table = create_statistics_table ( vs_user ,"vs");
+  var table    = create_statistics_table ( user.statistics.myform , ""  );
+  var vs_table = create_statistics_table ( user.statistics.vsform , "vs");
   document.getElementById("statistics_table").appendChild   (table   );
   document.getElementById("vs_statistics_table").appendChild(vs_table);
 }
 
-function draw_time_histgram ( user ) {
+function draw_time_histgram ( time_stat ) {
   var time_histgram=document.getElementById('time_histgram');
   var canvas = document.getElementById('hist_canvas');
   var offset={x:10,y:10};
   var size = {w:20,h:10};
   var max_cnt = 0;
   for ( var i=0; i<24; ++i ) {
-    var cnt_w = user.statistics[i+"時"]["先手"].win - 0
-              + user.statistics[i+"時"]["後手"].win - 0;
-    var cnt_l = user.statistics[i+"時"]["先手"].lose - 0
-              + user.statistics[i+"時"]["後手"].lose - 0;
+    var cnt_w = time_stat[i+"時"]["先手"].win - 0
+              + time_stat[i+"時"]["後手"].win - 0;
+    var cnt_l = time_stat[i+"時"]["先手"].lose - 0
+              + time_stat[i+"時"]["後手"].lose - 0;
     if ( max_cnt < cnt_w + cnt_l ) {
       max_cnt = cnt_w + cnt_l
     }
@@ -502,10 +489,10 @@ function draw_time_histgram ( user ) {
   ctx.fillStyle = 'gray';
   ctx.fillRect( offset.x, offset.y , size.w*24+3, max_cnt*size.h );
   for ( var i=0; i<24; ++i ) {
-    var cnt_w = user.statistics[i+"時"]["先手"].win - 0
-              + user.statistics[i+"時"]["後手"].win - 0;
-    var cnt_l = user.statistics[i+"時"]["先手"].lose - 0
-              + user.statistics[i+"時"]["後手"].lose - 0;
+    var cnt_w = time_stat[i+"時"]["先手"].win - 0
+              + time_stat[i+"時"]["後手"].win - 0;
+    var cnt_l = time_stat[i+"時"]["先手"].lose - 0
+              + time_stat[i+"時"]["後手"].lose - 0;
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = 'blue';
     ctx.fillRect( offset.x + size.w*i + Math.floor(i/6), offset.y + size.h*(max_cnt-cnt_w-cnt_l), size.w, cnt_w*10 );
@@ -544,11 +531,38 @@ function load_kif_table() {
   var recently = document.getElementById('recently');
   var user = { 
     name   : '',
-    form   : '', 
-    turn   : '',
-    result : '',
-    statistics : { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                 その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}}
+    statistics : {
+      myform :{ 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
+      vsform :{ 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+                その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
+      time: { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '0時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '1時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '2時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '3時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '4時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '5時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '6時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '7時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '8時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '9時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '10時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '11時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '12時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '13時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '14時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '15時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '16時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '17時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '18時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '19時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '20時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '21時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '22時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+            '23時':{先手:{win:0,lose:0},後手:{win:0,lose:0}}
+      }
+    }
   };
   user['name'] = document.getElementById('username').value;
   if ( _GET['recently'] ) {
@@ -557,34 +571,6 @@ function load_kif_table() {
   if ( _GET['username'] ) {
     document.getElementById('username').value = _GET['username'];
   }
-  var vs_user = JSON.parse(JSON.stringify(user));
-  var hist    = JSON.parse(JSON.stringify(user));
-  hist.statistics = { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '0時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '1時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '2時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '3時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '4時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '5時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '6時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '7時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '8時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                       '9時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '10時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '11時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '12時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '13時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '14時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '15時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '16時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '17時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '18時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '19時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '20時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '21時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '22時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-                      '23時':{先手:{win:0,lose:0},後手:{win:0,lose:0}}
-                    };
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
     if ( !lines[i] ) {
@@ -601,16 +587,14 @@ function load_kif_table() {
     }
     var h=(tmp[0].split('-')[3]-0) + "時";
     take_statistics(user   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
-    take_statistics(vs_user,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[9],tmp[8],tmp[10]);
-    take_statistics(hist   ,tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],h     ,h     ,tmp[10]);
     tbody_html += generate_tbody(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6],tmp[7],tmp[8],tmp[9],tmp[10]);
     count++;
   }
   main_table.innerHTML += tbody_html;
-  draw_statistics( user, vs_user );
-  draw_time_histgram ( hist ) ;
+  draw_statistics( user );
+  draw_time_histgram ( user.statistics.time ) ;
   document.getElementById("time_histgram").innerHTML = "";
-  var table    = create_hist_table ( hist );
+  var table    = create_hist_table ( user.statistics.time );
   document.getElementById("time_histgram").appendChild(table);
 }
 
