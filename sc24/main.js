@@ -283,7 +283,49 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
     take_form_stat(user.statistics.vsform,turn[i],form[1-i],user_result);
     user.statistics.time[h][turn[i]][user_result] += 1;
     user.statistics.time['合計'][turn[i]][user_result] += 1;
+    today = new Date();
+    today.setHours(23);
+    today.setMinutes(59);
+    today.setSeconds(59);
+    date_diff = Math.floor(( Date.now() - new Date(date.replace(/(.*)-(.*)-(.*)-(.*)-(.*)-(.*)/,'$1/$2/$3')).getTime() ) / 86400000);
+    if ( date_diff <= user.statistics.date.length ) {
+      user.statistics.date[date_diff] += 1;
+    }
   }
+}
+
+function create_date_table ( date_stat ) {
+  var wday  = new Date().getDay();
+  var table = document.createElement('table');
+  var border_style = 'thin solid black';
+  console.log(wday);
+  table.style.border = border_style;
+  for ( var i=0; i<7; ++i ) {
+    var tr = document.createElement('tr');
+    tr.style.border = border_style;
+    for ( var j=0; j<52; ++j ) {
+      var td = document.createElement('td');
+      td.style.border = border_style;
+      td.style.width  = '8px'
+      td.style.height = '8px'
+      tr.appendChild(td);
+      var r=255;
+      var g=255;
+      var b=255;
+      if ( i <= wday || j !== 51 ) {
+        var ratio = 255 / (_GET['username'] ? 5 : 20 ); 
+        console.log(ratio);
+        r = b = Math.floor( 255 - ratio   * date_stat[(51-j)*7+(wday-i)] );
+        g =     Math.floor( 255 - ratio/2 * date_stat[(51-j)*7+(wday-i)] );
+        if ( r < 0 ) { r = 0; }
+        if ( g < 0 ) { g = 0; }
+        if ( b < 0 ) { b = 0; }
+      }
+      td.style.backgroundColor = "rgb("+ r + "," + g + "," + b + ")";
+    }
+    table.appendChild(tr);
+  }
+  return table;
 }
 
 function generate_color ( win, lose ) {
@@ -536,34 +578,39 @@ function load_kif_table() {
                 その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
       vsform :{ 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
                 その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
-      time: { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '0時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '1時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '2時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '3時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '4時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '5時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '6時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '7時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '8時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-             '9時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '10時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '11時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '12時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '13時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '14時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '15時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '16時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '17時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '18時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '19時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '20時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '21時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '22時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
-            '23時':{先手:{win:0,lose:0},後手:{win:0,lose:0}}
-      }
+      time : { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '0時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '1時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '2時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '3時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '4時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '5時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '6時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '7時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '8時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+              '9時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '10時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '11時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '12時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '13時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '14時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '15時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '16時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '17時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '18時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '19時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '20時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '21時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '22時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
+             '23時':{先手:{win:0,lose:0},後手:{win:0,lose:0}}
+      },
+      date : []
     }
   };
+  user.statistics.date.length = 512;
+  for ( var i=0; i<user.statistics.date.length; ++i ) {
+    user.statistics.date[i] = 0;
+  }
   user['name'] = document.getElementById('username').value;
   if ( _GET['recently'] ) {
     recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
@@ -596,6 +643,13 @@ function load_kif_table() {
   document.getElementById("time_histgram").innerHTML = "";
   var table    = create_hist_table ( user.statistics.time );
   document.getElementById("time_histgram").appendChild(table);
+  document.getElementById("date_table").innerHTML = "";
+  var table    = create_date_table ( user.statistics.date );
+  document.getElementById("date_table").appendChild(table);
+
+  //for ( var i=0; i<user.statistics.date.length; ++i ) {
+  //  console.log( "date[" + i + "]=" + user.statistics.date[i]);
+  //}
 }
 
 function recently() {
