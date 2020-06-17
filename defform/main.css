@@ -1,6 +1,7 @@
 // Copyright (c) 2020 tMasayuki. All rights reserved.
 table {
   table-layout : fixed;
+  text-align : center;
 }
 td {
   width  : 30px;
