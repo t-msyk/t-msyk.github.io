@@ -84,6 +84,34 @@ function filter_date ( date ) {
   return false;
 }
 
+function download_kif ( kif_url ) {
+  var kif_url_list = kif_url.toString().split('/');
+  var kif_file = kif_url_list[kif_url_list.length - 1];
+  console.log('kif_file=' + kif_file);
+  var a = document.createElement('a');
+  document.body.appendChild(a);
+  a.download = kif_file;
+  a.href = kif_url;
+  a.click();
+  console.log('kif_file=' + kif_file);
+  document.body.removeChild(a);
+}
+
+function download_kif_all () {
+  var tr_list=document.getElementById("main_table").getElementsByTagName('tr');
+  var yes = window.confirm((tr_list.length-1) + "kif file will be downloaded.\nAre you sure continue?");
+  if ( !yes ) return;
+  var download_interval = 2000;
+  var i = 1;
+  var id = setInterval( function () {
+  var kif = tr_list[i++].getElementsByTagName('td')[7].innerHTML.match(/kifview.html\?kif=(.*\.kif)/)[1];
+    download_kif(kif);
+    if ( i >= tr_list.length ) {
+      clearInterval(id);
+    }
+  },download_interval);
+}
+
 function filter_kisen ( kisen ) {
   // kisen
   var ksn = document.getElementById('kisen').getElementsByTagName('input');
@@ -294,11 +322,11 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
   }
 }
 
+
 function create_date_table ( date_stat ) {
   var wday  = new Date().getDay();
   var table = document.createElement('table');
   var border_style = 'thin solid white';
-  console.log(wday);
   table.style.border = border_style;
   for ( var i=0; i<7; ++i ) {
     var tr = document.createElement('tr');
@@ -316,7 +344,6 @@ function create_date_table ( date_stat ) {
         var gray_base = 240;
         var ratio = gray_base / (_GET['username'] ? 5 : 20 ); 
         var cnt =  date_stat[(51-j)*7+(wday-i)];
-        console.log(ratio);
         r = b = Math.floor( gray_base - ratio   * cnt );
         g =     Math.floor( gray_base - ratio/2 * cnt );
         if ( r < 0 ) { r = 0; }
@@ -649,10 +676,6 @@ function load_kif_table() {
   document.getElementById("date_table").innerHTML = "";
   var table    = create_date_table ( user.statistics.date );
   document.getElementById("date_table").appendChild(table);
-
-  //for ( var i=0; i<user.statistics.date.length; ++i ) {
-  //  console.log( "date[" + i + "]=" + user.statistics.date[i]);
-  //}
 }
 
 function recently() {
