@@ -1,4 +1,4 @@
-var browser="unknown";
+var browser="unknown browser";
 function notice_unsupported_browser () {
   console.log( "window.navigator.userAgent:" + window.navigator.userAgent );
   var agent = window.navigator.userAgent.toLowerCase();
@@ -33,13 +33,8 @@ function notice_unsupported_browser () {
     browser = "Firefox";
   } else if ( agent.indexOf() !== -1 ) {
   }
-  if ( browser === 'Edge' || browser === 'IE' || browser ==='Opera' ) {
+  if ( browser !== 'Firefox' && browser !== 'Chrome' ) {
     notice.innerHTML = browser + " is unsupported browser.<br>" 
-                     + "Sometimes layouts broken.<br>"
-                     + "Firefox is recommended.<br>";
-  }
-  if ( browser === 'unknown' ) {
-    notice.innerHTML = "You use unknown browser.<br>" 
                      + "Sometimes layouts broken.<br>"
                      + "Firefox is recommended.<br>";
   }
