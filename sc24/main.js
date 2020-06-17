@@ -297,7 +297,7 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
 function create_date_table ( date_stat ) {
   var wday  = new Date().getDay();
   var table = document.createElement('table');
-  var border_style = 'thin solid black';
+  var border_style = 'thin solid white';
   console.log(wday);
   table.style.border = border_style;
   for ( var i=0; i<7; ++i ) {
@@ -313,13 +313,16 @@ function create_date_table ( date_stat ) {
       var g=255;
       var b=255;
       if ( i <= wday || j !== 51 ) {
-        var ratio = 255 / (_GET['username'] ? 5 : 20 ); 
+        var gray_base = 240;
+        var ratio = gray_base / (_GET['username'] ? 5 : 20 ); 
+        var cnt =  date_stat[(51-j)*7+(wday-i)];
         console.log(ratio);
-        r = b = Math.floor( 255 - ratio   * date_stat[(51-j)*7+(wday-i)] );
-        g =     Math.floor( 255 - ratio/2 * date_stat[(51-j)*7+(wday-i)] );
+        r = b = Math.floor( gray_base - ratio   * cnt );
+        g =     Math.floor( gray_base - ratio/2 * cnt );
         if ( r < 0 ) { r = 0; }
         if ( g < 0 ) { g = 0; }
         if ( b < 0 ) { b = 0; }
+        if ( cnt === 0 ) { r = g = b = gray_base; }
       }
       td.style.backgroundColor = "rgb("+ r + "," + g + "," + b + ")";
     }
