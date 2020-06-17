@@ -279,8 +279,8 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
     if ( player[i].indexOf(user.name) < 0 ) continue;
     if ( !result.match(/勝ち/) ) continue;
     var user_result = result.indexOf( turn[i] + "勝ち" ) !== -1 ? 'win' : 'lose';
-    take_form_stat(user.statistics.myform,turn[i],form[i],user_result);
-    take_form_stat(user.statistics.vsform,turn[i],form[i],user_result);
+    take_form_stat(user.statistics.myform,turn[i],form[i  ],user_result);
+    take_form_stat(user.statistics.vsform,turn[i],form[1-i],user_result);
     user.statistics.time[h][turn[i]][user_result] += 1;
     user.statistics.time['合計'][turn[i]][user_result] += 1;
   }
