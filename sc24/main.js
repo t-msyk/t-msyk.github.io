@@ -5,8 +5,6 @@ function dummy () {
 
 function onload () {
   notice_unsupported_browser();
-  console.log("onload()");
-  console.log( "window.navigator.userAgent:" + window.navigator.userAgent );
   var kif_table = document.getElementById("kif_table");
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'kif_table.csv', true);

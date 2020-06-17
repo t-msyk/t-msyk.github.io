@@ -1,6 +1,5 @@
 var browser="unknown";
 function notice_unsupported_browser () {
-  console.log("notice_unsupported_browser");
   console.log( "window.navigator.userAgent:" + window.navigator.userAgent );
   var agent = window.navigator.userAgent.toLowerCase();
   var notice = document.getElementById('notice_unsupported_browser');
