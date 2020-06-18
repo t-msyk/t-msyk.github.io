@@ -641,13 +641,13 @@ function load_kif_table() {
   for ( var i=0; i<user.statistics.date.length; ++i ) {
     user.statistics.date[i] = 0;
   }
-  user['name'] = document.getElementById('username').value;
   if ( _GET['recently'] ) {
     recently.checked = ( _GET['recently'].toString().toLowerCase() === 'true' );
   }
   if ( _GET['username'] ) {
     document.getElementById('username').value = _GET['username'];
   }
+  user['name'] = document.getElementById('username').value;
   var count = 0;
   for ( var i=0; i<lines.length; ++i ) {
     if ( !lines[i] ) {
