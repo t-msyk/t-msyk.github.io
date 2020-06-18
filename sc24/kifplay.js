@@ -273,3 +273,14 @@ function board_on_click ( obj,e ) {
   }
 }
 
+function download_kif () {
+  var kif_file =  _GET['kif_id'] + '.kif';
+  var kif_url  =  './kif/'  + kif_file;
+  var a = document.createElement('a');
+  document.body.appendChild(a);
+  a.download = kif_file;
+  a.href = kif_url;
+  a.click();
+  document.body.removeChild(a);
+}
+

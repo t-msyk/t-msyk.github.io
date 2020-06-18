@@ -87,13 +87,11 @@ function filter_date ( date ) {
 function download_kif ( kif_url ) {
   var kif_url_list = kif_url.toString().split('/');
   var kif_file = kif_url_list[kif_url_list.length - 1];
-  console.log('kif_file=' + kif_file);
   var a = document.createElement('a');
   document.body.appendChild(a);
   a.download = kif_file;
   a.href = kif_url;
   a.click();
-  console.log('kif_file=' + kif_file);
   document.body.removeChild(a);
 }
 
