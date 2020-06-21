@@ -157,7 +157,7 @@ function draw_board ( board ) {
     var prefix = "";
     var target = document.getElementById( reversal ? "" + (10-r) + (10-c) : ""  + r + c );
     var ascii2kanji = {
-      '_':'',
+      '_':'　',
       'K':"玉",
      '+R':"龍", 'R':"飛",
      '+B':"馬", 'B':"角",
