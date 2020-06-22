@@ -11,6 +11,31 @@ td {
 .loser {
 }
 
+.explain {
+  width:60%;
+  margin-left: 20%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border:1px solid #808080;
+  border-radius: 5px;
+  text-align:left;
+  float: center;
+}
+
+.notice {
+  width:60%;
+  margin-left: 20%;
+  text-align:left;
+  color:orange;
+  font-weight:800;
+  float: center;
+}
+
+
 .search {
   width:80%;
   margin-left: 10%;

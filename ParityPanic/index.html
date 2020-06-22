@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2020 tMasayuki. All rights reserved. -->
+<html>
+<head lang="ja">
+  <meta charset="utf8"/>
+  <title>Parity Panic</title>
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../reset.css">
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="./main.css">
+  <script type="text/javascript" src="../main.js"></script>
+  <script type="text/javascript" src="./main.js"></script>
+</head>
+<body onload='onload()'>
+<header>
+  <h1>Parity Panic</h1>
+  <p> You check and check and check Parity! </p>
+  <p> What is Parity bit? Then see <a href='https://en.wikipedia.org/wiki/Parity_bit'>Parity bit - Wikipedia</a>.</p>
+</header>
+<main>
+  <div id="score">Score : 0</div>
+  <input type="radio" id="Odd"  name="type" value="Odd"  checked><label for="Odd" > Odd  Parity </label>
+  <input type="radio" id="Even" name="type" value="Even"        ><label for="Even"> Even Parity </label>
+  <br>
+  <button onclick="startNewGame()" style='width:128px'>Start New Game</button>
+  <br>
+  <canvas id="progress_bar"></canvas>
+  <br>
+  <div id="binary_sequence"></div>
+  <br>
+  <button onclick="OK()" style='width:64px'>OK</button>
+  <button onclick="NG()" style='width:64px'>NG</button>
+
+</main>
+<footer>
+  Copyright (c) 2020 tMasayuki. All rights reserved.
+</footer>
+</body>
+</html>

@@ -15,7 +15,53 @@
 </head>
 <body onload='onload()'>
 <header>
-  <h1> Kif List Page </h1>
+  <h1>棋譜検索</h1>
+  <div class="notice">
+    <h2> 注意事項 </h2>
+    <ul>
+      <li> 当サイトは JavaScript を使用します．
+           当サイトを利用するユーザはこれに同意するものとします．
+      </li>
+      <li> static なページで実現するために，ほぼすべての機能をクライアント側で演算しています．
+           棋譜数が増えるほどクライアント側の負荷が高くなり，表示に時間がかかるようになります．
+      </li>
+      </li>
+      <li>棋譜をダウンロードボタンでは，「表示されている棋譜を一つづつ順次ダウンロードする」動作をします．
+          ダウンロードに非常に時間がかかるうえ，大量のファイルがダウンロードされることになるので，使用する際はご注意ください．
+          (Zip 等にまとめてダウンロードする機能は現在開発中です．)
+      </li>
+    </ul>
+  </div>
+  <div class="explain">
+    <details>
+      <summary> 要旨 </summary>
+        特定のユーザの将棋倶楽部24の棋譜を検索するためのサイトです．<br>
+        苦手な戦型/持ち時間で検索できるようにするために，戦型別/棋戦別の勝敗数を確認できます．<br>
+        アクティブ具合を示すために，GitHub 風の草が生えるようになっています．<br>
+        定義されている戦型は<a href="../defform/">戦形定義一覧</a>で確認できます．<br>
+    </details>
+  </div>
+  <div class="explain">
+    <details>
+      <summary> 使い方 </summary>
+      棋譜一覧表のユーザ名をクリックするとユーザ名で検索ができます．<br>
+      集計表中の戦法名をクリックすると，その戦法で検索ができます．<br>
+      「合計」をクリックすると，戦法での集計をクリアできます．<br>
+      より詳細に検索したい場合は，詳細検索から検索してください．<br>
+      詳細検索欄の戦形では正規表現が使えます．<br>
+    </details>
+  </div>
+  <div class="explain">
+    <details>
+    <summary> 棋譜収集中のユーザ一覧 </summary>
+    <ul>
+      <li><div onclick="set_username('mitsuji')"   > mitsuji   </div></li>
+      <li><div onclick="set_username('tabokou11')" > tabokou11 </div></li>
+      <li><div onclick="set_username('Giru-giru')" > Giru-giru </div></li>
+      <li><div onclick="set_username('cielstar3')" > cielstar3 </div></li>
+      <li><div onclick="set_username('Euler729')"  > Euler729  </div></li>
+    </ul>
+  </div>
 </header>
 <main>
   <div class="search">
@@ -83,6 +129,10 @@
   <details>
     <summary> 相手の戦形 </summary>
     <div id="vs_statistics_table" class="statistics_table"></div>
+  </details>
+  <details>
+    <summary> 棋戦 </summary>
+    <div id="kisen_table" class="statistics_table"></div>
   </details>
   <details>
     <summary> 対局時刻 </summary>
