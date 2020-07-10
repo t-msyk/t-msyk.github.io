@@ -535,7 +535,6 @@ function draw_statistics ( user ) {
 }
 
 function draw_time_histgram ( time_stat ) {
-  var time_histgram=document.getElementById('time_histgram');
   var canvas = document.getElementById('hist_canvas');
   var offset={x:10,y:10};
   var size = {w:20,h:10};
@@ -551,7 +550,6 @@ function draw_time_histgram ( time_stat ) {
   }
   canvas.width=2*offset.x + size.w*24 + 3;
   canvas.height=2*offset.y + max_cnt*size.h;
-  time_histgram.innerHTML = "";
   var ctx = canvas.getContext('2d');
   ctx.fillStyle = 'white';
   ctx.fillRect( 0,0, canvas.width, canvas.height );
