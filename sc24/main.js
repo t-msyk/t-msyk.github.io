@@ -116,7 +116,7 @@ function filter_kisen ( kisen ) {
   var re="hoge"
   for ( var i=0; i<ksn.length; ++i ) {
     if ( ksn[i].checked ) {
-      re += "|" + ksn[i].value;
+      re += "|R対局\\\(" + ksn[i].value + '\\\)';
     }
   }
   if ( kisen.match(new RegExp(re)) ) { 
@@ -225,6 +225,20 @@ function set_form ( form ) {
   formatin();
 }
 
+function set_kisen ( kisen ) {
+  var ksn = document.getElementById('kisen').getElementsByTagName('input');
+  if ( kisen ) {
+    for ( var i=0; i<ksn.length; ++i ) {
+      ksn[i].checked = ('R対局(' + ksn[i].value + ')' === kisen);
+    }
+  } else {
+    for ( var i=0; i<ksn.length; ++i ) {
+      ksn[i].checked = true;
+    }
+  }
+  load_kif_table();
+}
+
 function set_username ( uname ) {
   document.getElementById('username').value = uname;
   username();
@@ -290,7 +304,7 @@ function take_form_stat ( userstat, turn, form, result ) {
   for ( var j=0; j<form_list.length; ++j ) {
     if ( !form_list[j] ) continue;
     if ( !userstat[form_list[j]] ) {
-      userstat[form_list[j]] = {先手:{win:0,lose:0},後手:{win:0,lose:0}}
+      userstat[form_list[j]] = {先手:{win:0,lose:0},後手:{win:0,lose:0}};
     }
     userstat[form_list[j]][turn][result] += 1;
   }
@@ -307,6 +321,11 @@ function take_statistics ( user, date, kisen, sente, senteR, gote, goteR, result
     var user_result = result.indexOf( turn[i] + "勝ち" ) !== -1 ? 'win' : 'lose';
     take_form_stat(user.statistics.myform,turn[i],form[i  ],user_result);
     take_form_stat(user.statistics.vsform,turn[i],form[1-i],user_result);
+    if ( !user.statistics.kisen[kisen] ) {
+      user.statistics.kisen[kisen] = {先手:{win:0,lose:0},後手:{win:0,lose:0}};
+    }
+    user.statistics.kisen[kisen][turn[i]][user_result] +=1;
+    user.statistics.kisen['合計'][turn[i]][user_result] +=1;
     user.statistics.time[h][turn[i]][user_result] += 1;
     user.statistics.time['合計'][turn[i]][user_result] += 1;
     today = new Date();
@@ -429,7 +448,94 @@ function create_hist_table ( time_stat ) {
   return table;
 }
 
-function create_statistics_table ( form_stat, form_prefix ) {
+function create_kisen_table ( kisen_stat ) {
+  var table = document.createElement('table');
+  var border_style = 'thin solid black';
+  table.style.border = border_style;
+  // thead
+  var tr = document.createElement('tr');
+  tr.style.border = border_style;
+  for ( var txt of ['棋戦','先手(勝/敗)','後手(勝/敗)','合計(勝/敗)'] ) {
+    var td = document.createElement('td');
+    td.textContent = txt;
+    td.style.border = border_style;
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+  // tbody
+  var kisen_array = [];
+  for ( var kisen in kisen_stat ) {
+    kisen_array.push(kisen);
+  }
+  // total is last row
+  for ( var i=0; i<kisen_array.length; ++i ) {
+    if ( kisen_array[i] === '合計' ) {
+      kisen_array[i] = kisen_array[kisen_array.length-1];
+      kisen_array[kisen_array.length-1] = '合計';
+    }
+  }
+  // sort kisen
+  for ( var i=0; i<kisen_array.length - 1; ++i ) {
+    var kisen = kisen_array[i];
+    var score_min = + kisen_stat[kisen]['先手'].win
+                    - kisen_stat[kisen]['先手'].lose
+                    + kisen_stat[kisen]['後手'].win
+                    - kisen_stat[kisen]['後手'].lose;
+    var min_idx = i;
+    for ( var j=i+1; j<kisen_array.length - 2; ++j ) {
+       var score = + kisen_stat[kisen_array[j]]['先手'].win
+                   - kisen_stat[kisen_array[j]]['先手'].lose
+                   + kisen_stat[kisen_array[j]]['後手'].win
+                   - kisen_stat[kisen_array[j]]['後手'].lose;
+      if ( score_min > score ) {
+        score_min = score;
+        min_idx = j;
+      }
+    }
+    var tmp = kisen_array[i];
+    kisen_array[i] = kisen_array[min_idx];
+    kisen_array[min_idx] = tmp;
+  }
+  // add tr
+  for ( var i=0; i<kisen_array.length; ++i ) {
+    var kisen = kisen_array[i];
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.style.border = border_style;
+    td.textContent = kisen;
+    td.style.border = border_style;
+    if ( kisen === '合計' ) {
+      td.onclick=function () { set_kisen(''); }
+    } else {
+      td.onclick=function () { set_kisen(this.innerHTML); }
+    }
+    tr.appendChild(td);
+    var sente_win  = kisen_stat[kisen]['先手'].win;
+    var sente_lose = kisen_stat[kisen]['先手'].lose;
+    var gote_win   = kisen_stat[kisen]['後手'].win;
+    var gote_lose  = kisen_stat[kisen]['後手'].lose;
+    var win  = sente_win  + gote_win;
+    var lose = sente_lose + gote_lose;
+    tr.style.backgroundColor = generate_color(win,lose);
+    for ( var rslt of 
+      [
+        [ sente_win , sente_lose],
+        [ gote_win  , gote_lose ],
+        [ win       , lose      ]
+      ]
+    ) {
+      var td = document.createElement('td');
+      td.textContent = "" + rslt[0] + "/" + rslt[1];
+      td.style.border = border_style;
+      td.style.backgroundColor = generate_color(rslt[0],rslt[1]);
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  return table;
+}
+
+function create_form_table ( form_stat, form_prefix ) {
   var table = document.createElement('table');
   var border_style = 'thin solid black';
   table.style.border = border_style;
@@ -523,15 +629,19 @@ function create_statistics_table ( form_stat, form_prefix ) {
   return table;
 }
 
+function draw_table ( id, table ) {
+  document.getElementById(id).innerHTML = "";
+  document.getElementById(id).appendChild(table);
+}
+
 function draw_statistics ( user ) {
   document.getElementById("statistics_title").innerHTML 
     = ( user.name ? user.name + "さん" : "全ユーザ" ) + "の集計";
-  document.getElementById("statistics_table").innerHTML    = "";
-  document.getElementById("vs_statistics_table").innerHTML = "";
-  var table    = create_statistics_table ( user.statistics.myform , ""  );
-  var vs_table = create_statistics_table ( user.statistics.vsform , "vs");
-  document.getElementById("statistics_table").appendChild   (table   );
-  document.getElementById("vs_statistics_table").appendChild(vs_table);
+  draw_table("statistics_table"   ,create_form_table(user.statistics.myform,""  ));
+  draw_table("vs_statistics_table",create_form_table(user.statistics.vsform,"vs"));
+  draw_table("time_histgram",create_hist_table(user.statistics.time));
+  draw_table("date_table",create_date_table(user.statistics.date));
+  draw_table("kisen_table",create_kisen_table(user.statistics.kisen));
 }
 
 function draw_time_histgram ( time_stat ) {
@@ -604,6 +714,7 @@ function load_kif_table() {
                 その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
       vsform :{ 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
                 その他:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
+      kisen :{ 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}}},
       time : { 合計:{先手:{win:0,lose:0},後手:{win:0,lose:0}},
               '0時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
               '1時':{先手:{win:0,lose:0},後手:{win:0,lose:0}},
@@ -666,12 +777,6 @@ function load_kif_table() {
   main_table.innerHTML += tbody_html;
   draw_statistics( user );
   draw_time_histgram ( user.statistics.time ) ;
-  document.getElementById("time_histgram").innerHTML = "";
-  var table    = create_hist_table ( user.statistics.time );
-  document.getElementById("time_histgram").appendChild(table);
-  document.getElementById("date_table").innerHTML = "";
-  var table    = create_date_table ( user.statistics.date );
-  document.getElementById("date_table").appendChild(table);
 }
 
 function recently() {
