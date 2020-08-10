@@ -16,12 +16,28 @@
 <body onload='onload()'>
 <header>
   <h1>棋譜検索</h1>
-  <h2>使い方</h2>
-  <p>棋譜一覧表のユーザ名をクリックするとユーザ名で検索ができます．</p>
-  <p>集計表中の戦法名をクリックすると，その戦法で検索ができます．
-     「合計」をクリックすると，戦法での集計をクリアできます．</p>
-  <p>より詳細に検索したい場合は，詳細検索から検索してください．
-     詳細検索欄の戦形では正規表現が使えます．</p>
+  <div class="explain">
+    <details>
+      <summary> 使い方 </summary>
+      棋譜一覧表のユーザ名をクリックするとユーザ名で検索ができます．<br>
+      集計表中の戦法名をクリックすると，その戦法で検索ができます．<br>
+      「合計」をクリックすると，戦法での集計をクリアできます．<br>
+      より詳細に検索したい場合は，詳細検索から検索してください．<br>
+      詳細検索欄の戦形では正規表現が使えます．<br>
+    </details>
+  </div>
+  <div class="explain">
+    <details>
+    <summary> 棋譜収集中のユーザ一覧 </summary>
+    <ul>
+      <li><div onclick="set_username('mitsuji')"   > mitsuji   </div></li>
+      <li><div onclick="set_username('cuncoro')"   > cuncoro   </div></li>
+      <li><div onclick="set_username('tabokou11')" > tabokou11 </div></li>
+      <li><div onclick="set_username('Giru-giru')" > Giru-giru </div></li>
+      <li><div onclick="set_username('cielstar3')" > cielstar3 </div></li>
+      <li><div onclick="set_username('Euler729')"  > Euler729  </div></li>
+    </ul>
+  </div>
 </header>
 <main>
   <div class="search">
