@@ -30,6 +30,25 @@ a:hover {
   transition: all 0.5s;
 }
 
+header a {
+  color:orange;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+header a:visited {
+  color:orange;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+header a:hover {
+  color: red;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
 header{
   color: #F0F0F0;
   display: block;
