@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2020 tMasayuki. All rights reserved. -->
+<html lang='ja'>
+<head>
+  <meta charset="utf8"/>
+  <title> 戦形定義一覧 </title>
+  <link rel="stylesheet" href="../reset.css">
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="./main.css">
+  <script type="text/javascript" src="main.js"></script>
+</head>
+<body onload=load_defform()>
+<header>
+  <h1> 戦形定義一覧 </h1>
+</header>
+<main>
+  戦形：<select name="棋譜" id="form_list" onchange="draw()"></select>
+  <br>
+  <button id="go_to_start" onclick="go_to_start()">|&lt;</button>
+  <button id="prev" onclick="prev()">&lt;</button>
+  <button id="next" onclick="next()">&gt;</button>
+  <button id="go_to_end" onclick="go_to_end()">&gt;|</button>
+  <br>
+  <div id="turn"></div>
+  <div id="white_hand">△</div>
+  <table class="board" border="1">
+    <tr>
+      <td id="11"></td> <td id="12"></td> <td id="13"></td>
+      <td id="14"></td> <td id="15"></td> <td id="16"></td>
+      <td id="17"></td> <td id="18"></td> <td id="19"></td>
+    </tr>
+    <tr>
+      <td id="21"></td> <td id="22"></td> <td id="23"></td>
+      <td id="24"></td> <td id="25"></td> <td id="26"></td>
+      <td id="27"></td> <td id="28"></td> <td id="29"></td>
+    </tr>
+    <tr>
+      <td id="31"></td> <td id="32"></td> <td id="33"></td>
+      <td id="34"></td> <td id="35"></td> <td id="36"></td>
+      <td id="37"></td> <td id="38"></td> <td id="39"></td>
+    </tr>
+    <tr>
+      <td id="41"></td> <td id="42"></td> <td id="43"></td>
+      <td id="44"></td> <td id="45"></td> <td id="46"></td>
+      <td id="47"></td> <td id="48"></td> <td id="49"></td>
+    </tr>
+    <tr>
+      <td id="51"></td> <td id="52"></td> <td id="53"></td>
+      <td id="54"></td> <td id="55"></td> <td id="56"></td>
+      <td id="57"></td> <td id="58"></td> <td id="59"></td>
+    </tr>
+    <tr>
+      <td id="61"></td> <td id="62"></td> <td id="63"></td>
+      <td id="64"></td> <td id="65"></td> <td id="66"></td>
+      <td id="67"></td> <td id="68"></td> <td id="69"></td>
+    </tr>
+    <tr>
+      <td id="71"></td> <td id="72"></td> <td id="73"></td>
+      <td id="74"></td> <td id="75"></td> <td id="76"></td>
+      <td id="77"></td> <td id="78"></td> <td id="79"></td>
+    </tr>
+    <tr>
+      <td id="81"></td> <td id="82"></td> <td id="83"></td>
+      <td id="84"></td> <td id="85"></td> <td id="86"></td>
+      <td id="87"></td> <td id="88"></td> <td id="89"></td>
+    </tr>
+    <tr>
+      <td id="91"></td> <td id="92"></td> <td id="93"></td>
+      <td id="94"></td> <td id="95"></td> <td id="96"></td>
+      <td id="97"></td> <td id="98"></td> <td id="99"></td>
+    </tr>
+  </table>
+  <div id="black_hand">▲</div>
+  <div id="tempo"></div>
+  
+  <br>
+  <br>
+  <div>戦形定義ファイル</div>
+  <textarea id="defform" class="defform" cols='120' rows='30' readonly>
+# 居飛車の囲い
+雁木,9/9/9/9/9/2PPP4/2_S5/1BG1G4/3K5 b - 1
+雁木,9/9/9/9/9/2PPP4/2BS5/2G1G4/3K5 b - 1
+ツノ銀雁木,9/9/9/9/9/2PP_P3/3SPS3/2G1G4/3K5 b - 1
+居飛車穴熊,9/9/9/9/9/9/9/LS7/KN7 b - 1
+ビッグフォー,9/9/9/9/9/9/1SS6/LGG6/KN7 b - 1
+銀冠,9/9/9/9/9/9/1S7/1KG6/9 b - 1
+銀冠穴熊,9/9/9/9/9/9/1S7/L1G6/KN7 b - 1
+銀冠穴熊,9/9/9/9/9/9/1S7/LG7/KN7 b - 1
+カニ囲い,9/9/9/9/9/9/3P5/1BGSG4/LN_K5 b - 1
+船囲い,9/9/9/9/9/9/1P1P5/1BK1G4/LN1G5 b - 1
+船囲い,9/9/9/9/9/9/1P1P5/1BKGG4/LN7 b - 1
+矢倉,9/9/9/9/9/1_PP5/1PSG5/1KG6/LN7 b - 1
+銀矢倉,9/9/9/9/9/1_PP5/1PSS5/1KG6/LN7 b - 1
+片矢倉,9/9/9/9/9/1_PP5/1PSG5/2KG5/LN7 b - 1
+銀立ち矢倉,9/9/9/9/2P6/1_SP5/1P1G5/1KG6/LN7 b - 1
+天守閣美濃,9/9/9/9/9/PPP6/_K7/2S1G4/LN1G5 b - 1
+エルモ囲い,9/9/9/9/9/2P6/1P1P5/2KS5/LNG6 b - 1
+ミレニアム,9/9/9/9/9/1_PB5/1PN6/_S7/LKG6 b - 1
+菊水矢倉,9/9/9/9/9/2PP5/1PNG5/_SG6/LK7 b - 1
+
+# 振り飛車の囲い
+穴熊,9/9/9/9/9/9/7P1/7SL/7NK b - 1
+片美濃囲い,9/9/9/9/9/9/6PP1/6S2/5GKNL b - 1
+片美濃囲い,9/9/9/9/9/9/6PP1/6SK1/5G1NL b - 1
+美濃囲い,9/9/9/9/9/9/7P1/4G1S2/5GKNL b - 1
+美濃囲い,9/9/9/9/9/9/7P1/4G1SK1/5G1NL b - 1
+高美濃囲い,9/9/9/9/9/9/5G1P1/6S2/5GKNL b - 1
+高美濃囲い,9/9/9/9/9/9/5G1P1/6SK1/5G1NL b - 1
+銀冠,9/9/9/9/9/9/7S1/6GK1/9 b - 1
+金無双,9/9/9/9/9/9/5PPP1/4GGKS1/7NL b - 1
+
+# 振り飛車
+角交換四間飛車,9/9/9/9/9/2P6/3P5/3R5/9 b B 1
+三間飛車,9/9/9/9/9/9/9/2R6/L2GKGSNL b - 1
+早石田,lnsgkgsnl/1r5b1/p1pppp_pp/6p2/2P6/9/PP_PPPPPP/1B5R1/LNSGKGSNL b - 1
+トマホーク,9/1r7/6bpp/6p2/9/9/1PB5N/2R6/LN3G2L b - 1
+トマホーク,9/9/6bpp/1r4p2/9/9/1PB5N/2R6/LN3G2L b - 1
+石田流本組,9/9/9/9/2P6/P1RPS4/BPN_P4/9/9 b - 1
+四間飛車,9/9/9/9/9/9/9/3R5/L2GKGSNL b - 1
+中飛車,9/9/9/9/9/9/9/4R4/L3KGSNL b - 1
+向飛車,9/9/9/9/9/9/9/1R7/L2GKGSNL b - 1
+ゴキゲン中飛車,lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P1P4/PP1P1PPPP/1B2R4/LNSGKGSNL b - 1
+端角中飛車,9/9/9/9/9/9/B8/4R4/9 b - 1
+
+# 居飛車
+相掛かり,lnsgkgsnl/1r5b1/p_ppppppp/9/1p5P1/9/PPPPPPP_P/1B5R1/LNSGKGSNL b - 1
+横歩取り,lnsgk_snl/6gb1/p_pppp__p/6R2/9/1rP6/P__PPPP_P/1BG6/LNS_KGSNL b - 1
+横歩取り,lnsgk_snl/6gb1/p_pppp__p/6pR1/9/2r6/P__PPPP_P/1BG6/LNS_KGSNL b - 1
+居飛車,9/9/9/9/7P1/9/9/7R1/9 b - 1
+袖飛車,9/9/9/9/6P2/9/9/6R2/9 b - 1
+袖飛車,9/9/9/9/9/6P2/9/6R2/9 b - 1
+右四間飛車,9/9/9/9/5P3/9/9/5R3/9 b - 1
+右四間飛車,9/9/9/9/9/5P3/9/5R3/9 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/4R4/3K5 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/4R4/2K6 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/4R4/1K7 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/4R4/K8 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/3KR4/9 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/2K1R4/9 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/1K2R4/9 b - 1
+中飛車（居飛車）,9/9/9/9/9/9/9/K3R4/9 b - 1
+右玉,9/9/9/9/9/5PP2/5SN2/4GK3/7RL b - 1
+右玉,9/9/9/9/9/5PP2/5SN2/4G1K2/7RL b - 1
+右玉,9/9/9/9/9/5PP2/5SN2/5GK2/7RL b - 1
+# TODO 角換わり
+角換わり,9/1r4g2/6s2/9/9/9/2S6/2G4R1/9 b B 1
+棒銀,9/9/9/9/7P1/7S1/9/7R1/9 b - 1
+棒銀,9/9/9/9/7S1/9/9/7R1/9 b - 1
+早繰り銀,9/1r4g2/9/9/9/5SP/4PP_/2G4R1/9 b B 1
+腰掛け銀,9/1r4g2/9/9/9/4SP3/4P_3/2G4R1/9 b - 1
+腰掛け銀,1r7/6g2/9/9/9/4SP3/4P_3/2G4R1/9 b - 1
+腰掛け銀,9/1r4g2/9/9/9/4SP3/4P_3/2G6/7R1 b - 1
+腰掛け銀,1r7/6g2/9/9/9/4SP3/4P_3/2G6/7R1 b - 1
+対抗形,9/5r3/6bp1/5pp2/7P1/9/9/1B5R1/9 b - 1
+対抗形,9/6r2/6bp1/5pp2/7P1/9/9/1B5R1/9 b - 1
+対抗形,9/7r1/6bp1/5pp2/7P1/9/9/1B5R1/9 b - 1
+対振り持久戦,9/4r4/6bp1/5pp2/7P1/2P6/2B6/2K4R1/9 b - 1
+対振り持久戦,9/5r3/6bp1/5pp2/7P1/2P6/2B6/2K4R1/9 b - 1
+対振り持久戦,9/6r2/6bp1/5pp2/7P1/2P6/2B6/2K4R1/9 b - 1
+対振り持久戦,9/7r1/6bp1/5pp2/7P1/2P6/2B6/2K4R1/9 b - 1
+飯島流引き角戦法,9/5r3/6bp1/5pp2/9/9/1PPP_4/2S4R1/LNBGKG3 b - 1
+飯島流引き角戦法,9/6r2/6bp1/5pp2/9/9/1PPP_4/2S4R1/LNBGKG3 b - 1
+飯島流引き角戦法,9/7r1/6bp1/5pp2/9/9/1PPP_4/2S4R1/LNBGKG3 b - 1
+一直線穴熊,9/4r4/9/9/4p4/2PP5/1P1GPP3/2K2S1R1/1NSG5 b - 1
+超速,lnsg_gsnl/2k1r4/pppp_pbpp/6p2/4p2P1/2P2SP2/PP_PPP3/1B1K3R1/LNSG_G_NL b - 1
+
+# その他
+筋違い角,9/9/9/6p2/5B3/9/PP_PPPP1P/7R1/LN5NL b - 1
+角頭歩,lnsgkgsnl/1r5b1/pppppp_pp/6p2/9/1PP6/P__PPPPPP/1B5R1/LNSGKGSNL b - 1
+角頭歩,lnsgkgsnl/1r5b1/p_pppp_pp/1p4p2/9/1PP6/P__PPPPPP/1B5R1/LNSGKGSNL b - 1
+バックマン,lnsgkgsnl/1r5b1/pppppp_pp/6p2/9/346/PPP_PPPPP/1B5R1/LNSGKGSNL b - 1
+アヒル,9/9/9/9/9/9/9/3S_S3/2G_K_G2 b - 1
+アヒル,9/9/9/9/9/9/9/3SKS3/2G___G2 b - 1
+</textarea>
+  <br>
+</main>
+<footer>
+Copyright (c) 2020 tMasayuki. All rights reserved.
+</footer>
+</body>
+</html>
+
