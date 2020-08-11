@@ -1,0 +1,37 @@
+// Copyright (c) 2020 tMasayuki. All rights reserved.
+table {
+  table-layout : fixed;
+}
+td {
+  width  : 30px;
+  height : 30px;
+  border-width : 1.2px;
+}
+
+table.board {
+  text-align : center;
+  border-collapse : collapse;
+  border-width : 1.2px;
+}
+
+.Kifu {
+  width : 240px;
+  height : 120px;
+}
+textarea{
+  width:100%;
+  height:30%;
+}
+button {
+  height:44px;
+}
+
+.left{
+  width:48%;
+  float: left;
+}
+
+.right{
+  width:48%;
+  float: right;
+}

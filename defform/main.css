@@ -1,0 +1,14 @@
+// Copyright (c) 2020 tMasayuki. All rights reserved.
+table {
+  table-layout : fixed;
+  text-align : center;
+}
+td {
+  width  : 30px;
+  height : 30px;
+}
+
+button {
+  width  : 64px;
+  height : 44px;
+}
