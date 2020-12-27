@@ -647,7 +647,7 @@ function draw_statistics ( user ) {
 function draw_time_histgram ( time_stat ) {
   var canvas = document.getElementById('hist_canvas');
   var offset={x:10,y:10};
-  var size = {w:20,h:10};
+  var size = {w:20,h:3};
   var max_cnt = 0;
   for ( var i=0; i<24; ++i ) {
     var cnt_w = time_stat[i+"時"]["先手"].win - 0
