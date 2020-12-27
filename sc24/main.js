@@ -665,7 +665,7 @@ function draw_time_histgram ( time_stat ) {
   ctx.fillRect( 0,0, canvas.width, canvas.height );
   var ctx = canvas.getContext('2d');
   ctx.fillStyle = 'gray';
-  ctx.fillRect( offset.x, offset.y , size.w*24+3, max_cnt*size.h );
+  ctx.fillRect( offset.x, offset.y , size.w*24+3, max_cnt*(size.h+10) );
   for ( var i=0; i<24; ++i ) {
     var cnt_w = time_stat[i+"時"]["先手"].win - 0
               + time_stat[i+"時"]["後手"].win - 0;
