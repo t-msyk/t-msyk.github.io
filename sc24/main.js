@@ -288,7 +288,7 @@ function filter ( date, kisen, sente, senteR, gote, goteR, result, tempo, sente_
   // TODO implement search-by-rate
   return filter_username_form ( sente, gote, sente_form, gote_form ) 
       && filter_date ( date )
-      && filter_kisen ( kisen )
+      //&& filter_kisen ( kisen )
       &&filter_player1 ( sente, gote, senteR, goteR )
       &&filter_player2 ( sente, gote, senteR, goteR )
       &&filter_result ( result )
