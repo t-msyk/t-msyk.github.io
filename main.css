@@ -1,171 +1,220 @@
-@charset "utf-8";
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent-color: #38bdf8;
+    --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+    --border-color: #334155;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
-  font: 14px/1.6,"メイリオ";
-  margin:0;
-  color:#303030;
+    font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 40px;
 }
 
-img {
-  outline:none;
-  border-style:none;
+/* ヘッダー */
+header {
+    position: sticky;
+    top: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+    padding: 1rem 2rem;
 }
 
-a {
-  color:blue;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
-}
-a:visited {
-  color:blue;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
-}
-a:hover {
-  color: green;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
+.nav-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-header a {
-  color:orange;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
-}
-header a:visited {
-  color:orange;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
-}
-header a:hover {
-  color: red;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
+.logo {
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    color: var(--accent-color);
 }
 
-header{
-  color: #F0F0F0;
-  display: block;
-  width:100%;
-  background-color: #0A1837;
-  text-align: center;
-  overflow: hidden;
-}
-header h1{
-  width:80%;
-  margin-left: 10%;
-  font-size:120%;
-  color:#F0F0F0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border:1px solid #F0F0F0;
-  border-radius: 5px;
-  letter-spacing: 3px;
-  font-weight:400;
-  float: center;
-}
-header p{
-  margin-left: 10%;
-  font-size:100%;
-  color:#F0F0F0;
-  float: left;
+nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-size: 0.9rem;
+    transition: color 0.2s;
 }
 
-nav{
-  width: 100%;
-  border-top: 1px solid #000080;
-  border-bottom: 1px solid #000080;
-  margin-bottom: 5px;
-  overflow: hidden;
-}
-nav ul{
-  width: 60%;
-  margin-left: 20%;
-}
-nav li{
-  width: calc(25% - 2px);
-  font-size: 110%;
-  letter-spacing: 5px;
-  font-weight: 400;
-  line-height: 45px;
-  border-left: 1px solid #0A1837;
-  color: #202020;
-  cursor: pointer;
-  text-align: center;
-  float: left;
-}
-nav li:last-child{
-  border-right: 1px solid #0A1837;
+nav a:hover {
+    color: var(--accent-color);
 }
 
-nav li:hover{
-  background-color: #0A1837;
-  transition: background-color 0.5s ease-out;
-  color: #ffffff;
+/* コンテナ・カード */
+.container {
+    max-width: 800px;
+    margin: 2rem auto 0;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-main {
-  color: #0A1837;
-  display: block;
-  width:80%;
-  margin-left: 10%;
-  overflow: hidden;
-}
-main h1 {
-  color: #0A1837;
-  font-size:120%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border:1px solid #202020;
-  border-radius: 5px;
-  letter-spacing: 3px;
-  font-weight:700;
-}
-main h2 {
-  color: #0A1837;
-  font-size:110%;
-  text-decoration: underline;
-  font-weight:700;
-  float: center;
-}
-main h3 {
-  color: #0A1837;
-  font-size:100%;
-  text-decoration: underline;
-  font-weight:700;
-  float: center;
-}
-main h4,h5,h6 {
-  color: #0A1837;
-  font-size:100%;
-  text-decoration: underline;
-  font-weight:400;
-  float: center;
-}
-main p {
-  color: #0A1837;
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, border-color 0.2s;
 }
 
+.card:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+}
+
+/* ヒーローセクション */
+.hero h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--accent-color);
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 1rem;
+}
+
+.meta-info {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.meta-info i {
+    margin-right: 0.4rem;
+}
+
+/* セクション共通 */
+h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.6rem;
+}
+
+h2 i {
+    color: var(--accent-color);
+}
+
+/* グリッドレイアウト */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item h3 {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.clean-list {
+    list-style: none;
+}
+
+.clean-list li {
+    margin-bottom: 0.4rem;
+}
+
+.clean-list a, .link-list a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.clean-list a:hover, .link-list a:hover {
+    color: var(--accent-color);
+}
+
+.sub-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+/* タグデザイン */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background-color: rgba(56, 189, 248, 0.1);
+    color: var(--accent-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-family: 'Fira Code', monospace;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.tag.tech {
+    background-color: rgba(129, 140, 248, 0.1);
+    color: #818cf8;
+    border-color: rgba(129, 140, 248, 0.2);
+}
+
+/* リンク一覧 */
+.link-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.link-list li a {
+    padding: 0.6rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.link-list li a:hover {
+    background: rgba(56, 189, 248, 0.05);
+    border-color: var(--accent-color);
+}
+
+/* フッター */
 footer {
-  color: #808080;
-  font-size: 80%;
-  width: 100%;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: #0A1837;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 3rem;
 }

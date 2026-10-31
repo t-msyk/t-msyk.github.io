@@ -1,66 +1,104 @@
 <!DOCTYPE html>
-<!-- Copyright (c) 2020 tMasayuki. All rights reserved. -->
-<html>
-<head lang="ja">
-  <meta charset="utf8"/>
-  <title>t-msyk GitHub Pages</title>
-  <link rel="shortcut icon" href="./favicon.ico">
-  <link rel="stylesheet" href="./reset.css">
-  <link rel="stylesheet" href="./main.css">
-  <script type="text/javascript" src="main.js"></script>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masayuki Tamura - Portfolio</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>t-msyk GitHub Pages</h1>
-  <p> This page is ... what? </p>
-</header>
-<nav>
-  <ul>
-    <li> <a href="./#who_am_i">Who am I?</a> </li>
-    <li> <a href="./#links">Links</a> </li>
-  </ul>
-</nav>
-<main>
-  <a id='who_am_i'> <h1> Who am I? </h1> </a>
-  <h2>Personal Data</h2>
-  Masayuki Tamura, born in 1993, male. Live in Matsumoto, Nagano, Japan. <br>
-  <h2>SNS</h2>
-  <ul>
-    <li> GitHub : <a href="https://github.com/t-msyk">t-msyk</a> </li>
-    <li> Twitter : <a href="https://twitter.com/_tmsyk">_tmsyk</a> </li>
-  </ul>
-  <h2>Hobbys / Interests</h2>
-  <ul>
-    <li> <a href="https://en.wikipedia.org/wiki/Shogi">Shogi</a> </li>
-    <li> <a href="https://en.wikipedia.org/wiki/Vim_(text_editor)">Vim</a> </li>
-    <li> <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>
-         (<a href="https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux">RHEL</a>)</li>
-  </ul>
-  <h2>Education</h2>
-  Kanazawa Univ. March, 2018. Master of Engineering ( bioinformatics ).
-  I was studying cell tracking.
-  <h2>Languages</h2>
-  C/C++, perl, shell(bash) script, Java, etc.
-  <a id='links'> <h1> links </h1> </a>
-  <ul>
-    <li>
-      <a href="./sc24/">kif list page</a>
-      </br>
-      <object type="text/html" data="./sc24/" width='60%' height='256'>
-      <p>404 Not Found</p>
-      </object>
-    </li>
-    <li>
-      <a href="./ParityPanic/">Parity Panic</a>
-      </br>
-      <object type="text/html" data="./ParityPanic/" width='60%' height='256'>
-      <p>404 Not Found</p>
-      </object>
-    </li>
-  </ul>
-</main>
-<footer>
-  Copyright (c) 2020 tMasayuki. All rights reserved.
-</footer>
+
+    <!-- ヘッダー / ナビゲーション -->
+    <header id="header">
+        <div class="nav-container">
+            <span class="logo">t-msyk.github.io</span>
+            <nav>
+                <a href="#about"><i class="fa-solid fa-user"></i> Who am I?</a>
+                <a href="#links"><i class="fa-solid fa-link"></i> Links</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container">
+        
+        <!-- ヒーローセクション -->
+        <section class="hero card">
+            <h1>Masayuki Tamura</h1>
+            <p class="subtitle">Software Developer / Researcher</p>
+            <div class="meta-info">
+                <span><i class="fa-solid fa-cake-candles"></i> 1993年生</span>
+                <span><i class="fa-solid fa-location-dot"></i> 長野県松本市</span>
+            </div>
+        </section>
+
+        <!-- Who am I? セクション -->
+        <section id="about" class="card">
+            <h2><i class="fa-solid fa-id-card"></i> Who am I?</h2>
+            
+            <div class="info-grid">
+                <!-- SNS -->
+                <div class="info-item">
+                    <h3>SNS</h3>
+                    <ul class="clean-list">
+                        <li><a href="https://github.com/t-msyk" target="_blank"><i class="fa-brands fa-github"></i> GitHub: t-msyk</a></li>
+                        <li><a href="https://twitter.com/_tmsyk" target="_blank"><i class="fa-brands fa-twitter"></i> Twitter: _tmsyk</a></li>
+                    </ul>
+                </div>
+
+                <!-- 趣味・関心 -->
+                <div class="info-item">
+                    <h3>Hobbies / Interests</h3>
+                    <div class="tags">
+                        <span class="tag">Shogi</span>
+                        <span class="tag">Vim</span>
+                        <span class="tag">Linux (RHEL)</span>
+                    </div>
+                </div>
+
+                <!-- 学歴 -->
+                <div class="info-item">
+                    <h3>Education</h3>
+                    <p><strong>金沢大学大学院</strong> (2018年3月修了)</p>
+                    <p class="sub-text">修士（工学）- バイオインフォマティクス (細胞追跡の研究)</p>
+                </div>
+
+                <!-- 言語・技術 -->
+                <div class="info-item">
+                    <h3>Languages & Tech</h3>
+                    <div class="tags">
+                        <span class="tag tech">C/C++</span>
+                        <span class="tag tech">Perl</span>
+                        <span class="tag tech">Shell (Bash)</span>
+                        <span class="tag tech">Java</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Links セクション -->
+        <section id="links" class="card">
+            <h2><i class="fa-solid fa-bookmark"></i> Links</h2>
+            <ul class="link-list">
+                <li><a href="sc24"><i class="fa-solid fa-chess-board"></i> kif list page</a></li>
+                <li><a href="ParityPanic"><i class="fa-solid fa-gamepad"></i> Parity Panic</a></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2020 tMasayuki. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>

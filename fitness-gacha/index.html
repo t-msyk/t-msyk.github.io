@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>今日のクエストガチャ</title>
+
+<style>
+body{
+    margin:0;
+    font-family:sans-serif;
+    background:#10131a;
+    color:white;
+    text-align:center;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+}
+
+h1{
+    font-size:2em;
+}
+
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin:20px 0;
+}
+
+.card{
+    background:#1d2330;
+    padding:12px;
+    border-radius:12px;
+    min-width:120px;
+}
+
+button{
+    font-size:1.5em;
+    padding:20px 40px;
+    border:none;
+    border-radius:16px;
+    background:#ffb300;
+    cursor:pointer;
+    box-shadow:0 0 20px #ffb300;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+#result{
+    margin-top:30px;
+    min-height:140px;
+}
+
+.rarity{
+    font-size:2em;
+    font-weight:bold;
+}
+
+.quest{
+    font-size:1.4em;
+    margin-top:10px;
+}
+
+.ssr{
+    color:#ffd700;
+    text-shadow:0 0 20px gold;
+}
+
+.sr{
+    color:#66ccff;
+}
+
+.r{
+    color:#99ff99;
+}
+
+.n{
+    color:#dddddd;
+}
+
+.spin{
+    animation:spin 0.08s linear infinite;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.completeBar{
+    margin-top:30px;
+}
+
+progress{
+    width:80%;
+    height:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎰 今日のクエストガチャ 🎰</h1>
+
+<div class="stats">
+<div class="card">
+<div>総ガチャ</div>
+<div id="drawCount">0</div>
+</div>
+
+<div class="card">
+<div>継続日数</div>
+<div id="streak">0</div>
+</div>
+
+<div class="card">
+<div>図鑑</div>
+<div id="collection">0%</div>
+</div>
+</div>
+
+<button onclick="drawGacha()">ガチャを回す</button>
+
+<div id="result"></div>
+
+<div class="completeBar">
+<progress id="progress" max="7" value="0"></progress>
+</div>
+
+</div>
+
+<script>
+
+const items = [
+{ rarity:"SSR", rate:5, task:"ラジオ体操 第一＋第二", cls:"ssr" },
+{ rarity:"SR", rate:20, task:"ラジオ体操 第一", cls:"sr" },
+{ rarity:"SR", rate:20, task:"ラジオ体操 第二", cls:"sr" },
+{ rarity:"R", rate:20, task:"むぎゅむぎゅ100回", cls:"r" },
+{ rarity:"R", rate:15, task:"ストレッチ5分", cls:"r" },
+{ rarity:"N", rate:10, task:"肩回し20回", cls:"n" },
+{ rarity:"N", rate:10, task:"今日は休み", cls:"n" }
+];
+
+let drawCount =
+Number(localStorage.getItem("drawCount") || 0);
+
+let collection =
+JSON.parse(localStorage.getItem("collection") || "[]");
+
+let streak =
+Number(localStorage.getItem("streak") || 0);
+
+updateUI();
+
+function pickItem(){
+
+    let r = Math.random() * 100;
+    let total = 0;
+
+    for(let item of items){
+        total += item.rate;
+
+        if(r < total){
+            return item;
+        }
+    }
+}
+
+function drawGacha(){
+
+    const button = document.querySelector("button");
+
+    button.disabled = true;
+    button.classList.add("spin");
+
+    let count = 0;
+
+    const interval = setInterval(()=>{
+
+        const item =
+        items[Math.floor(Math.random()*items.length)];
+
+        document.getElementById("result").innerHTML =
+        `<div class="rarity ${item.cls}">
+        ${item.rarity}
+        </div>
+        <div class="quest">${item.task}</div>`;
+
+        count++;
+
+        if(count > 25){
+
+            clearInterval(interval);
+
+            const result = pickItem();
+
+            drawCount++;
+
+            localStorage.setItem(
+                "drawCount",
+                drawCount
+            );
+
+            if(!collection.includes(result.task)){
+                collection.push(result.task);
+
+                localStorage.setItem(
+                    "collection",
+                    JSON.stringify(collection)
+                );
+            }
+
+            updateStreak();
+
+            document.getElementById("result").innerHTML =
+            `<div class="rarity ${result.cls}">
+            ${result.rarity}
+            </div>
+            <div class="quest">
+            ${result.task}
+            </div>`;
+
+            button.disabled = false;
+            button.classList.remove("spin");
+
+            updateUI();
+
+            if(result.rarity === "SSR"){
+                alert("✨ SSR!! 超レアクエスト獲得！ ✨");
+            }
+
+        }
+
+    },100);
+}
+
+function updateStreak(){
+
+    const today =
+    new Date().toISOString().slice(0,10);
+
+    const last =
+    localStorage.getItem("lastDate");
+
+    if(last !== today){
+
+        streak++;
+
+        localStorage.setItem(
+            "streak",
+            streak
+        );
+
+        localStorage.setItem(
+            "lastDate",
+            today
+        );
+    }
+}
+
+function updateUI(){
+
+    document.getElementById("drawCount")
+        .textContent = drawCount;
+
+    document.getElementById("streak")
+        .textContent = streak;
+
+    const percent =
+    Math.round(collection.length / items.length * 100);
+
+    document.getElementById("collection")
+        .textContent = percent + "%";
+
+    document.getElementById("progress")
+        .value = collection.length;
+}
+
+</script>
+
+</body>
+</html>
+
