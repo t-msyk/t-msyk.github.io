@@ -109,7 +109,7 @@ progress{
 
 <div class="container">
 
-<h1>🎰 今日のクエストガチャ 🎰</h1>
+<h1>&#x1f3b0; 今日のクエストガチャ &#x1f3b0;</h1>
 
 <div class="stats">
 <div class="card">
@@ -141,14 +141,69 @@ progress{
 <script>
 
 const items = [
-{ rarity:"SSR", rate:5, task:"ラジオ体操 第一＋第二", cls:"ssr" },
-{ rarity:"SR", rate:20, task:"ラジオ体操 第一", cls:"sr" },
-{ rarity:"SR", rate:20, task:"ラジオ体操 第二", cls:"sr" },
-{ rarity:"R", rate:20, task:"むぎゅむぎゅ100回", cls:"r" },
-{ rarity:"R", rate:15, task:"ストレッチ5分", cls:"r" },
-{ rarity:"N", rate:10, task:"肩回し20回", cls:"n" },
-{ rarity:"N", rate:10, task:"今日は休み", cls:"n" }
+
+{ id:1, rarity:"SSR", rate:1, task:"&#x1f451; 王様の休日\n今日は休み", cls:"ssr" },
+
+{ id:2, rarity:"SSR", rate:1, task:"&#x1f308; フルコンボ\nラジオ体操 第一＋第二", cls:"ssr" },
+
+{ id:3, rarity:"SSR", rate:1, task:"&#x1f48e; 足やせスペシャル\nラジオ体操第一＋むぎゅむぎゅ10分", cls:"ssr" },
+
+{ id:4, rarity:"SSR", rate:1, task:"&#x1f3ab; クエスト選択券\n好きなクエストを選べる", cls:"ssr" },
+
+{ id:5, rarity:"SR", rate:4, task:"ラジオ体操 第一", cls:"sr" },
+
+{ id:6, rarity:"SR", rate:4, task:"ラジオ体操 第二", cls:"sr" },
+
+{ id:7, rarity:"SR", rate:4, task:"むぎゅむぎゅ10分", cls:"sr" },
+
+{ id:8, rarity:"SR", rate:4, task:"ストレッチ10分", cls:"sr" },
+
+{ id:9, rarity:"SR", rate:4, task:"肩回し50回", cls:"sr" },
+
+{ id:10, rarity:"SR", rate:4, task:"その場足踏み5分", cls:"sr" },
+
+{ id:11, rarity:"SR", rate:4, task:"お部屋ウォーク5分", cls:"sr" },
+
+{ id:12, rarity:"SR", rate:4, task:"肩回し20回＋ストレッチ5分", cls:"sr" },
+
+{ id:13, rarity:"R", rate:6, task:"むぎゅむぎゅ5分", cls:"r" },
+
+{ id:14, rarity:"R", rate:6, task:"むぎゅむぎゅ3分", cls:"r" },
+
+{ id:15, rarity:"R", rate:6, task:"肩回し20回", cls:"r" },
+
+{ id:16, rarity:"R", rate:6, task:"首ストレッチ2分", cls:"r" },
+
+{ id:17, rarity:"R", rate:6, task:"足首ぐるぐる左右20回", cls:"r" },
+
+{ id:18, rarity:"R", rate:6, task:"前屈30秒", cls:"r" },
+
+{ id:19, rarity:"R", rate:6, task:"背伸び20秒×3", cls:"r" },
+
+{ id:20, rarity:"R", rate:6, task:"深呼吸20回", cls:"r" },
+
+{ id:21, rarity:"R", rate:6, task:"姿勢リセット3分", cls:"r" },
+
+{ id:22, rarity:"R", rate:6, task:"立ってテレビを見る5分", cls:"r" },
+
+{ id:23, rarity:"N", rate:8, task:"水を1杯飲む", cls:"n" },
+
+{ id:24, rarity:"N", rate:8, task:"麦茶を飲む", cls:"n" },
+
+{ id:25, rarity:"N", rate:8, task:"窓を開けて背伸び", cls:"n" },
+
+{ id:26, rarity:"N", rate:8, task:"1分だけ外の空気を吸う", cls:"n" },
+
+{ id:27, rarity:"N", rate:8, task:"お菓子を1個我慢", cls:"n" },
+
+{ id:28, rarity:"N", rate:8, task:"3分だけ片付け", cls:"n" },
+
+{ id:29, rarity:"N", rate:8, task:"今日はスタンプだけ押してOK", cls:"n" },
+
+{ id:30, rarity:"N", rate:8, task:"夫に『よくできました』を言わせる", cls:"n" }
+
 ];
+
 
 let drawCount =
 Number(localStorage.getItem("drawCount") || 0);
